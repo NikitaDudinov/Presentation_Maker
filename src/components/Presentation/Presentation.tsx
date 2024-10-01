@@ -5,12 +5,12 @@ import { Toolbar } from "../Toolbar/Toolbar"
 import { SlideBar } from "../SlideBar/SlideBar"
 import { CurrentSlide } from "../CurrentSlide/CurrentSlide"
 import styles from './Presentation.module.css'
-import { maxPresentation} from "../../data/Presentation"
+import { maxPresentation, minPresentation} from "../../data/Presentation"
 
 const Presentation = () => {
-    const [presentation, setPresenation] = useState<TPresentation>(maxPresentation)
+    const [presentation, setPresenation] = useState<TPresentation>(minPresentation)
     const [currentSlideId, setCurrentSlideId] = useState(
-        maxPresentation?.slides?.[0]?.id ?? null
+        minPresentation?.slides?.[0]?.id ?? null
       );
     const valueContext = {
         presentation: presentation,

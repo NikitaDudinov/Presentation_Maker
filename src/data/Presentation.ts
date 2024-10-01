@@ -1,7 +1,7 @@
 import { TPresentation } from "../types/types"
 
 const minPresentation: TPresentation = {
-    title: '',
+    title: 'Минимальная презентация',
     select: {
         elementsId: []
     },
