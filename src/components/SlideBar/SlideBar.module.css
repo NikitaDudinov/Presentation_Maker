@@ -1,0 +1,24 @@
+.slideBar {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    width: 250px;
+    height: 90vh;
+    gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;  
+}
+
+.minSlide {
+    position: relative;
+    width: 100%;
+    min-height: 124px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.minSlide:hover {
+    border-color: gray;
+}
