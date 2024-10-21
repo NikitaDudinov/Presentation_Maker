@@ -1,27 +1,27 @@
-import { TPresentation, TSlide, ImageElement, TextElement } from "../types/types";
+import { PresentationType, SlideType, ImageElement, TextElement } from "../store/types";
 
-function renameTPresentationTitle(newTitle: string, presentation: TPresentation): TPresentation {
+function renamePresentationTypeTitle(newTitle: string, presentation: PresentationType): PresentationType {
     return {
         ...presentation,
         title: newTitle,
     }
 }
 
-function addSlides(newSlide: TSlide, presentation: TPresentation): TPresentation {
+function addSlides(newSlide: SlideType, presentation: PresentationType): PresentationType {
     return {
         ...presentation,
         slides: [...presentation.slides, newSlide]
     }
 }
 
-function removeSlide(slideId: string, presentation: TPresentation, ): TPresentation {
+function removeSlide(slideId: string, presentation: PresentationType, ): PresentationType {
     return {
         ...presentation,
         slides: [...presentation.slides.filter(slide => slide.id !== slideId)]
     }
 }
 
-function moveSlide(newIndex: number, elementId: string, presentation: TPresentation): TPresentation {
+function moveSlide(newIndex: number, elementId: string, presentation: PresentationType): PresentationType {
     const slides = [...presentation.slides];
     const slideIndex = findArrayIndex(slides, elementId)
     if(slideIndex !== -1){
@@ -35,7 +35,7 @@ function moveSlide(newIndex: number, elementId: string, presentation: TPresentat
     }
 }
 
-function addSlideElement(slideId: string, newElement: ImageElement | TextElement, presentation: TPresentation): TPresentation {
+function addSlideElement(slideId: string, newElement: ImageElement | TextElement, presentation: PresentationType): PresentationType {
     const newSlides =  [...presentation.slides].map(slide => {
         if(slide.id === slideId)
             return {
@@ -50,7 +50,7 @@ function addSlideElement(slideId: string, newElement: ImageElement | TextElement
     }
 }
 
-function removeSlideElment(slideId: string, elementId: string,  presentation: TPresentation): TPresentation {
+function removeSlideElment(slideId: string, elementId: string,  presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if(slide.id === slideId) {
             return {
@@ -66,7 +66,7 @@ function removeSlideElment(slideId: string, elementId: string,  presentation: TP
     }
 }
 
-function moveSlideElement(slideId: string, elementId: string, newPosition: { x: number, y: number }, presentation: TPresentation): TPresentation {
+function moveSlideElement(slideId: string, elementId: string, newPosition: { x: number, y: number }, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if (slide.id === slideId){
             const newElements = slide.elements;
@@ -88,7 +88,7 @@ function moveSlideElement(slideId: string, elementId: string, newPosition: { x: 
 
 }
 
-function resizeElement(slideId: string, elementId: string, newSize: { width: number, height: number }, presentation: TPresentation): TPresentation {
+function resizeElement(slideId: string, elementId: string, newSize: { width: number, height: number }, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if (slide.id === slideId){
             const newElements = slide.elements;
@@ -108,7 +108,7 @@ function resizeElement(slideId: string, elementId: string, newSize: { width: num
     }
 }
 
-function changeText(slideId: string, elementId: string, newText: string, presentation: TPresentation): TPresentation {
+function changeText(slideId: string, elementId: string, newText: string, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if (slide.id === slideId){
             const newElements = slide.elements;
@@ -132,7 +132,7 @@ function changeText(slideId: string, elementId: string, newText: string, present
     }
 }
 
-function changeTextSize(slideId: string, elementId: string, newSize: number, presentation: TPresentation): TPresentation {
+function changeTextSize(slideId: string, elementId: string, newSize: number, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if (slide.id === slideId){
             const newElements = slide.elements.map(element => {
@@ -154,7 +154,7 @@ function changeTextSize(slideId: string, elementId: string, newSize: number, pre
     }
 }
 
-function changeTextFamily(slideId: string, elementId: string, newFamily: string, presentation: TPresentation): TPresentation {
+function changeTextFamily(slideId: string, elementId: string, newFamily: string, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if (slide.id === slideId){
             const newElements = slide.elements.map(element => {
@@ -176,7 +176,7 @@ function changeTextFamily(slideId: string, elementId: string, newFamily: string,
     }
 }
 
-function changeBackgroundSlide(slideId: string, newBackground: string, presentation: TPresentation): TPresentation {
+function changeBackgroundSlide(slideId: string, newBackground: string, presentation: PresentationType): PresentationType {
     const newSlides = [...presentation.slides].map(slide => {
         if(slide.id === slideId){
             return{
@@ -192,7 +192,7 @@ function changeBackgroundSlide(slideId: string, newBackground: string, presentat
     }
 }
 
-function findArrayIndex(arr: Array<TSlide> | Array<ImageElement | TextElement>, id: string): number {
+function findArrayIndex(arr: Array<SlideType> | Array<ImageElement | TextElement>, id: string): number {
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].id === id) {
             return i;
@@ -202,7 +202,7 @@ function findArrayIndex(arr: Array<TSlide> | Array<ImageElement | TextElement>, 
 }
 
 export {
-    renameTPresentationTitle,
+    renamePresentationTypeTitle,
     addSlides,
     removeSlide,
     moveSlide,

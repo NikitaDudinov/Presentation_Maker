@@ -1,10 +1,10 @@
-type TPresentation = {
+type PresentationType = {
     title: string,
-    select: Select,
-    slides: Array<TSlide>,
+    select: Selection,
+    slides: Array<SlideType>,
 }
 
-type TSlide = {
+type SlideType = {
     id: string,
     background: string,
     elements: Array<TextElement | ImageElement>
@@ -40,17 +40,18 @@ type TextElement = BaseElement & {
     }
 }
 
-type Select = {
+type Selection = {
+    selectedSlideId: string;
     elementsId: Array<string>
 }
 
 export type{
-    TPresentation,
-    TSlide,
+    PresentationType,
+    SlideType,
     Position,
     Size,
     BaseElement,
     ImageElement,
     TextElement,
-    Select
+    Selection
 };

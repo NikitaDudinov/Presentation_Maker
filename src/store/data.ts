@@ -1,16 +1,18 @@
-import { TPresentation } from "../types/types"
+import { PresentationType } from "../store/types"
 
-const minPresentation: TPresentation = {
+const minPresentation: PresentationType = {
     title: 'Минимальная презентация',
     select: {
+        selectedSlideId: '',
         elementsId: []
     },
     slides: []
 }
 
-const maxPresentation: TPresentation = {
+const maxPresentation: PresentationType = {
     title: 'Презентация с данными', 
     select: {
+        selectedSlideId: '1',
         elementsId: ['1','2','3']
     },
     slides: [

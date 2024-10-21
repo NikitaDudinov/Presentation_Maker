@@ -1,4 +1,4 @@
-.slideBar {
+.slidesList {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -10,7 +10,7 @@
     overflow-x: hidden;  
 }
 
-.minSlide {
+.slide {
     position: relative;
     width: 100%;
     min-height: 124px;
@@ -19,6 +19,6 @@
     transition: border-color 0.3s ease;
 }
 
-.minSlide:hover {
+.slide:hover {
     border-color: gray;
 }
