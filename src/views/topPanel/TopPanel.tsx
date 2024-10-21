@@ -6,7 +6,7 @@ type TopPanelProps = {
 
 const TopPanel = ({title}: TopPanelProps) => {
     return (
-        <div className={styles.TopPanel}>
+        <div className={styles.topPanel}>
             <p className={styles.presentationTitle}>{title}</p>
             <p className={styles.topPanelDescription}>В будущем тут будут инструменты для работы</p>
         </div>

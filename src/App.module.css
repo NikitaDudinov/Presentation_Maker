@@ -5,7 +5,7 @@
 }
 
 .container {
-    height: 90vh;
+    height: calc(100vh - var(--topPanelHeight));
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,3 +13,7 @@
     box-sizing: border-box;
     padding-right: 8%;
 }
+
+:root {
+    --topPanelHeight: 100px;
+  }
