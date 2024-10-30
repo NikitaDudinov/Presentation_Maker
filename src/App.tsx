@@ -2,19 +2,24 @@ import './App.module.css'
 import { TopPanel } from './views/topPanel/TopPanel'
 import styles from './App.module.css'
 import { SlidesList } from './views/slidesList/SlidesList'
-import { maxPresentation } from './store/data'
 import { Workspace } from './views/workSpace/Workspace'
+import { PresentationType } from './store/types'
 
-function App() {
-
+type AppProps = {
+  presentation: PresentationType,
+}
+function App({presentation}: AppProps) {
+  const curSlide = presentation.slides.length > 0 
+  ? (presentation.slides.find(slide => slide.id == presentation.select.selectedSlideId) || presentation.slides[0]) 
+  : null;
   return (
-    <>
-      <TopPanel title='hello'/>
-      <div className={styles.container}>
-          <SlidesList slides={maxPresentation.slides} selection={maxPresentation.select}/>
-          <Workspace slide={maxPresentation.slides[0]}/>
-      </div>
-    </>
+      <>
+          <TopPanel title={presentation.title} background={curSlide?.background}></TopPanel>
+          <div className={styles.container}>
+              <SlidesList slides={presentation.slides} selectSlideId={presentation.select.selectedSlideId}></SlidesList>
+              <Workspace slide={curSlide} selectElemnets={presentation.select.elementsId}></Workspace>
+          </div>
+      </>
   )
 }
 

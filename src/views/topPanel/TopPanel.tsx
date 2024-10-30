@@ -1,14 +1,19 @@
+
 import styles from './TopPanel.module.css'
 
+import { PresentationTitle} from '../../components/titlePresentation/PresentationTitle'
+import { Toolbar } from '../../components/toolbar/Toolbar'
 type TopPanelProps = {
     title: string,
+    background?: string,
 }
 
-const TopPanel = ({title}: TopPanelProps) => {
+const TopPanel = ({title, background}: TopPanelProps) => {
     return (
         <div className={styles.topPanel}>
-            <p className={styles.presentationTitle}>{title}</p>
-            <p className={styles.topPanelDescription}>В будущем тут будут инструменты для работы</p>
+            <PresentationTitle title={title}/>
+            <Toolbar background={background}/>
+
         </div>
     )
 }

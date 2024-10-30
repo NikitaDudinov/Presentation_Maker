@@ -1,57 +1,57 @@
 type PresentationType = {
     title: string,
-    select: Selection,
-    slides: Array<SlideType>,
+    selection: SelectionType,
+    slides: SlideType[],
 }
 
 type SlideType = {
     id: string,
     background: string,
-    elements: Array<TextElement | ImageElement>
+    elements: (ImageElementType | TextElementType)[],
 }
 
-type Position = {
+type PositionType = {
     x: number,
-    y: number
+    y: number,
 }
 
-type Size = {
+type SizeType = {
     width: number,
-    height: number
+    height: number,
 }
 
-type BaseElement = {
+type BaseElementType = {
     id: string,
-    position: Position,
-    size: Size,
+    position: PositionType,
+    size: SizeType,
 }
 
-type ImageElement = BaseElement & {
-    type: 'image';
-    src: string;
+type ImageElementType = BaseElementType & {
+    type: 'image',
+    src: string,
 }
 
-type TextElement = BaseElement & {
-    type: 'text';
-    content: string;
+type TextElementType = BaseElementType & {
+    type: 'text',
+    content: string,
     font: {
         family: string,
-        size: number
+        size: number,
     }
 }
 
-type Selection = {
-    selectedSlideId: string;
-    elementsId: Array<string>
+type SelectionType = {
+    selectedSlideId: string | null,
+    elementsId: string[],
 }
 
-export type{
+export type {
     PresentationType,
     SlideType,
-    Position,
-    Size,
-    BaseElement,
-    ImageElement,
-    TextElement,
-    Selection
+    PositionType,
+    SizeType,
+    BaseElementType,
+    ImageElementType,
+    TextElementType,
+    SelectionType
 };

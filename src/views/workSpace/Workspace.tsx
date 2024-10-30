@@ -1,14 +1,18 @@
-import { SlideType } from "../../store/types"
+import { SlideType, Selection } from "../../store/types"
 import styles from './Workspace.module.css'
 import { Slide } from "../slide/Slide"
 
 type WorkspaceProps = {
-    slide: SlideType
+    slide: SlideType | null;
+    selectElemnets: string[];
 }
 
-const Workspace = ({slide}: WorkspaceProps) => (
+const Workspace = ({slide, selectElemnets}: WorkspaceProps) => (
     <div className={styles.workspace}>
-        <Slide slide={slide} isSelected={false}/>
+        {
+            (slide && <Slide slide={slide} selectElements={selectElemnets}/>)
+        }
+
     </div>
 )
 

@@ -1,19 +1,20 @@
-import { Selection, SlideType } from "../../store/types"
+import {SlideType } from "../../store/types"
 import { Slide } from "../slide/Slide"
 import styles from './SlidesList.module.css'
-
+import { dispatch } from "../../store/presentation"
+import { setSelectSlide } from "../../store/setSelectSlide"
 const SLIDE_PREVIEW_SCALE = 0.2
 
 type SlidesListPros = {
     slides: Array<SlideType>,
-    selection: Selection,
+    selectSlideId: string | null,
 }
 
-function SlidesList({slides, selection}: SlidesListPros) {
+function SlidesList({slides, selectSlideId}: SlidesListPros) {
     function onSlideClick(slideId: string) {
-        // dispatch(setSelection, {
-        //     selectedSlideId: slideId,
-        // })
+        dispatch(setSelectSlide, {
+            selectedSlideId: slideId,
+        })
     }
     return (
         <div className={styles.slidesList}>
@@ -22,7 +23,7 @@ function SlidesList({slides, selection}: SlidesListPros) {
                     <Slide
                         slide={slide}
                         scale={SLIDE_PREVIEW_SCALE}
-                        isSelected={slide.id == selection.selectedSlideId}
+                        select={selectSlideId === slide.id}
                         className={styles.slide}
                     />
                 </div>

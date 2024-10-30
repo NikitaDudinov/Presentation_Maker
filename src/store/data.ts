@@ -2,7 +2,7 @@ import { PresentationType } from "../store/types"
 
 const minPresentation: PresentationType = {
     title: 'Минимальная презентация',
-    select: {
+    selection: {
         selectedSlideId: '',
         elementsId: []
     },
@@ -11,9 +11,9 @@ const minPresentation: PresentationType = {
 
 const maxPresentation: PresentationType = {
     title: 'Презентация с данными', 
-    select: {
+    selection: {
         selectedSlideId: '1',
-        elementsId: ['1','2','3']
+        elementsId: []
     },
     slides: [
         {
