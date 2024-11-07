@@ -1,7 +1,10 @@
 import { PresentationType, ImageElementType } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
-const addImageElement = (presentation: PresentationType): PresentationType => {
+const addImageElement = (
+    presentation: PresentationType,
+    payload?: { value: string},
+): PresentationType => {
     const selectedSlideId = presentation.selection.selectedSlideId;
 
     if (selectedSlideId) {
@@ -18,7 +21,7 @@ const addImageElement = (presentation: PresentationType): PresentationType => {
                         height: 150,
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: payload ? payload.value : "/images/picture.avif",
                 };
 
                 return {

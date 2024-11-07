@@ -1,9 +1,9 @@
 
 import {CSSProperties} from "react";
-import { ImageElement } from "../../store/types";
+import { ImageElementType } from "../../store/types";
 
 type ImageObjectProps = {
-    imageObject: ImageElement,
+    imageObject: ImageElementType,
     scale?: number,
     isSelected: boolean,
 }
@@ -20,7 +20,7 @@ function ImageObject({imageObject, scale = 1, isSelected}: ImageObjectProps) {
         imageObjectStyles.border = '2px solid #0b57d0'
     }
     return (
-        <img style={imageObjectStyles} src={'/images/' + imageObject.src} />
+        <img style={imageObjectStyles} src={imageObject.src} />
     )
 }
 

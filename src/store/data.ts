@@ -88,7 +88,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
                 {
                     id: '3',
@@ -101,7 +101,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
             ]
         },
@@ -177,7 +177,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
                 {
                     id: '3',
@@ -190,7 +190,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
             ]
         },
@@ -266,7 +266,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
                 {
                     id: '3',
@@ -279,7 +279,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
             ]
         },
@@ -355,7 +355,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
                 {
                     id: '3',
@@ -368,7 +368,7 @@ const maxPresentation: PresentationType = {
                         height: 150
                     },
                     type: "image",
-                    src: "picture.avif",
+                    src: "/images/picture.avif",
                 },
             ]
         },

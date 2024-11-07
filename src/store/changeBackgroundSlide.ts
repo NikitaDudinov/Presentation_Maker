@@ -5,13 +5,13 @@ const changeBackgroundSlide = (
     payload: { background: string; all: boolean }
 ): PresentationType => {
     const selectedSlideId = presentation.selection.selectedSlideId
-    
+    console.log(payload)
     if(selectedSlideId){
         const newSlides = presentation.slides.map(slide => {
             if (payload.all || slide.id === selectedSlideId) {
                 return {
                     ...slide,
-                    background: payload.background,
+                    background: payload.background === '' ? 'white' : payload.background,
                 };
             }
             return slide;

@@ -10,8 +10,7 @@
     position: absolute;
     bottom: 160% ;
     right: 50%;
-    background-color: #232222;
-    opacity: 0.84;
+    background-color: rgba(35, 34, 34, 0.85);
     border-radius: 40px;
     padding: 40px;
     z-index: 1;

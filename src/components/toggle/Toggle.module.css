@@ -1,0 +1,33 @@
+.toggleContainer {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.toggle {
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 15px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.checked {
+    background-color: #4caf50;
+}
+
+.toggleThumb {
+    width: 21px;
+    height: 21px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+}
+
+.checkedToggleThumb {
+    transform: translateX(25px);
+}

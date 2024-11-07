@@ -1,4 +1,5 @@
 import styles from './Button.module.css'
+import classNames from 'classnames';
 
 type IconProps = {
     src: string,
@@ -7,6 +8,7 @@ type IconProps = {
 
 type ButtonProps = ButtonContentProps & {
     onClick: () => void,
+    disabled?: boolean,
 }
 
 type IconSizeType = 'small' | 'medium' | 'large'
@@ -39,8 +41,10 @@ type ButtonTextIconProps = {
 }
 
 const Button = (props: ButtonProps) => (
-        <button 
-            className={styles.button} 
+        <button
+            className={classNames(props.type == 'icon' ? styles.buttonIcon : styles.buttonText, {
+                [styles.disabledButton]: props.disabled,
+            })}
             onClick={props.onClick} 
         >
             {props.type == 'icon-text' && 
@@ -49,7 +53,15 @@ const Button = (props: ButtonProps) => (
                         src={props.iconUrl} 
                         size={props.iconSize}
                     />
-                    <span>{props.label}</span>
+                    <span 
+                        className={
+                            classNames(styles.labelButton, {
+                                [styles.disabledLabelButton]: props.disabled,
+                            })
+                        }
+                    >
+                        {props.label}
+                    </span>
                 </div>
             }
             {props.type == 'text-icon' && 
@@ -58,11 +70,27 @@ const Button = (props: ButtonProps) => (
                         src={props.iconUrl} 
                         size={props.iconSize}
                     />
-                    <span>{props.label}</span>
+                    <span 
+                        className={
+                            classNames(styles.labelButton, {
+                                [styles.disabledLabelButton]: props.disabled,
+                            })
+                        }
+                    >
+                        {props.label}
+                    </span>
                 </div>
             }
             {props.type == 'text' && 
-                    <span>{props.label}</span>
+                    <span 
+                        className={
+                            classNames(styles.labelButton, {
+                                [styles.disabledLabelButton]: props.disabled,
+                            })
+                        }
+                    >
+                        {props.label}
+                    </span>
             }
             {props.type == 'icon' && 
                 <Icon 

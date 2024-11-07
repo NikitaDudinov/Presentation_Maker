@@ -6,6 +6,8 @@ import styles from './EditTextComponent.module.css'
 import {useState} from 'react'
 import { ImageElementType, TextElementType } from '../../../store/types'
 import { changePropertyTextElement } from '../../../store/changePropertyTextElement'
+import { dispatch } from '../../../store/presentation'
+import { addTextElement } from '../../../store/addTextElement'
 
 const options = ['Times New Roman', 'Arial', 'Calibri']
 
@@ -125,11 +127,22 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
             <Button type={'icon'} onClick={() => {}} iconUrl={imageTextUrl} iconSize={'medium'}/>
         </Popover>
         ) : (
+            <Popover 
+            content={
+                <div>
+                <span className={styles.label}>Добавить текст</span>
+                <Button type='text' onClick={() => dispatch(addTextElement)} label="Добавить текст"/>
+                </div>
+            }
+        >
             <Button type={'icon'} onClick={() => {}} iconUrl={imageTextUrl} iconSize={'medium'}/>
+        </Popover>
         )
         
     )
 }
+
+
 
 export {
     EditTextComponent
