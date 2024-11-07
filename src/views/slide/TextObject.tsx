@@ -1,8 +1,8 @@
-import { TextElement } from "../../store/types";
+import { TextElementType } from "../../store/types";
 import {CSSProperties} from "react";
 
 type TextObjectProps = {
-    textObject: TextElement,
+    textObject: TextElementType,
     scale?: number,
     isSelected: boolean,
 }

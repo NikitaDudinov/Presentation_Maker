@@ -1,4 +1,4 @@
-import { SlideType, Selection } from "../../store/types";
+import { SlideType} from "../../store/types";
 import {CSSProperties} from "react";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
@@ -18,6 +18,7 @@ type SlideProps = {
 }
 
 const Slide = ({slide, scale = 1, select, className, selectElements}: SlideProps) => {
+
     const slideStyles:CSSProperties = {
         backgroundColor: slide.background,
         width: `${SLIDE_WIDTH * scale}px`,
@@ -25,7 +26,7 @@ const Slide = ({slide, scale = 1, select, className, selectElements}: SlideProps
     }
 
     if (select) {
-        slideStyles.border = '3px solid #0b57d0'
+        slideStyles.border = '3px solid #20AB25'
     }
     const onSetSelectionElement = (itemId: string) => {
         dispatch(setSelectionElement, {selectedItemId: itemId})

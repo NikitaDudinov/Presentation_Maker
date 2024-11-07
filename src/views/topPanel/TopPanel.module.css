@@ -1,23 +1,33 @@
 .topPanel {
     width: 100%;
     height: var(--topPanelHeight);
-    background-color: #FFFFFF;
+    background-color: #20AB25;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    padding-block: 10px;
-    padding-inline: 40px;
+    padding-block: 25px;
+    padding-inline: 50px;
 }
 
-.presentationTitle {
-    font: 500 22px/22px 'Roboto';
-    max-width: 300px;
-    width: 100%;
-}
-
-.topPanelDescription {
-    width: 100%;
+.titleInput {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    color: white;
+    font-size: 28px;
+    transition: background-color 0.3s ease;
     text-align: center;
-    font: 300 20px/22px 'Roboto';
+    max-width: 1400px;
+    width: 100%;
+}
+
+.navigationContainer {
+    display: flex;
+    gap: 15x;
+}
+
+.actionContainer {
+    display: flex;
+    gap: 40px;
 }

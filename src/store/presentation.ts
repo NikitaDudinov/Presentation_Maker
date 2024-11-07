@@ -13,7 +13,6 @@ function setPresentation(newPresentation: PresentationType) {
 }
 
 function dispatch(modifyFn: Function, payload?: Object): void {
-    console.log(payload)
     const newPresentation = modifyFn(_presentation, payload)
     setPresentation(newPresentation)
 

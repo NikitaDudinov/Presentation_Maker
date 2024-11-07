@@ -1,4 +1,4 @@
-import { SlideType, Selection } from "../../store/types"
+import { SlideType} from "../../store/types"
 import styles from './Workspace.module.css'
 import { Slide } from "../slide/Slide"
 

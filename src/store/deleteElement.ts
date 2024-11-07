@@ -2,7 +2,7 @@ import { PresentationType } from "./types"
 
 const deleteElement = (presentation: PresentationType): PresentationType => {
     const selectedSlideId = presentation.selection.selectedSlideId
-    const selectedElementId = presentation.selection.elementsId[0]
+    const selectedElementId = presentation.selection.elementsId.length > 0 ? presentation.selection.elementsId[0] : null
 
     if (selectedElementId && selectedSlideId) {
         const selectedSlide = presentation.slides.find(slide => slide.id === selectedSlideId)

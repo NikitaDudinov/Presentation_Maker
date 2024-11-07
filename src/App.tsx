@@ -4,6 +4,7 @@ import styles from './App.module.css'
 import { SlidesList } from './views/slidesList/SlidesList'
 import { Workspace } from './views/workSpace/Workspace'
 import { PresentationType } from './store/types'
+import { Toolbar } from './views/toolbar/Toolbar'
 
 type AppProps = {
   presentation: PresentationType,
@@ -14,13 +15,17 @@ function App({presentation}: AppProps) {
   : null;
   return (
       <>
-          <TopPanel title={presentation.title} background={curSlide?.background}></TopPanel>
+          <TopPanel title={presentation.title}></TopPanel>
           <div className={styles.container}>
               <SlidesList slides={presentation.slides} selectSlideId={presentation.selection.selectedSlideId}></SlidesList>
-              <Workspace slide={curSlide} selectElemnets={presentation.selection.elementsId}></Workspace>
+              <div className={styles.workspaceConatiner}>
+                <Workspace slide={curSlide} selectElemnets={presentation.selection.elementsId}></Workspace>
+                <Toolbar presentation={presentation}/>
+              </div>
           </div>
       </>
   )
 }
+
 
 export default App

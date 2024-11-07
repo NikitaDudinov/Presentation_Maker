@@ -1,0 +1,11 @@
+.toolbarContainer {
+    width: 900px;
+    height: 80px;
+    background-color: #232222;
+    border-radius: 50px;
+    box-sizing: border-box;
+    padding-inline: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}   

@@ -6,7 +6,7 @@ import { setSelectSlide } from "../../store/setSelectSlide"
 const SLIDE_PREVIEW_SCALE = 0.2
 
 type SlidesListPros = {
-    slides: Array<SlideType>,
+    slides: SlideType[],
     selectSlideId: string | null,
 }
 
