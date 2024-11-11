@@ -19,10 +19,6 @@ type EditTextComponentProps = {
 
 const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
 
-    if(element && element.type === 'text'){
-        console.log(element.font)
-    }
-
     const [textStyle, setTextStyle] = useState({
         fontWeight: 'normal',
         fontStyle: 'normal',
@@ -36,8 +32,6 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
         underline: false,
         capsLock: false,
     });
-
-    const [inputText, setInputText] = useState('');
 
     const toggleBold = () => {
         setTextStyle(prev => ({

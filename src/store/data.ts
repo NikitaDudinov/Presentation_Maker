@@ -1,5 +1,5 @@
 import { PresentationType } from "../store/types"
-
+import { v4 as uuidv4 } from 'uuid';
 const minPresentation: PresentationType = {
     title: 'Минимальная презентация',
     selection: {
@@ -12,16 +12,16 @@ const minPresentation: PresentationType = {
 const maxPresentation: PresentationType = {
     title: 'Презентация с данными', 
     selection: {
-        selectedSlideId: '1',
+        selectedSlideId: 'slide-1',
         elementsId: []
     },
     slides: [
         {
-            id: '1',
+            id: 'slide-1',
             background: '#FFFFFF',
             elements: [
                 {
-                    id: '1',
+                    id: 'text-1',
                     position: {
                         x: 300,
                         y: 10
@@ -38,7 +38,7 @@ const maxPresentation: PresentationType = {
                     }  
                 },
                 {
-                    id: '2',
+                    id: 'text-2',
                     position: {
                         x: 600,
                         y: 300,
@@ -57,11 +57,11 @@ const maxPresentation: PresentationType = {
             ]
         },
         {
-            id: '2',
+            id: 'slide-2',
             background: '#FF3F44',
             elements: [
                 {
-                    id: '1',
+                    id: 'text-3',
                     position: {
                         x: 300,
                         y: 100
@@ -78,7 +78,7 @@ const maxPresentation: PresentationType = {
                     }  
                 },
                 {
-                    id: '2',
+                    id: 'image-1',
                     position: {
                         x: 500,
                         y: 250,
@@ -91,7 +91,7 @@ const maxPresentation: PresentationType = {
                     src: "/images/picture.avif",
                 },
                 {
-                    id: '3',
+                    id: 'image-2',
                     position: {
                         x: 100,
                         y: 250,
@@ -106,11 +106,11 @@ const maxPresentation: PresentationType = {
             ]
         },
         {
-            id: '3',
+            id: 'slide-3',
             background: 'green',
             elements: [
                 {
-                    id: '1',
+                    id: 'text-4',
                     position: {
                         x: 300,
                         y: 10
@@ -127,7 +127,7 @@ const maxPresentation: PresentationType = {
                     }  
                 },
                 {
-                    id: '2',
+                    id: 'text-5',
                     position: {
                         x: 600,
                         y: 300,
@@ -142,233 +142,6 @@ const maxPresentation: PresentationType = {
                         family: 'Calibri',
                         size: 14
                     }  
-                },
-            ]
-        },
-        {
-            id: '4',
-            background: '#FF3F44',
-            elements: [
-                {
-                    id: '1',
-                    position: {
-                        x: 300,
-                        y: 100
-                    },
-                    size: {
-                        width: 10,
-                        height: 30
-                    },
-                    type: "text",
-                    content: "Текст слайда",
-                    font: {
-                        family: 'Arial',
-                        size: 20
-                    }  
-                },
-                {
-                    id: '2',
-                    position: {
-                        x: 500,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
-                },
-                {
-                    id: '3',
-                    position: {
-                        x: 100,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
-                },
-            ]
-        },
-        {
-            id: '5',
-            background: 'yellow',
-            elements: [
-                {
-                    id: '1',
-                    position: {
-                        x: 300,
-                        y: 10
-                    },
-                    size: {
-                        width: 10,
-                        height: 30
-                    },
-                    type: "text",
-                    content: "Текст слайда",
-                    font: {
-                        family: 'Arial',
-                        size: 20
-                    }  
-                },
-                {
-                    id: '2',
-                    position: {
-                        x: 600,
-                        y: 300,
-                    },
-                    size: {
-                        width: 48,
-                        height: 60
-                    },
-                    type: "text",
-                    content: "Текст второго элемента",
-                    font: {
-                        family: 'Calibri',
-                        size: 14
-                    }  
-                },
-            ]
-        },
-        {
-            id: '6',
-            background: '#FF3F44',
-            elements: [
-                {
-                    id: '1',
-                    position: {
-                        x: 300,
-                        y: 100
-                    },
-                    size: {
-                        width: 10,
-                        height: 30
-                    },
-                    type: "text",
-                    content: "Текст слайда",
-                    font: {
-                        family: 'Arial',
-                        size: 20
-                    }  
-                },
-                {
-                    id: '2',
-                    position: {
-                        x: 500,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
-                },
-                {
-                    id: '3',
-                    position: {
-                        x: 100,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
-                },
-            ]
-        },
-        {
-            id: '7',
-            background: '#FFFFFF',
-            elements: [
-                {
-                    id: '1',
-                    position: {
-                        x: 300,
-                        y: 10
-                    },
-                    size: {
-                        width: 10,
-                        height: 30
-                    },
-                    type: "text",
-                    content: "Текст слайда",
-                    font: {
-                        family: 'Arial',
-                        size: 20
-                    }  
-                },
-                {
-                    id: '2',
-                    position: {
-                        x: 600,
-                        y: 300,
-                    },
-                    size: {
-                        width: 48,
-                        height: 60
-                    },
-                    type: "text",
-                    content: "Текст второго элемента",
-                    font: {
-                        family: 'Calibri',
-                        size: 14
-                    }  
-                },
-            ]
-        },
-        {
-            id: '8',
-            background: '#FF3F44',
-            elements: [
-                {
-                    id: '1',
-                    position: {
-                        x: 300,
-                        y: 100
-                    },
-                    size: {
-                        width: 10,
-                        height: 30
-                    },
-                    type: "text",
-                    content: "Текст слайда",
-                    font: {
-                        family: 'Arial',
-                        size: 20
-                    }  
-                },
-                {
-                    id: '2',
-                    position: {
-                        x: 500,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
-                },
-                {
-                    id: '3',
-                    position: {
-                        x: 100,
-                        y: 250,
-                    },
-                    size: {
-                        width: 300,
-                        height: 150
-                    },
-                    type: "image",
-                    src: "/images/picture.avif",
                 },
             ]
         },

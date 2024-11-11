@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactElement } from 'react';
+import { useState, useRef, ReactElement, useEffect } from 'react';
 import styles from './Popover.module.css'
 
 
@@ -24,7 +24,7 @@ const Popover = ({
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);

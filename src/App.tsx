@@ -15,7 +15,7 @@ function App({presentation}: AppProps) {
   : null;
   return (
       <>
-          <TopPanel title={presentation.title}></TopPanel>
+          <TopPanel presentation={presentation}></TopPanel>
           <div className={styles.container}>
               <SlidesList slides={presentation.slides} selectSlideId={presentation.selection.selectedSlideId}></SlidesList>
               <div className={styles.workspaceConatiner}>

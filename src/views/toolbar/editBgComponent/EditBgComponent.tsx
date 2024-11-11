@@ -14,8 +14,15 @@ type EditBgComponentProps = {
 const EditBgComponent: React.FC<EditBgComponentProps> = ({ background }) => {
     const [allSlides, setAllSlides] = useState(false)
     const [inputBackground, setInputBackground] = useState(background ? background : '')
+    const [color, setColor] = useState<string>('#000000');
+
     const handleToggleChange = (checked: boolean) => {
         setAllSlides(checked)
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setColor(event.target.value);
+        dispatch(changeBackgroundSlide, {background: event.target.value, all: allSlides});
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +42,13 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background }) => {
                         onChange={handleInputChange}
                         className="input-field"
                     />
+                <input
+                    type="color"
+                    id="color-picker"
+                    value={color}
+                    onChange={handleChange}
+                />
+            <p style={{ color }}>Выбранный цвет: {color}</p>
             </div>
         }
     >

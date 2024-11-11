@@ -3,17 +3,32 @@ import styles from './TopPanel.module.css'
 import imageBackUrl from '../../assets/back.png'
 import imageAheadUrl from '../../assets/ahead.png'
 import imagePlayUrl from '../../assets/play.svg'
-import imageDownloadUrl from '../../assets/download.svg'
+import imageExportUrl from '../../assets/Export.svg'
 import { dispatch } from '../../store/presentation'
 import { renamePresentationTitle } from '../../store/renamePresentationTitle'
+import { saveToJsonFile } from '../../store/files/saveToJsonFile'
+import { PresentationType } from '../../store/types'
+import { getFromFile } from '../../store/files/getFromFile'
+
 type TopPanelProps = {
-    title: string,
+    presentation: PresentationType,
 }
 
-const TopPanel = ({title}: TopPanelProps) => {
+const TopPanel = ({presentation}: TopPanelProps) => {
     const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const newValue = event.target.value;
         dispatch(renamePresentationTitle, newValue);
+    };
+
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]; // Получаем первый файл из списка
+        if (file) {
+            try {
+                dispatch(getFromFile, {file: file})
+            } catch (error) {
+                console.error(error); // Обработка ошибок
+            }
+        }
     };
 
     return (
@@ -25,13 +40,13 @@ const TopPanel = ({title}: TopPanelProps) => {
             <input
                 className={styles.titleInput}
                 type="text"
-                value={title}
+                value={presentation.title}
                 onKeyUp={() => "this.style.width = ;"}
                 onChange={onTitleChange}
             />
             <div className={styles.actionContainer}>
                 <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {}} iconSize={'medium'}/>
-                <Button type={'icon'} iconUrl={imageDownloadUrl} onClick={() => {}} iconSize={'medium'}/>
+                <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => saveToJsonFile(presentation)} iconSize={'medium'}/>
             </div>
         </div>
     )

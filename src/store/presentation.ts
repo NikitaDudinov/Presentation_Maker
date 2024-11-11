@@ -1,7 +1,10 @@
 import {maxPresentation} from './data.ts'
+import { getFromLocalStorage } from './localStorage/getFromLocalStorage.ts';
+import { saveToLocalStorage } from './localStorage/saveToLocalStorage.ts';
 import { PresentationType } from './types'
 
-let _presentation = maxPresentation
+
+let _presentation = getFromLocalStorage() ? getFromLocalStorage() :  maxPresentation
 let _handler: Function | null = null;
 
 function getPresentation() {
@@ -15,7 +18,7 @@ function setPresentation(newPresentation: PresentationType) {
 function dispatch(modifyFn: Function, payload?: Object): void {
     const newPresentation = modifyFn(_presentation, payload)
     setPresentation(newPresentation)
-
+    saveToLocalStorage(newPresentation)
     if (_handler) {
         _handler()
     }
