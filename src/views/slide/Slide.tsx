@@ -47,6 +47,7 @@ const Slide = ({ slide, scale = 1, select, className, selectElements }: SlidePro
             style={slideStyles} 
             className={`${styles.slide} ${className}`} 
             onClick={onSlideClick}
+            onMouseDown={handleMouseDown}
         >
             {slide.elements.map(slideObject => {
                 switch (slideObject.type) {
