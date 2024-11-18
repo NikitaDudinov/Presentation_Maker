@@ -7,13 +7,12 @@ const updatePositionElement = (
     const selectedSlideId = presentation.selection.selectedSlideId
     const selectElementId = presentation.selection.elementsId[0]
 
-    
     const newSlides = presentation.slides.map(slide => {
         if (slide.id === selectedSlideId) {
             return {
                 ...slide,
                 elements: slide.elements.map(element => {
-                    if (element.id === selectElementId && element.type !== 'image') {
+                    if (element.id === selectElementId) {
                         console.log(
                             {
                             ...element,

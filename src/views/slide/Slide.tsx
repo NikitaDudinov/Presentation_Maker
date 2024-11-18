@@ -1,5 +1,5 @@
 import { SlideType } from "../../store/types";
-import { CSSProperties, useRef } from "react";
+import { CSSProperties, useRef, useState, useEffect} from "react";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css';
@@ -18,7 +18,7 @@ type SlideProps = {
     className?: string; 
 }
 
-const Slide = ({ slide, scale = 1, select, className, selectElements }: SlideProps) => {
+const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
     const slideRef = useRef<HTMLDivElement>(null);
 
     const slideStyles: CSSProperties = {
@@ -31,8 +31,8 @@ const Slide = ({ slide, scale = 1, select, className, selectElements }: SlidePro
         slideStyles.border = '3px solid #20AB25';
     }
 
-    const onSetSelectionElement = (slideId: string) => {
-        dispatch(setSelectionElement, { selectedItemId: slideId });
+    const onSetSelectionElement = (elementId: string) => {
+        dispatch(setSelectionElement, { selectedItemId: elementId });
     };
 
     const onSlideClick = () => {
@@ -42,56 +42,39 @@ const Slide = ({ slide, scale = 1, select, className, selectElements }: SlidePro
     };
 
     return (
-        <div 
-            ref={slideRef} 
-            style={slideStyles} 
-            className={`${styles.slide} ${className}`} 
+        <div
+            ref={slideRef}
+            style={slideStyles}
+            className={styles.slide}
             onClick={onSlideClick}
-            onMouseDown={handleMouseDown}
         >
-            {slide.elements.map(slideObject => {
-                switch (slideObject.type) {
-                    case "text":
-                        return (
-                            <div 
-                                key={slideObject.id} 
-                                className={styles.element} 
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Останавливаем всплытие события
-                                    onSetSelectionElement(slideObject.id);
-                                }}
-                            >
-                                <TextObject 
-                                    textObject={slideObject} 
-                                    scale={scale} 
-                                    isSelected={selectElements?.includes(slideObject.id) ? true : false} 
-                                />
-                            </div>
-                        );
-                    case "image":
-                        return (
-                            <div 
-                                key={slideObject.id} 
-                                className={styles.element} 
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Останавливаем всплытие события
-                                    onSetSelectionElement(slideObject.id);
-                                }}
-                            >
-                                <ImageObject 
-                                    imageObject={slideObject} 
-                                    scale={scale} 
-                                    isSelected={selectElements?.includes(slideObject.id) ? true : false} 
-                                />
-                            </div>
-                        );
-                    default:
-                        throw new Error(`Unknown slide type`);
-                }
-            })}
+            {slide.elements.map(slideObject => (
+                <div 
+                    key={slideObject.id} 
+                    className={styles.element} 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onSetSelectionElement(slideObject.id);
+                    }}
+                >
+                    {slideObject.type === "text" ? (
+                        <TextObject 
+                            textObject={slideObject} 
+                            scale={scale} 
+                            isSelected={selectElements?.includes(slideObject.id) ? true : false} 
+                        />
+                    ) : (
+                        <ImageObject 
+                            imageObject={slideObject} 
+                            scale={scale} 
+                            isSelected={selectElements?.includes(slideObject.id) ? true : false} 
+                        />
+                    )}
+                </div>
+            ))}
         </div>
     );
-}
+};
 
 export {
     Slide,

@@ -27,8 +27,8 @@ const maxPresentation: PresentationType = {
                         y: 10
                     },
                     size: {
-                        width: 10,
-                        height: 30
+                        width: 40,
+                        height: 40
                     },
                     type: "text",
                     content: "Текст слайда",

@@ -4,7 +4,7 @@ import { saveToLocalStorage } from './localStorage/saveToLocalStorage.ts';
 import { PresentationType } from './types'
 
 
-let _presentation = getFromLocalStorage() ? getFromLocalStorage() :  maxPresentation
+let _presentation = getFromLocalStorage() || maxPresentation
 let _handler: Function | null = null;
 
 function getPresentation() {
