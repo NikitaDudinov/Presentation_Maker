@@ -45,6 +45,16 @@ type SelectionType = {
     elementsId: string[],
 }
 
+type UpdateSizeType = 
+    | 'horizontal-right' 
+    | 'horizontal-left' 
+    | 'diagonal-right-bottom' 
+    | 'diagonal-right-top' 
+    | 'diagonal-left-bottom' 
+    | 'diagonal-left-top' 
+    | 'vertical-top' 
+    | 'vertical-bottom';
+
 export type {
     PresentationType,
     SlideType,
@@ -53,5 +63,6 @@ export type {
     BaseElementType,
     ImageElementType,
     TextElementType,
-    SelectionType
+    SelectionType,
+    UpdateSizeType
 };

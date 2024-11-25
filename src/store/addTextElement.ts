@@ -10,7 +10,7 @@ const addTextElement = (presentation: PresentationType): PresentationType => {
                 const textElement: TextElementType = {
                     id: uuidv4(),
                     position: { x: 50, y: 50 },
-                    size: { width: 10, height: 30 },
+                    size: { width: 100, height: 50 },
                     type: "text",
                     content: "Новый текст",
                     font: { family: 'Arial', size: 20 }

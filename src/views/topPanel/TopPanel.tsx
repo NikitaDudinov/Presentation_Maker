@@ -4,30 +4,45 @@ import imageBackUrl from '../../assets/back.png'
 import imageAheadUrl from '../../assets/ahead.png'
 import imagePlayUrl from '../../assets/play.svg'
 import imageExportUrl from '../../assets/Export.svg'
+import imageImportUrl from '../../assets/download.svg'
 import { dispatch } from '../../store/presentation'
 import { renamePresentationTitle } from '../../store/renamePresentationTitle'
 import { saveToJsonFile } from '../../store/files/saveToJsonFile'
 import { PresentationType } from '../../store/types'
 import { getFromFile } from '../../store/files/getFromFile'
-
+import { useRef } from 'react'
+import { getNewPresentation } from '../../store/getNewPresentation'
 type TopPanelProps = {
     presentation: PresentationType,
 }
 
 const TopPanel = ({presentation}: TopPanelProps) => {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
     const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const newValue = event.target.value;
         dispatch(renamePresentationTitle, newValue);
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]; // Получаем первый файл из списка
-        if (file) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
             try {
-                dispatch(getFromFile, {file: file})
+                // Получаем презентацию из файла
+                const presentation = await getFromFile(file);
+                
+                // Диспатчим новое действие с новой презентацией
+                dispatch(getNewPresentation, { newPresentation: presentation });
             } catch (error) {
-                console.error(error); // Обработка ошибок
+                console.error('Ошибка при загрузке файла:', error);
             }
+        }
+    };
+
+    const handleButtonClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click(); // Открываем диалог выбора файла
         }
     };
 
@@ -46,6 +61,15 @@ const TopPanel = ({presentation}: TopPanelProps) => {
             />
             <div className={styles.actionContainer}>
                 <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {}} iconSize={'medium'}/>
+                <div>
+                    <Button type={'icon'} iconUrl={imageImportUrl} onClick={handleButtonClick} iconSize={'medium'}/>
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }} // Скрываем элемент input
+                    />
+                </div>
                 <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => saveToJsonFile(presentation)} iconSize={'medium'}/>
             </div>
         </div>

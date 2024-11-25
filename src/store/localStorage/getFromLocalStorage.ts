@@ -1,10 +1,16 @@
+import { validatePresentation } from "../validate/validatePresentation";
 
 const getFromLocalStorage = () => {
     const jsonString = localStorage.getItem('presentation');
 
     if (jsonString) {
         try {
-            return JSON.parse(jsonString);
+            let presentation = JSON.parse(jsonString);
+            if(validatePresentation(presentation)){
+                return presentation;
+            } else{
+                alert('Презентация, сохранненая в хранилище не валидна')
+            }
         } catch (error) {
             return null;
         }
