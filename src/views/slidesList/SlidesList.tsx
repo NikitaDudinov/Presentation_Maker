@@ -1,5 +1,4 @@
 import {SlideType } from "../../store/types"
-import { useState, useEffect} from "react"
 import { Slide } from "../slide/Slide"
 import styles from './SlidesList.module.css'
 import { dispatch } from "../../store/presentation"

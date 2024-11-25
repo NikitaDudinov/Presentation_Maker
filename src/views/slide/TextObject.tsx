@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState, useRef, useEffect} from "react";
+import React, { CSSProperties} from "react";
 import { dispatch } from "../../store/presentation";
 import { TextElementType, UpdateSizeType } from "../../store/types";
 import { setSelectionElement } from "../../store/setSelectionElement";
