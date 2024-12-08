@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect} from 'react';
 import styles from './Dropdown.module.css'
 import dropdownIconUrl from '../../assets/drop-down.svg'
 import classNames from 'classnames';
-import { dispatch } from '../../store/presentation';
 
 type DropdownProps = {
     options: string[] | number[];
@@ -46,7 +45,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, label, size, onClick, prop
 
     const handleClick = (option: string | number) => {
       handleOptionClick(option);
-      dispatch(onClick, { property: property, value: option });
+      // dispatch(onClick, { property: property, value: option });
   };
 
     return (

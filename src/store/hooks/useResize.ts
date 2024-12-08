@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { dispatch } from '../presentation';
 import { updateSizeElement } from '../updateSizeElement';
 import { UpdateSizeType } from '../types';
 
@@ -55,12 +54,12 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
     const handleMouseUp = () => {
         if (ref.current) {
             const target = ref.current.getBoundingClientRect();
-            dispatch(updateSizeElement, {
-                size: {
-                    width: Math.max((target.right - target.left) / scale, 20),
-                    height: Math.max((target.bottom - target.top) / scale, 20)
-                }
-            });
+            // dispatch(updateSizeElement, {
+            //     size: {
+            //         width: Math.max((target.right - target.left) / scale, 20),
+            //         height: Math.max((target.bottom - target.top) / scale, 20)
+            //     }
+            // });
         }
         setResizeType(null);
     };

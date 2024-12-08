@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { dispatch } from '../presentation';
 import { updatePositionElement } from '../updatePositionElement';
 import { PositionType, SizeType } from '../types';
+
+const SLIDE_WIDTH = 935;
+const SLIDE_HEIGHT = 525;
 
 const useDragAndDrop = (
     initialPosition: PositionType, 
@@ -17,9 +19,9 @@ const useDragAndDrop = (
         if(isDragging){
             const boundary = {
                 minX: 0,
-                maxX: 935 - sizeObject.width,
+                maxX: SLIDE_WIDTH - sizeObject.width,
                 minY: 0,
-                maxY: 525 - sizeObject.height,
+                maxY: SLIDE_HEIGHT - sizeObject.height,
             };
             const newX = Math.min(Math.max(localPosition.x + e.clientX - dragStart.x, boundary.minX), boundary.maxX);
             const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
@@ -31,13 +33,13 @@ const useDragAndDrop = (
         if(isDragging){
             const boundary = {
                 minX: 0,
-                maxX: 935 - sizeObject.width,
+                maxX: SLIDE_WIDTH - sizeObject.width,
                 minY: 0,
-                maxY: 525 - sizeObject.height,
+                maxY: SLIDE_HEIGHT - sizeObject.height,
             };
             const newX = Math.min(Math.max(localPosition.x + e.clientX - dragStart.x, boundary.minX), boundary.maxX);
             const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
-            dispatch(updatePositionElement, {position: {x: newX, y: newY}})
+            // dispatch(updatePositionElement, {position: {x: newX, y: newY}})
             setIsDragging(false);
         }
     }

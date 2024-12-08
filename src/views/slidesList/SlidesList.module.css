@@ -7,6 +7,7 @@
 .slide {
     border-radius: 10px;
     border: 2px solid transparent;
+    pointer-events: 'none';
     transition: border-color 0.3s ease;
 }
 

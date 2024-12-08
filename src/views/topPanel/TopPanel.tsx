@@ -5,23 +5,17 @@ import imageAheadUrl from '../../assets/ahead.png'
 import imagePlayUrl from '../../assets/play.svg'
 import imageExportUrl from '../../assets/Export.svg'
 import imageImportUrl from '../../assets/download.svg'
-import { dispatch } from '../../store/presentation'
-import { renamePresentationTitle } from '../../store/renamePresentationTitle'
 import { saveToJsonFile } from '../../store/files/saveToJsonFile'
-import { PresentationType } from '../../store/types'
 import { getFromFile } from '../../store/files/getFromFile'
 import { useRef } from 'react'
-import { getNewPresentation } from '../../store/getNewPresentation'
-type TopPanelProps = {
-    presentation: PresentationType,
-}
+import { useAppSelector } from '../../store/hooks/useAppSelector'
 
-const TopPanel = ({presentation}: TopPanelProps) => {
+const TopPanel = () => {
+    const title = useAppSelector((presentation => presentation.title))
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const newValue = event.target.value;
-        dispatch(renamePresentationTitle, newValue);
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +27,7 @@ const TopPanel = ({presentation}: TopPanelProps) => {
                 const presentation = await getFromFile(file);
                 
                 // Диспатчим новое действие с новой презентацией
-                dispatch(getNewPresentation, { newPresentation: presentation });
+                // dispatch(getNewPresentation, { newPresentation: presentation });
             } catch (error) {
                 console.error('Ошибка при загрузке файла:', error);
             }
@@ -55,7 +49,7 @@ const TopPanel = ({presentation}: TopPanelProps) => {
             <input
                 className={styles.titleInput}
                 type="text"
-                value={presentation.title}
+                defaultValue={title} 
                 onKeyUp={() => "this.style.width = ;"}
                 onChange={onTitleChange}
             />
@@ -67,10 +61,11 @@ const TopPanel = ({presentation}: TopPanelProps) => {
                         type="file"
                         ref={fileInputRef}
                         onChange={handleFileChange}
-                        style={{ display: 'none' }} // Скрываем элемент input
+                        style={{ display: 'none' }} 
                     />
                 </div>
-                <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => saveToJsonFile(presentation)} iconSize={'medium'}/>
+                {/* saveToJsonFile(presentation) */}
+                <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => {}} iconSize={'medium'}/>
             </div>
         </div>
     )

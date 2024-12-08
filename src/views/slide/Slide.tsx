@@ -4,7 +4,6 @@ import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css';
 import { setSelectionElement } from "../../store/setSelectionElement";
-import { dispatch } from "../../store/presentation";
 import { deleteSelectionElement } from "../../store/deleteSelectionElement";
 
 const SLIDE_WIDTH = 935;
@@ -32,12 +31,12 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
     }
 
     const onSetSelectionElement = (elementId: string) => {
-        dispatch(setSelectionElement, { selectedItemId: elementId });
+        // dispatch(setSelectionElement, { selectedItemId: elementId });
     };
 
     const onSlideClick = () => {
         if (slideRef.current) {
-            dispatch(deleteSelectionElement);
+            // dispatch(deleteSelectionElement);
         }
     };
 
@@ -52,10 +51,10 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
                 <div 
                     key={slideObject.id} 
                     className={styles.element} 
-                    onClick={(e) => {
+                    onClick={scale === 1 ? (e) => {
                         e.stopPropagation();
                         onSetSelectionElement(slideObject.id);
-                    }}
+                    } : undefined}
                 >
                     {slideObject.type === "text" ? (
                         <TextObject 

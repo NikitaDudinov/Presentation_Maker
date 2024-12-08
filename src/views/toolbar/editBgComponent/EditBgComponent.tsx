@@ -1,10 +1,9 @@
 import imagePenUrl from '../../../assets/pen.svg'
 import { Popover } from '../../../components/popover/Popover'
 import { Button } from '../../../components/button/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toggle } from '../../../components/toggle/Toggle'
 import styles from './EditBgComponent.module.css'
-import { dispatch } from '../../../store/presentation'
 import { changeBackgroundSlide } from '../../../store/changeBackgroundSlide'
 
 type EditBgComponentProps = {
@@ -16,19 +15,25 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background }) => {
     const [inputBackground, setInputBackground] = useState(background ? background : '')
     const [color, setColor] = useState<string>('#000000');
 
+    useEffect(() => {
+        setInputBackground(background ? background : '');
+    }, [background]);
+
+
+
     const handleToggleChange = (checked: boolean) => {
         setAllSlides(checked)
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setColor(event.target.value);
-        dispatch(changeBackgroundSlide, {background: event.target.value, all: allSlides});
+        // dispatch(changeBackgroundSlide, {background: event.target.value, all: allSlides});
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value;
         setInputBackground(newValue)
-        dispatch(changeBackgroundSlide, {background: newValue, all: allSlides});
+        // dispatch(changeBackgroundSlide, {background: newValue, all: allSlides});
     };
 
     return (

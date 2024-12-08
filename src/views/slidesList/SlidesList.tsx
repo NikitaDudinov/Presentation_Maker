@@ -1,24 +1,23 @@
 import {SlideType } from "../../store/types"
 import { Slide } from "../slide/Slide"
 import styles from './SlidesList.module.css'
-import { dispatch } from "../../store/presentation"
 import { setSelectSlide } from "../../store/setSelectSlide"
 import { useDraggableSlides } from "../../store/hooks/useDraggableSlides"
 import { updateSlides } from "../../store/updateSlides"
+import { useAppSelector } from "../../store/hooks/useAppSelector"
 const SLIDE_PREVIEW_SCALE = 0.3
 
-type SlidesListProps = {
-    slides: SlideType[];
-    selectSlideId: string | null;
-};
+const SlidesList = () => {
 
-const SlidesList: React.FC<SlidesListProps> = ({ slides, selectSlideId}) => {
+    const slides = useAppSelector(state => state.slides)
+    const selectSlideId = useAppSelector(state => state.selection.selectedSlideId)
+
     const { currentSlides, handleMouseDown, draggedIndex, topSlide, heightSlide } = useDraggableSlides(slides, (newSlides) => {
-        dispatch(updateSlides, {newSlides: newSlides})
+        // dispatch(updateSlides, {newSlides: newSlides})
     });
 
     const onSlideClick = (slideId: string) => {
-        dispatch(setSelectSlide, { selectedSlideId: slideId });
+        // dispatch(setSelectSlide, { selectedSlideId: slideId });
     };
 
     return (

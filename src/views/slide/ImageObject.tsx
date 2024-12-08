@@ -2,7 +2,6 @@
 import {CSSProperties} from "react";
 import { ImageElementType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
-import { dispatch } from "../../store/presentation";
 import { setSelectionElement } from "../../store/setSelectionElement";
 import { useResize } from "../../store/hooks/useResize";
 import { UpdateSizeType } from "../../store/types";
@@ -29,7 +28,8 @@ const ImageObject = ({ imageObject, scale = 1, isSelected }: ImageObjectProps) =
         imageObject.position,
         imageObject.size,
         isSelected,
-        () => dispatch(setSelectionElement, { selectedItemId: imageObject.id})
+        () => {}
+        // () => dispatch(setSelectionElement, { selectedItemId: imageObject.id})
     );
 
     const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(imageObject.size, scale);
@@ -70,14 +70,13 @@ const ImageObject = ({ imageObject, scale = 1, isSelected }: ImageObjectProps) =
     ];
 
     return (
-        <div ref={ref} onMouseDown={!resizeType ? handleMouseDown : undefined} style={imageObjectStyles}>
+        <div ref={ref} onMouseDown={scale === 1 ? handleMouseDown : undefined} style={imageObjectStyles}>
             <img
             style={{
                 width: '100%',
                 height: '100%'
             }}
                 src={imageObject.src}
-                onMouseDown={scale === 1 ? handleMouseDown : undefined}
             />
             <div>
             {isSelected && resizeHandles.map(handle => (

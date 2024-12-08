@@ -6,7 +6,6 @@ import styles from './EditTextComponent.module.css'
 import {useState} from 'react'
 import { ImageElementType, TextElementType } from '../../../store/types'
 import { changePropertyTextElement } from '../../../store/changePropertyTextElement'
-import { dispatch } from '../../../store/presentation'
 import { addTextElement } from '../../../store/addTextElement'
 
 const options = ['Times New Roman', 'Arial', 'Calibri']
@@ -125,7 +124,8 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
             content={
                 <div>
                 <span className={styles.label}>Добавить текст</span>
-                <Button type='text' onClick={() => dispatch(addTextElement)} label="Добавить текст"/>
+                {/* dispatch(addTextElement) */}
+                <Button type='text' onClick={() => {}} label="Добавить текст"/>
                 </div>
             }
         >

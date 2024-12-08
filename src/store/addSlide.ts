@@ -1,28 +1,31 @@
-import { PresentationType } from "./types";
-import { v4 as uuidv4 } from 'uuid';
+import { PresentationType, SlideType } from "./types";
+import { createNewSlide } from "./redux/createNewSlide";
 
-const addSlide = (presentation: PresentationType): PresentationType => {
-    const slideId = uuidv4();
-    
+function addSlide(presentation: PresentationType): PresentationType {
+    const selection = presentation.selection
+    const newSlide = createNewSlide()
+    const slides: SlideType[] = []
+    if (selection) {
+        for (const slide of presentation.slides) {
+            slides.push(slide)
+            if (slide.id === selection.selectedSlideId) {
+                slides.push(newSlide)
+            }
+        }
+    }
+    else {
+        slides.push(newSlide)
+    }
     return {
         ...presentation,
-        slides: [
-            ...presentation.slides,
-            {
-                id: slideId,
-                background: '#FFFFFF',
-                elements: []
-            }
-        ],
+        slides: slides,
         selection: {
-            ...presentation.selection,
-            selectedSlideId: presentation.slides.length === 0 
-            ? slideId 
-            : presentation.selection.selectedSlideId
+            ...selection,
+            selectedSlideId: newSlide.id,
         }
-    };
+    }
 }
 
-export { 
+export {
     addSlide,
 }

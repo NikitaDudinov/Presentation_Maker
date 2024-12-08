@@ -1,5 +1,4 @@
 import React, { CSSProperties} from "react";
-import { dispatch } from "../../store/presentation";
 import { TextElementType, UpdateSizeType } from "../../store/types";
 import { setSelectionElement } from "../../store/setSelectionElement";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
@@ -27,7 +26,8 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected }
         textObject.position,
         textObject.size,
         isSelected,
-        () => dispatch(setSelectionElement, { selectedItemId: textObject.id })
+        () => {}
+        // () => dispatch(setSelectionElement, { selectedItemId: textObject.id })
     );
 
     const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale);
@@ -68,7 +68,7 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected }
         <div
             ref={ref}
             style={{ ...commonStyles, ...positionStyles, ...sizeStyles }}
-            onMouseDown={!resizeType ? handleMouseDown : undefined}
+            onMouseDown={scale === 1 ? handleMouseDown : undefined}
         >
             <p style={{ margin: 0 }}>
                 {textObject.content}

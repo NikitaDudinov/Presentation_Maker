@@ -3,7 +3,6 @@ import { Button } from "../../../components/button/Button"
 import { Popover } from "../../../components/popover/Popover"
 import imageImgUrl from '../../../assets/image.svg'
 import styles from './EditImageComponent.module.css'
-import { dispatch } from "../../../store/presentation"
 import { addImageElement } from "../../../store/addImageElement"
 
 const EditImageComponent = () => {
@@ -25,14 +24,15 @@ const EditImageComponent = () => {
             content={
                 <div>
                     <span className={styles.label}>Добавить картинку с компьютера</span>
-                    <Button type='text' onClick={() => dispatch(addImageElement)} label="Добавить картинку"/>
+                    {/* dispatch(addImageElement) dispatch(addImageElement, { value: url})*/}
+                    <Button type='text' onClick={() => {}} label="Добавить картинку"/>
                     <span className={styles.label}>Добавить картинку через url</span>
                     <input
                         value={url}
                         onChange={handleInputChange}
                         className="input-field"
                     />
-                    <Button type='text' onClick={() => dispatch(addImageElement, { value: url})} label="Добавить картинку" disabled={disabled}/>
+                    <Button type='text' onClick={() => {}} label="Добавить картинку" disabled={disabled}/>
                 </div>
             }
         >
