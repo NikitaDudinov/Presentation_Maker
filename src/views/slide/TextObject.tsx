@@ -1,5 +1,5 @@
 import React, { CSSProperties} from "react";
-import { TextElementType, UpdateSizeType } from "../../store/types";
+import { PresentationType, TextElementType, UpdateSizeType } from "../../store/types";
 import { setSelectionElement } from "../../store/setSelectionElement";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
 import { useResize } from "../../store/hooks/useResize";
@@ -8,6 +8,7 @@ type TextObjectProps = {
     textObject: TextElementType;
     scale: number;
     isSelected: boolean;
+    state: PresentationType;
 };
 
 type ResizeHandle  = {
@@ -21,16 +22,16 @@ type ResizeHandle  = {
     };
 }
 
-const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected }) => {
+const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, state }) => {
     const { localPosition, handleMouseDown } = useDragAndDrop(
         textObject.position,
         textObject.size,
         isSelected,
-        () => {}
-        // () => dispatch(setSelectionElement, { selectedItemId: textObject.id })
+        () => {},
+        state,
     );
 
-    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale);
+    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale, state);
 
     const commonStyles: CSSProperties = {
         position: 'absolute',

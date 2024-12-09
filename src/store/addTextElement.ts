@@ -1,11 +1,11 @@
-import { PresentationType, TextElementType } from "./types";
+import { SlideType, TextElementType } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
-const addTextElement = (presentation: PresentationType): PresentationType => {
-    const selectedSlideId = presentation.selection.selectedSlideId
+const addTextElement = (slides: SlideType[], selectedSlideId: string): SlideType[] => {
+    
     if(selectedSlideId) {
-        const newSlides = presentation.slides.map(slide => {
+        const newSlides = slides.map(slide => {
             if (slide.id === selectedSlideId) {
                 const textElement: TextElementType = {
                     id: uuidv4(),
@@ -21,14 +21,10 @@ const addTextElement = (presentation: PresentationType): PresentationType => {
             return slide;
         });
 
-        return {
-            ...presentation,
-            slides: newSlides
-        }
+        return newSlides
     }
 
-    return presentation
-
+    return slides
 }
 
 export {

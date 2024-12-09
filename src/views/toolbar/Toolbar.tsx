@@ -11,27 +11,34 @@ import { useAppSelector } from '../../store/hooks/useAppSelector'
 import { useAppActions } from '../../store/hooks/useAppActions'
 
 const Toolbar = () => {
-    const {addSlide} = useAppActions();
-    // const presentation = useAppSelector((state) => state);
-    // const selectedSlideId = presentation.selection.selectedSlideId
-    // const selectedElementId = presentation.selection.elementsId[0]
-    // const selectedElement = presentation.slides.find(slide => slide.id === selectedSlideId)?.elements.find(element => element.id === selectedElementId)
-    // const selectedSlideBg = presentation.slides.find(slide => slide.id === selectedSlideId)?.background
+
+    const {addSlide, deleteElement, deleteSelectionElement} = useAppActions();
+    const presentation = useAppSelector((state) => state);
+    const selectedSlideId = presentation.selection.selectedSlideId;
+    const selectedElementId = presentation.selection.elementsId[0]
+    const selectedElement = presentation.slides.find(slide => slide.id === selectedSlideId)?.elements.find(element => element.id === selectedElementId)
+    const selectedSlideBg = presentation.slides.find(slide => slide.id === selectedSlideId)?.background
     
     return (
         <div className={styles.toolbarContainer}>
-            {/* <EditTextComponent element={selectedElement}/> */}
-            <EditImageComponent/>
+            <EditTextComponent element={selectedElement} selectedSlideId={selectedSlideId}/>
+            <EditImageComponent selectedSlideId={selectedSlideId}/>
             <Button type={'icon'} onClick={() => {}} iconUrl={imageStarUrl} iconSize={'large'}/>
             <Button type={'icon'} onClick={() => {}} iconUrl={imageThemesUrl} iconSize={'large'}/>
-            {/* <EditBgComponent background={selectedSlideBg}/> */}
-            <Button type={'icon'} onClick={addSlide} iconUrl={imageAddSlide} iconSize={'large'}/>
-            {/* {
-                selectedElement && (
-                    // dispatch(deleteElement)
-                    <Button type={'icon'} onClick={() => {}} iconUrl={imnageTrash} iconSize={'large'}/>
+            <EditBgComponent background={selectedSlideBg} selectedSlideId={selectedSlideId}/>
+            <Button type={'icon'} onClick={() => addSlide(presentation.selection)} iconUrl={imageAddSlide} iconSize={'large'}/>
+            {
+                selectedElement && (    
+                    <Button 
+                        type={'icon'} 
+                        onClick={() => {
+                            deleteElement(selectedElementId, selectedSlideId);
+                            deleteSelectionElement();
+                        }} 
+                        iconUrl={imnageTrash} iconSize={'large'}
+                    />
                 )
-            } */}
+            }
         </div>
     )
 }

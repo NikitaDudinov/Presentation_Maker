@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { updateSizeElement } from '../updateSizeElement';
-import { UpdateSizeType } from '../types';
+import { PresentationType, UpdateSizeType } from '../types';
+import { useAppActions } from './useAppActions';
 
-const useResize = (initialSize: { width: number; height: number }, scale: number) => {
+const useResize = (initialSize: { width: number; height: number }, scale: number, state: PresentationType) => {
+    const {updateSizeElement} = useAppActions();
     const [sizeObject, setSizeObject] = useState(initialSize);
     const [resizeType, setResizeType] = useState<UpdateSizeType | null>(null);
     const ref = useRef<HTMLDivElement | null>(null);
@@ -54,13 +55,16 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
     const handleMouseUp = () => {
         if (ref.current) {
             const target = ref.current.getBoundingClientRect();
-            // dispatch(updateSizeElement, {
-            //     size: {
-            //         width: Math.max((target.right - target.left) / scale, 20),
-            //         height: Math.max((target.bottom - target.top) / scale, 20)
-            //     }
-            // });
+            if (state.selection.selectedSlideId)
+            updateSizeElement(
+                state.selection.elementsId[0], 
+                state.selection.selectedSlideId,
+                {
+                width: Math.max((target.right - target.left) / scale, 20),
+                height: Math.max((target.bottom - target.top) / scale, 20)
+            })
         }
+        console.log('hiohihaha')
         setResizeType(null);
     };
 

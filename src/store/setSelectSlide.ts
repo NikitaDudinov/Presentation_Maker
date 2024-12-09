@@ -1,18 +1,11 @@
-import {PresentationType} from "./types.ts";
+import {SelectionType} from "./types.ts";
 
-const setSelectSlide = (
-    presentation: PresentationType, 
-    payload: {selectedSlideId: string}
-): PresentationType => {
-
-    return {
-        ...presentation,
-        selection: {
-            selectedSlideId: payload.selectedSlideId,
-            elementsId: []
-        }
+const setSelectSlide = (selectedSlideId: string): SelectionType => (
+    {
+        selectedSlideId: selectedSlideId,
+        elementsId: []
     }
-}
+)
 
 export {
     setSelectSlide,

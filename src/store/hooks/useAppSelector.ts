@@ -1,10 +1,8 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux"
-import { presentationReducer } from "../../store/redux/presentationReducer"
+import { rootReducer } from "../redux/reducers/rootReducer"
 
-// Выведение типа `RootState` из хранилища
-type RootState = ReturnType<typeof presentationReducer>
+type RootState = ReturnType<typeof rootReducer>
 
-// Используйте во всем приложении вместо `useSelector`
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export {

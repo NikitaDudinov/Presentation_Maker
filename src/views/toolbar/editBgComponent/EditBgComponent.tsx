@@ -4,13 +4,15 @@ import { Button } from '../../../components/button/Button'
 import { useEffect, useState } from 'react'
 import { Toggle } from '../../../components/toggle/Toggle'
 import styles from './EditBgComponent.module.css'
-import { changeBackgroundSlide } from '../../../store/changeBackgroundSlide'
+import { useAppActions } from '../../../store/hooks/useAppActions'
 
 type EditBgComponentProps = {
     background?: string
+    selectedSlideId: string | null
 }
 
-const EditBgComponent: React.FC<EditBgComponentProps> = ({ background }) => {
+const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedSlideId }) => {
+    const {updateBackgroundSlide} = useAppActions();
     const [allSlides, setAllSlides] = useState(false)
     const [inputBackground, setInputBackground] = useState(background ? background : '')
     const [color, setColor] = useState<string>('#000000');
@@ -27,13 +29,16 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background }) => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setColor(event.target.value);
-        // dispatch(changeBackgroundSlide, {background: event.target.value, all: allSlides});
+        if(selectedSlideId)
+        updateBackgroundSlide(selectedSlideId ,event.target.value, allSlides)
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value;
-        setInputBackground(newValue)
-        // dispatch(changeBackgroundSlide, {background: newValue, all: allSlides});
+        setInputBackground(newValue);
+        if(selectedSlideId) {
+            updateBackgroundSlide(selectedSlideId , newValue, allSlides)
+        }
     };
 
     return (

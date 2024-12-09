@@ -5,6 +5,8 @@ import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css';
 import { setSelectionElement } from "../../store/setSelectionElement";
 import { deleteSelectionElement } from "../../store/deleteSelectionElement";
+import { useAppSelector } from "../../store/hooks/useAppSelector";
+import { useAppActions } from "../../store/hooks/useAppActions";
 
 const SLIDE_WIDTH = 935;
 const SLIDE_HEIGHT = 525;
@@ -18,8 +20,9 @@ type SlideProps = {
 }
 
 const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
+    const {setSelectionElement, deleteSelectionElement} = useAppActions();
     const slideRef = useRef<HTMLDivElement>(null);
-
+    const presentation = useAppSelector(state => state)
     const slideStyles: CSSProperties = {
         backgroundColor: slide.background,
         width: `${SLIDE_WIDTH * scale}px`,
@@ -31,12 +34,12 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
     }
 
     const onSetSelectionElement = (elementId: string) => {
-        // dispatch(setSelectionElement, { selectedItemId: elementId });
+        setSelectionElement(elementId)
     };
 
     const onSlideClick = () => {
         if (slideRef.current) {
-            // dispatch(deleteSelectionElement);
+            deleteSelectionElement();
         }
     };
 
@@ -58,12 +61,14 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
                 >
                     {slideObject.type === "text" ? (
                         <TextObject 
+                            state={presentation}
                             textObject={slideObject} 
                             scale={scale} 
                             isSelected={selectElements?.includes(slideObject.id) ? true : false} 
                         />
                     ) : (
                         <ImageObject 
+                            state={presentation}
                             imageObject={slideObject} 
                             scale={scale} 
                             isSelected={selectElements?.includes(slideObject.id) ? true : false} 

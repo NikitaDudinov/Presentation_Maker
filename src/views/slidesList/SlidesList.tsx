@@ -1,23 +1,20 @@
-import {SlideType } from "../../store/types"
-import { Slide } from "../slide/Slide"
 import styles from './SlidesList.module.css'
-import { setSelectSlide } from "../../store/setSelectSlide"
+import { Slide } from "../slide/Slide"
 import { useDraggableSlides } from "../../store/hooks/useDraggableSlides"
-import { updateSlides } from "../../store/updateSlides"
 import { useAppSelector } from "../../store/hooks/useAppSelector"
+import { useAppActions } from "../../store/hooks/useAppActions"
 const SLIDE_PREVIEW_SCALE = 0.3
 
 const SlidesList = () => {
+    const {setSelectionSlide, updateSlides} = useAppActions();
+    const presentation = useAppSelector(state => state)
 
-    const slides = useAppSelector(state => state.slides)
-    const selectSlideId = useAppSelector(state => state.selection.selectedSlideId)
-
-    const { currentSlides, handleMouseDown, draggedIndex, topSlide, heightSlide } = useDraggableSlides(slides, (newSlides) => {
-        // dispatch(updateSlides, {newSlides: newSlides})
-    });
+    const { currentSlides, handleMouseDown, draggedIndex, topSlide, heightSlide } = useDraggableSlides(presentation.slides, (newSlides) => {
+        updateSlides(newSlides);
+    }); 
 
     const onSlideClick = (slideId: string) => {
-        // dispatch(setSelectSlide, { selectedSlideId: slideId });
+        setSelectionSlide(slideId)
     };
 
     return (
@@ -46,7 +43,7 @@ const SlidesList = () => {
                         <Slide
                             slide={slide}
                             scale={SLIDE_PREVIEW_SCALE}
-                            select={selectSlideId === slide.id}
+                            select={presentation.selection.selectedSlideId === slide.id}
                             className={styles.slide}
                         />
                     </div>

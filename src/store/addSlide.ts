@@ -1,30 +1,23 @@
-import { PresentationType, SlideType } from "./types";
+import { SelectionType, SlideType } from "./types";
 import { createNewSlide } from "./redux/createNewSlide";
 
-function addSlide(presentation: PresentationType): PresentationType {
-    const selection = presentation.selection
-    const newSlide = createNewSlide()
-    const slides: SlideType[] = []
+const addSlide = (slides: SlideType[], selection: SelectionType): SlideType[] => {
+    const newSlide = createNewSlide();
+    const newSlides: SlideType[] = [];
     if (selection) {
-        for (const slide of presentation.slides) {
-            slides.push(slide)
+        for (const slide of slides) {
+            newSlides.push(slide);
             if (slide.id === selection.selectedSlideId) {
-                slides.push(newSlide)
+                newSlides.push(newSlide);
             }
         }
+    } else {
+        newSlides.push(newSlide);
     }
-    else {
-        slides.push(newSlide)
-    }
-    return {
-        ...presentation,
-        slides: slides,
-        selection: {
-            ...selection,
-            selectedSlideId: newSlide.id,
-        }
-    }
+    console.log(newSlides)
+    return newSlides;
 }
+
 
 export {
     addSlide,

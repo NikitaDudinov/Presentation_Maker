@@ -1,21 +1,16 @@
-import { PositionType, PresentationType} from "./types"
+import { PositionType, SlideType} from "./types"
 
-const updatePositionElement = (
-    presentation: PresentationType,
-    payload: { position: PositionType }
-): PresentationType => {
-    const selectedSlideId = presentation.selection.selectedSlideId
-    const selectElementId = presentation.selection.elementsId[0]
+const updatePositionElement = (slides: SlideType[], newPosition: PositionType, selectedSlideId: string, selectedElementId: string): SlideType[] => {
 
-    const newSlides = presentation.slides.map(slide => {
+    const newSlides = slides.map(slide => {
         if (slide.id === selectedSlideId) {
             return {
                 ...slide,
                 elements: slide.elements.map(element => {
-                    if (element.id === selectElementId) {
+                    if (element.id === selectedElementId) {
                         return {
                             ...element,
-                            position: payload.position
+                            position: newPosition
                         };
                     }
                     return element;
@@ -25,14 +20,7 @@ const updatePositionElement = (
         return slide; 
     });
 
-    return {
-        ...presentation,
-        selection: {
-            ...presentation.selection,
-            elementsId: [],
-        },
-        slides: newSlides,
-    };
+    return newSlides
 }
 
 export {

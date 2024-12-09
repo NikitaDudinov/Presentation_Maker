@@ -6,7 +6,7 @@ import styles from './EditTextComponent.module.css'
 import {useState} from 'react'
 import { ImageElementType, TextElementType } from '../../../store/types'
 import { changePropertyTextElement } from '../../../store/changePropertyTextElement'
-import { addTextElement } from '../../../store/addTextElement'
+import { useAppActions } from '../../../store/hooks/useAppActions'
 
 const options = ['Times New Roman', 'Arial', 'Calibri']
 
@@ -14,9 +14,12 @@ const sizes = [10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 2
 
 type EditTextComponentProps = {
     element?: ImageElementType | TextElementType;
+    selectedSlideId: string | null;
 };
 
-const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
+const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selectedSlideId }) => {
+
+    const {addTextElement} = useAppActions();
 
     const [textStyle, setTextStyle] = useState({
         fontWeight: 'normal',
@@ -124,8 +127,7 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element }) => {
             content={
                 <div>
                 <span className={styles.label}>Добавить текст</span>
-                {/* dispatch(addTextElement) */}
-                <Button type='text' onClick={() => {}} label="Добавить текст"/>
+                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement(selectedSlideId)}} label="Добавить текст"/>
                 </div>
             }
         >

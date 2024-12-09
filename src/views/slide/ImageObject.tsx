@@ -1,6 +1,6 @@
 
 import {CSSProperties} from "react";
-import { ImageElementType } from "../../store/types";
+import { ImageElementType, PresentationType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
 import { setSelectionElement } from "../../store/setSelectionElement";
 import { useResize } from "../../store/hooks/useResize";
@@ -10,6 +10,7 @@ type ImageObjectProps = {
     imageObject: ImageElementType,
     scale?: number,
     isSelected: boolean,
+    state: PresentationType,
 }
 
 type ResizeHandle  = {
@@ -23,16 +24,17 @@ type ResizeHandle  = {
     };
 }
 
-const ImageObject = ({ imageObject, scale = 1, isSelected }: ImageObjectProps) => {
+const ImageObject = ({ imageObject, scale = 1, isSelected, state }: ImageObjectProps) => {
+
     const { localPosition, handleMouseDown } = useDragAndDrop(
         imageObject.position,
         imageObject.size,
         isSelected,
-        () => {}
-        // () => dispatch(setSelectionElement, { selectedItemId: imageObject.id})
+        () => {},
+        state,
     );
 
-    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(imageObject.size, scale);
+    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(imageObject.size, scale, state);
 
     const commonStyles: CSSProperties = {
         position: 'absolute',

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { updatePositionElement } from '../updatePositionElement';
-import { PositionType, SizeType } from '../types';
+import { PositionType, PresentationType, SizeType } from '../types';
+import { useAppActions } from './useAppActions';
 
 const SLIDE_WIDTH = 935;
 const SLIDE_HEIGHT = 525;
@@ -10,7 +10,9 @@ const useDragAndDrop = (
     sizeObject: SizeType,
     isSelected: boolean,
     setSelection: () => void,
+    state: PresentationType,
 ) => {
+    const {updatePositionElement} = useAppActions()
     const [localPosition, setLocalPosition] = useState(initialPosition);
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({x: 0, y: 0});
@@ -39,7 +41,9 @@ const useDragAndDrop = (
             };
             const newX = Math.min(Math.max(localPosition.x + e.clientX - dragStart.x, boundary.minX), boundary.maxX);
             const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
-            // dispatch(updatePositionElement, {position: {x: newX, y: newY}})
+            console.log(state.selection.selectedSlideId, state.selection.elementsId[0], {x: newX, y: newY})
+            if(state.selection.selectedSlideId)
+                updatePositionElement(state.selection.selectedSlideId, state.selection.elementsId[0], {x: newX, y: newY})
             setIsDragging(false);
         }
     }
