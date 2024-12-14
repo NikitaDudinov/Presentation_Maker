@@ -13,10 +13,24 @@ import { useAppActions } from '../../store/hooks/useAppActions'
 import { useContext } from 'react'
 import { HistoryContext } from '../../store/hooks/historyContext'
 
+
 const TopPanel = () => {
     const {changePresentationTitle, setPresentation} = useAppActions();
 
     const history = useContext(HistoryContext)
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    function handleKeyPress(event: KeyboardEvent): void {
+        if (event.ctrlKey && event.key === 'z') {
+            event.preventDefault(); 
+            onUndo();
+        }
+        if (event.ctrlKey && event.key === 'y') {
+            event.preventDefault(); 
+            onRedo();
+        }
+    }
 
     function onUndo() {
         const newPresentation = history.undo()

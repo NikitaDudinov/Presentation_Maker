@@ -1,6 +1,5 @@
 import React, { CSSProperties} from "react";
 import { PresentationType, TextElementType, UpdateSizeType } from "../../store/types";
-import { setSelectionElement } from "../../store/setSelectionElement";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
 import { useResize } from "../../store/hooks/useResize";
 

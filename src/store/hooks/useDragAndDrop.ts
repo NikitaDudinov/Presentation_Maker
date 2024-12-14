@@ -43,7 +43,7 @@ const useDragAndDrop = (
             const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
             console.log(state.selection.selectedSlideId, state.selection.elementsId[0], {x: newX, y: newY})
             if(state.selection.selectedSlideId)
-                updatePositionElement(state.selection.selectedSlideId, state.selection.elementsId[0], {x: newX, y: newY})
+                updatePositionElement({x: newX, y: newY})
             setIsDragging(false);
         }
     }
