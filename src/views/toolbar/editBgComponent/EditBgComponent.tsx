@@ -30,14 +30,14 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setColor(event.target.value);
         if(selectedSlideId)
-        updateBackgroundSlide(selectedSlideId ,event.target.value, allSlides)
+        updateBackgroundSlide(event.target.value, allSlides)
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value;
         setInputBackground(newValue);
         if(selectedSlideId) {
-            updateBackgroundSlide(selectedSlideId , newValue, allSlides)
+            updateBackgroundSlide(newValue, allSlides)
         }
     };
 

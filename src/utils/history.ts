@@ -14,23 +14,25 @@ function initHistory(store: Store<PresentationType>): HistoryType {
     const undoStack: Array<PresentationType> = []
     let redoStack: Array<PresentationType> = []
 
-    let previousPresentation = store.getState()
+    let previousEditor = store.getState()
 
     store.subscribe(() => {
-        const presentation = store.getState()
-        if (!undoStack.length || presentation != presentation) {
-            if (presentation == getLastItem(undoStack)) {
+        const editor = store.getState()
+        console.log('undo' , undoStack);
+        console.log('redo', redoStack)
+        if (!undoStack.length || previousEditor != editor) {
+            if (editor == getLastItem(undoStack)) {
                 undoStack.pop()
-                redoStack.push(previousPresentation)
-            } else if (presentation == getLastItem(redoStack)) {
+                redoStack.push(previousEditor)
+            } else if (editor == getLastItem(redoStack)) {
                 redoStack.pop()
-                undoStack.push(previousPresentation)
+                undoStack.push(previousEditor)
             } else {
-                undoStack.push(previousPresentation)
+                undoStack.push(previousEditor)
                 redoStack = []
             }
         }
-        previousPresentation = presentation
+        previousEditor = editor
     })
 
     function undo() {

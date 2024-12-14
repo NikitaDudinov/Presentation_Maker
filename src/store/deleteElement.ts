@@ -1,21 +1,29 @@
-import { SlideType } from "./types"
+import { PresentationType } from "./types"
 
-const deleteElement = (slides: SlideType[], selectedElementId: string, selectedSlideId: string | null): SlideType[] => {
+const deleteElement = (presentation: PresentationType): PresentationType => {
+
+    const selectedElementId = presentation.selection.elementsId[0];
+    const selectedSlideId = presentation.selection.selectedSlideId;
+
+
     if (selectedElementId && selectedSlideId) {
-        const selectedSlide = slides.find(slide => slide.id === selectedSlideId)
+        const selectedSlide = presentation.slides.find(slide => slide.id === selectedSlideId)
         if (selectedSlide) {
             const newElements = selectedSlide.elements.filter(element => element.id !== selectedElementId);
-            const updatedSlides = slides.map(slide => 
+            const updatedSlides = presentation.slides.map(slide => 
                 slide.id === selectedSlideId ? { ...slide, elements: newElements } : slide
             );
-            return updatedSlides
+            return {
+                ...presentation,
+                slides: updatedSlides,
+            }
         }
 
-        return slides
+        return presentation
 
     }
 
-    return slides
+    return presentation
 }
 
 export {

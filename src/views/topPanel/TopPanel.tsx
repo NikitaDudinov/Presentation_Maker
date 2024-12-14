@@ -10,15 +10,26 @@ import { getFromFile } from '../../store/files/getFromFile'
 import { useRef } from 'react'
 import { useAppSelector } from '../../store/hooks/useAppSelector'
 import { useAppActions } from '../../store/hooks/useAppActions'
-import { PresentationType } from '../../store/types'
+import { useContext } from 'react'
+import { HistoryContext } from '../../store/hooks/historyContext'
 
 const TopPanel = () => {
-    const {setSelection, setSlides, setPresentationTitle, changePresentationTitle} = useAppActions();
+    const {changePresentationTitle, setPresentation} = useAppActions();
 
-    const setPresentation = (newPresentation: PresentationType) => {
-        setSelection(newPresentation.selection);
-        setSlides(newPresentation.slides);
-        setPresentationTitle(newPresentation.title);
+    const history = useContext(HistoryContext)
+
+    function onUndo() {
+        const newPresentation = history.undo()
+        if (newPresentation) {
+            setPresentation(newPresentation)
+        }
+    }
+
+    function onRedo() {
+        const newPresentation = history.redo()
+        if (newPresentation) {
+            setPresentation(newPresentation)
+        }
     }
 
     const presentation = useAppSelector((presentation => presentation))
@@ -52,8 +63,8 @@ const TopPanel = () => {
     return (
         <div className={styles.topPanel}>
             <div className={styles.navigationContainer}>
-                <Button type={'icon'} iconUrl={imageBackUrl} onClick={() => {}} iconSize={'small'}/>
-                <Button type={'icon'} iconUrl={imageAheadUrl} onClick={() => {}} iconSize={'small'}/>
+                <Button type={'icon'} iconUrl={imageBackUrl} onClick={onUndo} iconSize={'small'}/>
+                <Button type={'icon'} iconUrl={imageAheadUrl} onClick={onRedo} iconSize={'small'}/>
             </div>
             <input
                 className={styles.titleInput}

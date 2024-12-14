@@ -127,7 +127,7 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
             content={
                 <div>
                 <span className={styles.label}>Добавить текст</span>
-                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement(selectedSlideId)}} label="Добавить текст"/>
+                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement()}} label="Добавить текст"/>
                 </div>
             }
         >

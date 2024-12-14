@@ -1,14 +1,15 @@
-import {SlideType} from "./types"
+import {PresentationType} from "./types"
 
 const updateBackgroundSlide = (
-    slides: SlideType[],
+    presentation: PresentationType,
     newBackground: string,
-    selectedSlideId: string,
     isAllSlides: boolean,
-): SlideType[] => {
-    console.log('hihih')
+): PresentationType => {
+
+    const selectedSlideId = presentation.selection.selectedSlideId;
+
     if(selectedSlideId){
-        const newSlides = slides.map(slide => {
+        const newSlides = presentation.slides.map(slide => {
             if (isAllSlides || slide.id === selectedSlideId) {
                 return {
                     ...slide,
@@ -18,10 +19,13 @@ const updateBackgroundSlide = (
             return slide;
         });
 
-        return newSlides
+        return {
+            ...presentation,
+            slides: newSlides,
+        }
     }   
 
-    return slides
+    return presentation
 }
 
 export {

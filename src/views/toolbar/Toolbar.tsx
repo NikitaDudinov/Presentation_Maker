@@ -26,13 +26,13 @@ const Toolbar = () => {
             <Button type={'icon'} onClick={() => {}} iconUrl={imageStarUrl} iconSize={'large'}/>
             <Button type={'icon'} onClick={() => {}} iconUrl={imageThemesUrl} iconSize={'large'}/>
             <EditBgComponent background={selectedSlideBg} selectedSlideId={selectedSlideId}/>
-            <Button type={'icon'} onClick={() => addSlide(presentation.selection)} iconUrl={imageAddSlide} iconSize={'large'}/>
+            <Button type={'icon'} onClick={addSlide} iconUrl={imageAddSlide} iconSize={'large'}/>
             {
                 selectedElement && (    
                     <Button 
                         type={'icon'} 
                         onClick={() => {
-                            deleteElement(selectedElementId, selectedSlideId);
+                            deleteElement();
                             deleteSelectionElement();
                         }} 
                         iconUrl={imnageTrash} iconSize={'large'}

@@ -3,7 +3,6 @@ import { Button } from "../../../components/button/Button"
 import { Popover } from "../../../components/popover/Popover"
 import imageImgUrl from '../../../assets/image.svg'
 import styles from './EditImageComponent.module.css'
-import { addImageElement } from "../../../store/addImageElement"
 import { useAppActions } from "../../../store/hooks/useAppActions"
 
 type EditImageComponentProps = {
@@ -29,14 +28,14 @@ const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}
             content={
                 <div>
                     <span className={styles.label}>Добавить картинку с компьютера</span>
-                    <Button type='text' onClick={() => {if(selectedSlideId) addImageElement(selectedSlideId)}} label="Добавить картинку"/>
+                    <Button type='text' onClick={() => {if(selectedSlideId) addImageElement()}} label="Добавить картинку"/>
                     <span className={styles.label}>Добавить картинку через url</span>
                     <input
                         value={url}
                         onChange={handleInputChange}
                         className="input-field"
                     />
-                    <Button type='text' onClick={() => {if(selectedSlideId) addImageElement(selectedSlideId, url)}} label="Добавить картинку" disabled={disabled}/>
+                    <Button type='text' onClick={() => {if(selectedSlideId) addImageElement(url)}} label="Добавить картинку" disabled={disabled}/>
                 </div>
             }
         >

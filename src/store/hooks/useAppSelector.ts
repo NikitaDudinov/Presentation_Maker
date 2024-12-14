@@ -1,7 +1,7 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux"
-import { rootReducer } from "../redux/reducers/rootReducer"
+import { presentationReducer } from "../redux/presentationReducer"
 
-type RootState = ReturnType<typeof rootReducer>
+type RootState = ReturnType<typeof presentationReducer>
 
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 

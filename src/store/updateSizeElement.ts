@@ -1,7 +1,11 @@
-import {SizeType, SlideType } from "./types";
+import {PresentationType, SizeType} from "./types";
 
-const updateSizeElement = (slides: SlideType[], newSize: SizeType, selectedSlideId: string, selectedElementId: string): SlideType[] => {
-    const newSlides = slides.map(slide => {
+const updateSizeElement = (presentation: PresentationType, newSize: SizeType): PresentationType => {
+
+    const selectedElementId = presentation.selection.elementsId[0];
+    const selectedSlideId = presentation.selection.selectedSlideId;
+
+    const newSlides = presentation.slides.map(slide => {
         if (slide.id === selectedSlideId) {
             return {
                 ...slide,
@@ -19,7 +23,10 @@ const updateSizeElement = (slides: SlideType[], newSize: SizeType, selectedSlide
         return slide; 
     });
 
-    return newSlides
+    return {
+        ...presentation,
+        slides: newSlides,
+    }
 }
 
 export {
