@@ -64,6 +64,13 @@ function deleteElement(selectedElementId: string, selectedSlideId: string | null
     }
 }
 
+function setSlides(newSlides: SlideType[]){
+    return {
+        type: SlidesActionType.SET_SLIDES,
+        payload: newSlides,
+    }
+}
+
 export {
     addSlide,
     removeSlide,
@@ -73,5 +80,6 @@ export {
     updateBackgroundSlide,
     addTextElement,
     addImageElement,
-    deleteElement
+    deleteElement,
+    setSlides,
 }

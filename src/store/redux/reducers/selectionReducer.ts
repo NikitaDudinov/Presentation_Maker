@@ -19,6 +19,8 @@ const selectionReducer = (state: SelectionType = defaultPresentation.selection, 
                 ...state,
                 elementsId: [],
             }
+        case SelectionActionType.SET_SELECTION: 
+            return action.payload
         default: 
             return state 
     } 

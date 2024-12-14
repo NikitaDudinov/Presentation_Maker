@@ -53,6 +53,8 @@ const slidesReducer = (state: SlideType[] = defaultPresentation.slides, action: 
                 const {selectedSlideId, selectedElementId} = action.payload;
                 return deleteElement(state, selectedElementId, selectedSlideId)
             }
+        case SlidesActionType.SET_SLIDES: 
+            return action.payload
         default: 
             return state 
     } 

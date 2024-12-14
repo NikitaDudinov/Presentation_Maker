@@ -1,3 +1,4 @@
+import { SelectionType } from "../../../types";
 import { SelectionActionType } from "../actions";
 
 function setSelectionElement(newSelection: string) {
@@ -20,8 +21,16 @@ function deleteSelectionElement() {
     }
 }
 
+function setSelection(newSelection: SelectionType) {
+    return {
+        type: SelectionActionType.SET_SELECTION,
+        payload: newSelection,
+    }
+}
+
 export {
     setSelectionElement,
     setSelectionSlide,
     deleteSelectionElement,
+    setSelection,
 }

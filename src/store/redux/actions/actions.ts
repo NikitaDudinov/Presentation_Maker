@@ -1,11 +1,8 @@
-import { PositionType, PresentationType, SelectionType, SizeType, SlideType } from "../../types";
-
-enum PresentationActionType {
-    SET_PRESENTATION = 'setPresentation',
-}
+import { PositionType, SelectionType, SizeType, SlideType } from "../../types";
 
 enum TitleActionType {
     CHANGE_PRESENTATION_TITLE = 'changePresentationTitle',
+    SET_PRESENTATION_TITLE = 'setPresentationTitle'
 }
 
 enum SlidesActionType {
@@ -18,22 +15,30 @@ enum SlidesActionType {
     ADD_TEXT_ELEMENT = 'addTextElement',
     ADD_IMAGE_ELEMENT = 'addImageElement',
     DELETE_ELEMENT = 'deleteElement',
+    SET_SLIDES = 'setSlides',
 }
 
 enum SelectionActionType {
     SET_SELECTION_SLIDE = 'setSelectionSlide',
     SET_SELECTION_ELEMENT = 'setSelectionElement',
     DELETE_SELECTION_ELEMENT = 'deleteSelectionElement',
+    SET_SELECTION = 'setSelection',
 }
 
 type SetSelectionElementAction = {
     type: SelectionActionType.SET_SELECTION_ELEMENT,
-    payload: string
+    payload: string,
 }
+
+type SetSelectionAction = {
+    type: SelectionActionType.SET_SELECTION,
+    payload: SelectionType,
+}
+
 
 type SetSelectionSlideAction = {
     type: SelectionActionType.SET_SELECTION_SLIDE,
-    payload: string
+    payload: string,
 }
 
 type DeleteSelectionElementAction = {
@@ -44,6 +49,11 @@ type DeleteSelectionElementAction = {
 type AddSlideAction = {
     type: SlidesActionType.ADD_SLIDE,
     payload: {selection: SelectionType}
+}
+
+type SetSlidesAction = {
+    type: SlidesActionType.SET_SLIDES,
+    payload: SlideType[],
 }
 
 type DeleteElementAction = {
@@ -93,24 +103,22 @@ type ChangePresentationTitleAction = {
     payload: string,
 }
 
-type SetPresentationAction = {
-    type: PresentationActionType.SET_PRESENTATION,
-    payload: PresentationType,
+type SetPresentationTitleAction = {
+    type: TitleActionType.SET_PRESENTATION_TITLE,
+    payload: string,
 }
 
-type PresentationAction = SetPresentationAction
+type TitleAction = SetPresentationTitleAction | ChangePresentationTitleAction
 
-type SelectionAction = SetSelectionElementAction | SetSelectionSlideAction | DeleteSelectionElementAction
+type SelectionAction = SetSelectionElementAction | SetSelectionSlideAction | DeleteSelectionElementAction | SetSelectionAction
 
-type SlidesAction = AddSlideAction | RemoveSlideAction | UpdateSlidesAction | UpdatePositionElementAction | UpdateSizeElementAction | UpdateBackgroundSlideAction | AddTextElementAction | AddImageElementAction | DeleteElementAction
+type SlidesAction = AddSlideAction | RemoveSlideAction | UpdateSlidesAction | UpdatePositionElementAction | UpdateSizeElementAction | UpdateBackgroundSlideAction | AddTextElementAction | AddImageElementAction | DeleteElementAction | SetSlidesAction
 
 export {
-    PresentationActionType,
     TitleActionType,
     SelectionActionType,
     SlidesActionType,
     type SelectionAction,
-    type ChangePresentationTitleAction,
+    type TitleAction,
     type  SlidesAction,
-    type PresentationAction,
 }

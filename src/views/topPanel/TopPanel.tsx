@@ -9,13 +9,24 @@ import { saveToJsonFile } from '../../store/files/saveToJsonFile'
 import { getFromFile } from '../../store/files/getFromFile'
 import { useRef } from 'react'
 import { useAppSelector } from '../../store/hooks/useAppSelector'
+import { useAppActions } from '../../store/hooks/useAppActions'
+import { PresentationType } from '../../store/types'
 
 const TopPanel = () => {
-    const title = useAppSelector((presentation => presentation.title))
+    const {setSelection, setSlides, setPresentationTitle, changePresentationTitle} = useAppActions();
+
+    const setPresentation = (newPresentation: PresentationType) => {
+        setSelection(newPresentation.selection);
+        setSlides(newPresentation.slides);
+        setPresentationTitle(newPresentation.title);
+    }
+
+    const presentation = useAppSelector((presentation => presentation))
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const newValue = event.target.value;
+        changePresentationTitle(newValue);
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +34,9 @@ const TopPanel = () => {
         if (files && files.length > 0) {
             const file = files[0];
             try {
-                // Получаем презентацию из файла
                 const presentation = await getFromFile(file);
-                
-                // Диспатчим новое действие с новой презентацией
-                // dispatch(getNewPresentation, { newPresentation: presentation });
+                if(presentation) 
+                    setPresentation(presentation)
             } catch (error) {
                 console.error('Ошибка при загрузке файла:', error);
             }
@@ -36,7 +45,7 @@ const TopPanel = () => {
 
     const handleButtonClick = () => {
         if (fileInputRef.current) {
-            fileInputRef.current.click(); // Открываем диалог выбора файла
+            fileInputRef.current.click();
         }
     };
 
@@ -49,7 +58,7 @@ const TopPanel = () => {
             <input
                 className={styles.titleInput}
                 type="text"
-                defaultValue={title} 
+                defaultValue={presentation.title} 
                 onKeyUp={() => "this.style.width = ;"}
                 onChange={onTitleChange}
             />
@@ -64,8 +73,7 @@ const TopPanel = () => {
                         style={{ display: 'none' }} 
                     />
                 </div>
-                {/* saveToJsonFile(presentation) */}
-                <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => {}} iconSize={'medium'}/>
+                <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => {saveToJsonFile(presentation)}} iconSize={'medium'}/>
             </div>
         </div>
     )
