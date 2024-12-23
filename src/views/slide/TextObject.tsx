@@ -1,7 +1,8 @@
-import React, { CSSProperties} from "react";
+import React, { CSSProperties, useEffect} from "react";
 import { PresentationType, TextElementType, UpdateSizeType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
 import { useResize } from "../../store/hooks/useResize";
+import { useAppActions } from "../../store/hooks/useAppActions";
 
 type TextObjectProps = {
     textObject: TextElementType;
@@ -22,13 +23,20 @@ type ResizeHandle  = {
 }
 
 const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, state }) => {
-    const { localPosition, handleMouseDown } = useDragAndDrop(
+
+    const {setSelectionElement} = useAppActions();
+
+    const { localPosition, handleMouseDown, setLocalPosition } = useDragAndDrop(
         textObject.position,
         textObject.size,
         isSelected,
-        () => {},
+        () => {setSelectionElement(textObject.id)},
         state,
     );
+
+    useEffect(() => {
+        return(setLocalPosition(textObject.position))
+    }, [textObject]);
 
     const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale, state);
 
@@ -52,7 +60,7 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, 
     const sizeStyles: CSSProperties = scale === 1 
     ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
     : {width: `${textObject.size.width * scale}px`, height: `${textObject.size.height * scale}px`}
-
+    
     const resizeHandles: ResizeHandle[] = [
         { type: 'diagonal-right-bottom', style: { bottom: 0, right: 0, cursor: 'nwse-resize' } },
         { type: 'diagonal-right-top', style: { top: 0, right: 0, cursor: 'nesw-resize' }},

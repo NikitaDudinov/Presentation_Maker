@@ -7,30 +7,62 @@ import imageExportUrl from '../../assets/Export.svg'
 import imageImportUrl from '../../assets/download.svg'
 import { saveToJsonFile } from '../../store/files/saveToJsonFile'
 import { getFromFile } from '../../store/files/getFromFile'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useAppSelector } from '../../store/hooks/useAppSelector'
 import { useAppActions } from '../../store/hooks/useAppActions'
 import { useContext } from 'react'
 import { HistoryContext } from '../../store/hooks/historyContext'
-
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { Slide } from '../slide/Slide'
+import { useNavigate } from 'react-router'
 
 const TopPanel = () => {
+    const navigate = useNavigate()
     const {changePresentationTitle, setPresentation} = useAppActions();
+    const presentation = useAppSelector((presentation => presentation))
+    const [viewPdfFile, setViewPdfFile] = useState(false);
+    const slidesRef = useRef<HTMLDivElement>(null)
+
+    const generatePDF = async () => {
+        if (slidesRef.current) {
+            const elementWidth = slidesRef.current.offsetWidth;
+            const elementHeight = slidesRef.current.offsetHeight; 
+            const canvas = await html2canvas(slidesRef.current, {
+                scale: 2,
+                useCORS: true,
+            });
+            const imgData = canvas.toDataURL("image/png");
+            const pdfWidth = elementWidth * 0.264583;
+            const pdfHeight = elementHeight * 0.264583;
+            const doc = new jsPDF({
+                orientation: 'landscape',
+                unit: 'mm',
+                format: [pdfWidth, pdfHeight],
+            });
+            doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            doc.save(`${presentation.title}.pdf`);
+        }
+    };
 
     const history = useContext(HistoryContext)
 
-    document.addEventListener('keydown', handleKeyPress);
-
-    function handleKeyPress(event: KeyboardEvent): void {
-        if (event.ctrlKey && event.key === 'z') {
-            event.preventDefault(); 
-            onUndo();
+    useEffect(() => {
+        function handleKeyPress(event: KeyboardEvent): void {
+            if (event.ctrlKey && event.key === 'z') {
+                event.preventDefault(); 
+                onUndo();
+            }
+            if (event.ctrlKey && event.key === 'y') {
+                event.preventDefault(); 
+                onRedo();
+            }
         }
-        if (event.ctrlKey && event.key === 'y') {
-            event.preventDefault(); 
-            onRedo();
-        }
-    }
+        document.addEventListener('keydown', handleKeyPress);
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
 
     function onUndo() {
         const newPresentation = history.undo()
@@ -45,8 +77,6 @@ const TopPanel = () => {
             setPresentation(newPresentation)
         }
     }
-
-    const presentation = useAppSelector((presentation => presentation))
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const onTitleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -88,7 +118,7 @@ const TopPanel = () => {
                 onChange={onTitleChange}
             />
             <div className={styles.actionContainer}>
-                <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {}} iconSize={'medium'}/>
+                <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {navigate('slideshow')}} iconSize={'medium'}/>
                 <div>
                     <Button type={'icon'} iconUrl={imageImportUrl} onClick={handleButtonClick} iconSize={'medium'}/>
                     <input
@@ -99,6 +129,26 @@ const TopPanel = () => {
                     />
                 </div>
                 <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => {saveToJsonFile(presentation)}} iconSize={'medium'}/>
+                <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {setViewPdfFile(true)}} iconSize={'medium'}/>
+                {viewPdfFile && 
+                    <div className={styles.previewPdfContainer}>
+                        <Button type={'text'} label={'Закрыть'} onClick={() => setViewPdfFile(false)}/>
+                        <div ref={slidesRef} className={styles.listSlides}>
+                            {presentation.slides.map(slide => 
+                                <Slide key={slide.id} slide={slide}/>
+                            )}
+                        </div>
+                         <Button 
+                            type={'text'} 
+                            label={'Скачать в PDF'}     
+                            onClick={() => {
+                                generatePDF();
+                                setTimeout(() => {
+                                    setViewPdfFile(false);
+                                }, 2000);
+                            }} />
+                    </div>
+                }
             </div>
         </div>
     )

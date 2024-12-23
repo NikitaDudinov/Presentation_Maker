@@ -1,5 +1,6 @@
 import { Store } from "redux";
 import { PresentationType } from "../store/types";
+import { saveToLocalStorage } from "../store/localStorage/saveToLocalStorage";
 
 type HistoryType = {
     undo: () => PresentationType | undefined,
@@ -18,8 +19,7 @@ function initHistory(store: Store<PresentationType>): HistoryType {
 
     store.subscribe(() => {
         const editor = store.getState()
-        console.log('undo' , undoStack);
-        console.log('redo', redoStack)
+        saveToLocalStorage(editor)
         if (!undoStack.length || previousEditor != editor) {
             if (editor == getLastItem(undoStack)) {
                 undoStack.pop()

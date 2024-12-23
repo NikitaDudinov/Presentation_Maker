@@ -30,6 +30,7 @@ const Popover = ({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+    
     return (
         <div ref={popoverRef} className={styles.popoverContainer}>
             <div onClick={togglePopover} className={styles.popoverChildren}>

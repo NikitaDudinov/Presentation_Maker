@@ -1,10 +1,8 @@
 import { SlideType } from "../../store/types";
-import { CSSProperties, useRef, useState, useEffect} from "react";
+import { CSSProperties, useRef } from "react";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css';
-import { setSelectionElement } from "../../store/setSelectionElement";
-import { deleteSelectionElement } from "../../store/deleteSelectionElement";
 import { useAppSelector } from "../../store/hooks/useAppSelector";
 import { useAppActions } from "../../store/hooks/useAppActions";
 

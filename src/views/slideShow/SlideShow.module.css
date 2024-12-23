@@ -1,0 +1,33 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #424242, #212121); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.linkToPresentation {
+    color: white;
+    text-decoration: none;
+}
+
+.containerLink {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px 50px;
+}
+
+.containerButtons {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px 50px;
+    display: flex;
+    justify-content: end;
+}
+
+.buttons {
+    color: white;
+    border-radius: 15px;
+}

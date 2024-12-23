@@ -1,10 +1,10 @@
 
-import {CSSProperties} from "react";
+import {CSSProperties, useEffect} from "react";
 import { ImageElementType, PresentationType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
-import { setSelectionElement } from "../../store/setSelectionElement";
 import { useResize } from "../../store/hooks/useResize";
 import { UpdateSizeType } from "../../store/types";
+import { useAppActions } from "../../store/hooks/useAppActions";
 
 type ImageObjectProps = {
     imageObject: ImageElementType,
@@ -26,13 +26,19 @@ type ResizeHandle  = {
 
 const ImageObject = ({ imageObject, scale = 1, isSelected, state }: ImageObjectProps) => {
 
-    const { localPosition, handleMouseDown } = useDragAndDrop(
+    const {setSelectionElement} = useAppActions();
+
+    const { localPosition, handleMouseDown, setLocalPosition} = useDragAndDrop(
         imageObject.position,
         imageObject.size,
         isSelected,
-        () => {},
+        () => {setSelectionElement(imageObject.id)},
         state,
     );
+
+    useEffect(() => {
+        return(setLocalPosition(imageObject.position))
+    }, [imageObject]);
 
     const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(imageObject.size, scale, state);
 

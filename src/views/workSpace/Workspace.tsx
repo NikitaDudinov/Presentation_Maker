@@ -10,7 +10,7 @@ const Workspace = () => {
     return (
         <div className={styles.workspace}>
             {
-                (slide && <Slide slide={slide} selectElements={selectElemnets}/>)
+                (slide && <Slide key={slide.id} slide={slide} selectElements={selectElemnets}/>)
             }
         </div>
     )

@@ -57,14 +57,11 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
             const target = ref.current.getBoundingClientRect();
             if (state.selection.selectedSlideId)
             updateSizeElement(
-                state.selection.elementsId[0], 
-                state.selection.selectedSlideId,
                 {
                 width: Math.max((target.right - target.left) / scale, 20),
                 height: Math.max((target.bottom - target.top) / scale, 20)
             })
         }
-        console.log('hiohihaha')
         setResizeType(null);
     };
 
