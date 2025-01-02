@@ -2,7 +2,7 @@ import { PresentationType, TextElementType } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 
-const addTextElement = (presenattion: PresentationType): PresentationType => {
+const addTextElement = (presenattion: PresentationType, newText: string): PresentationType => {
     
     const selectedSlideId = presenattion.selection.selectedSlideId
 
@@ -14,7 +14,7 @@ const addTextElement = (presenattion: PresentationType): PresentationType => {
                     position: { x: 50, y: 50 },
                     size: { width: 100, height: 50 },
                     type: "text",
-                    content: "Новый текст",
+                    content: newText,
                     font: { family: 'Arial', size: 20 }
                 };
         

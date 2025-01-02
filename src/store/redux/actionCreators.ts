@@ -42,9 +42,10 @@ function updateBackgroundSlide(newBackground: string, isAllSlides: boolean){
     }
 }
 
-function addTextElement(){
+function addTextElement(newText: string){
     return {
         type: PresentationActionType.ADD_TEXT_ELEMENT,
+        payload: newText,
     }
 }
 

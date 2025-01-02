@@ -151,7 +151,7 @@ const Toolbar = () => {
                                 ))
                             }
                           </div>
-                        : <div>Her</div>
+                        : null
                         }
                         <Button 
                             type='text' 

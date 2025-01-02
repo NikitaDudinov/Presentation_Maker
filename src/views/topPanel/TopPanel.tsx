@@ -24,26 +24,34 @@ const TopPanel = () => {
     const [viewPdfFile, setViewPdfFile] = useState(false);
     const slidesRef = useRef<HTMLDivElement>(null)
 
+
     const generatePDF = async () => {
         if (slidesRef.current) {
-            const elementWidth = slidesRef.current.offsetWidth;
-            const elementHeight = slidesRef.current.offsetHeight; 
-            const canvas = await html2canvas(slidesRef.current, {
+            const slidesElement = slidesRef.current as HTMLElement;
+    
+            const slideHeightPx = 550;
+            const slideWidthPx = 935;
+    
+            const canvas = await html2canvas(slidesElement, {
                 scale: 2,
                 useCORS: true,
             });
             const imgData = canvas.toDataURL("image/png");
-            const pdfWidth = elementWidth * 0.264583;
-            const pdfHeight = elementHeight * 0.264583;
+    
+
+            const pdfWidth = slideWidthPx;
+            const pdfHeight = presentation.slides.length * slideHeightPx;
+    
             const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
+                orientation: 'portrait',
+                unit: 'px',
                 format: [pdfWidth, pdfHeight],
             });
             doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
             doc.save(`${presentation.title}.pdf`);
         }
     };
+    
 
     const history = useContext(HistoryContext)
 
@@ -132,21 +140,24 @@ const TopPanel = () => {
                 <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {setViewPdfFile(true)}} iconSize={'medium'}/>
                 {viewPdfFile && 
                     <div className={styles.previewPdfContainer}>
-                        <Button type={'text'} label={'Закрыть'} onClick={() => setViewPdfFile(false)}/>
-                        <div ref={slidesRef} className={styles.listSlides}>
-                            {presentation.slides.map(slide => 
-                                <Slide key={slide.id} slide={slide}/>
-                            )}
+                        <div className={styles.conatinerLists}>
+                            <Button type={'text'} label={'Закрыть'} onClick={() => setViewPdfFile(false)}/>
+                            <div ref={slidesRef} className={styles.listSlides}>
+                                {presentation.slides.map(slide => 
+                                    <Slide key={slide.id} slide={slide}/>
+                                )}
+                            </div>
+                            <Button 
+                                type={'text'} 
+                                label={'Скачать в PDF'}     
+                                onClick={() => {
+                                    generatePDF();
+                                    setTimeout(() => {
+                                        setViewPdfFile(false);
+                                    }, 3000);
+                                }} 
+                            />
                         </div>
-                         <Button 
-                            type={'text'} 
-                            label={'Скачать в PDF'}     
-                            onClick={() => {
-                                generatePDF();
-                                setTimeout(() => {
-                                    setViewPdfFile(false);
-                                }, 2000);
-                            }} />
                     </div>
                 }
             </div>

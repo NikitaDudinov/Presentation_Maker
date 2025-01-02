@@ -33,7 +33,7 @@ const presentationReducer = (state: PresentationType = defaultPresentation, acti
                 return updateBackgroundSlide(state, newBackground, isAllSlides);
             }
         case PresentationActionType.ADD_TEXT_ELEMENT:
-            return addTextElement(state);
+            return addTextElement(state, action.payload);
         case PresentationActionType.ADD_IMAGE_ELEMENT:
             return addImageElement(state, action.payload);
         case PresentationActionType.DELETE_ELEMENT:

@@ -20,6 +20,7 @@ type EditTextComponentProps = {
 const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selectedSlideId }) => {
 
     const {addTextElement} = useAppActions();
+    const [inputText, setInputText] = useState('')
 
     const [textStyle, setTextStyle] = useState({
         fontWeight: 'normal',
@@ -65,6 +66,11 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
             textDecoration: prev.textTransform === 'uppercase' ? 'none' : 'uppercase'
         }));
         setActiveStyles(prev => ({ ...prev, capsLock: !prev.capsLock }));
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value;
+        setInputText(newValue);
     };
 
 
@@ -126,8 +132,13 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
             <Popover 
             content={
                 <div>
+                    <input
+                        value={inputText}
+                        onChange={handleInputChange}
+                        className="input-field"
+                    />
                 <span className={styles.label}>Добавить текст</span>
-                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement()}} label="Добавить текст"/>
+                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement(inputText)}} label="Добавить текст"/>
                 </div>
             }
         >

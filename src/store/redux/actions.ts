@@ -56,6 +56,7 @@ type UpdateBackgroundSlideAction = {
 
 type AddTextElementAction = {
     type: PresentationActionType.ADD_TEXT_ELEMENT,
+    payload: string,
 }
 
 type AddImageElementAction = {
