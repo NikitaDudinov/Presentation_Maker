@@ -11,6 +11,7 @@ type ImageObjectProps = {
     scale?: number,
     isSelected: boolean,
     state: PresentationType,
+    isWorkSpace?: boolean,
 }
 
 type ResizeHandle  = {
@@ -24,7 +25,7 @@ type ResizeHandle  = {
     };
 }
 
-const ImageObject = ({ imageObject, scale = 1, isSelected, state }: ImageObjectProps) => {
+const ImageObject = ({ imageObject, scale = 1, isWorkSpace=false, isSelected, state }: ImageObjectProps) => {
 
     const {setSelectionElement} = useAppActions();
 
@@ -48,11 +49,11 @@ const ImageObject = ({ imageObject, scale = 1, isSelected, state }: ImageObjectP
         height: `${sizeObject.height * scale}px`,
     };
 
-    const sizeStyles: CSSProperties = scale === 1 
+    const sizeStyles: CSSProperties = isWorkSpace 
     ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
     : {width: `${imageObject.size.width * scale}px`, height: `${imageObject.size.height * scale}px`}
 
-    const positionStyles = scale === 1 
+    const positionStyles = isWorkSpace 
         ? { top: `${localPosition.y * scale}px`, left: `${localPosition.x * scale}px` }
         : { top: `${imageObject.position.y * scale}px`, left: `${imageObject.position.x * scale}px` };
 
@@ -78,7 +79,7 @@ const ImageObject = ({ imageObject, scale = 1, isSelected, state }: ImageObjectP
     ];
 
     return (
-        <div ref={ref} onMouseDown={scale === 1 ? handleMouseDown : undefined} style={imageObjectStyles}>
+        <div ref={ref} onMouseDown={isWorkSpace ? handleMouseDown : undefined} style={imageObjectStyles}>
             <img
             style={{
                 width: '100%',

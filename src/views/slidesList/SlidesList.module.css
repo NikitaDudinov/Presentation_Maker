@@ -7,10 +7,18 @@
 .slide {
     border-radius: 10px;
     border: 2px solid transparent;
-    pointer-events: 'none';
+    pointer-events: none;
     transition: border-color 0.3s ease;
 }
 
 .slide:hover {
     border-color: gray;
+}
+
+.slidesList::-webkit-scrollbar {
+    display: none;
+}
+
+.slidesList {
+    scrollbar-width: none;
 }

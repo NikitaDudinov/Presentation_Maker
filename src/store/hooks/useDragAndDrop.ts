@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PositionType, PresentationType, SizeType } from '../types';
 import { useAppActions } from './useAppActions';
-
-const SLIDE_WIDTH = 935;
-const SLIDE_HEIGHT = 525;
+import { SLIDE_HEIGHT, SLIDE_WIDTH } from '../constants';
 
 const useDragAndDrop = (
     initialPosition: PositionType, 

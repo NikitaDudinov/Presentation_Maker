@@ -1,7 +1,9 @@
+@import '../../styles/colors.module.css';
+
 .topPanel {
     width: 100%;
     height: var(--topPanelHeight);
-    background-color: #20AB25;
+    background-color: var(--secondary-color);
     display: flex;
     justify-content: space-between;
     align-items: center;

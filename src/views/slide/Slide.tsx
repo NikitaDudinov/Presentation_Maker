@@ -5,19 +5,22 @@ import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css';
 import { useAppSelector } from "../../store/hooks/useAppSelector";
 import { useAppActions } from "../../store/hooks/useAppActions";
-
-const SLIDE_WIDTH = 935;
-const SLIDE_HEIGHT = 525;
+import { SLIDE_HEIGHT, SLIDE_WIDTH } from "../../store/constants";
 
 type SlideProps = {
     slide: SlideType;
-    scale?: number;
-    select?: boolean;
+    isWorkSpace?: boolean,
+    scale: number;
     selectElements?: string[];
     className?: string; 
 }
 
-const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
+const Slide = ({ 
+    slide, 
+    isWorkSpace = false, 
+    scale, 
+    selectElements 
+}: SlideProps) => {
     const {setSelectionElement, deleteSelectionElement} = useAppActions();
     const slideRef = useRef<HTMLDivElement>(null);
     const presentation = useAppSelector(state => state)
@@ -26,10 +29,6 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     };
-
-    if (select) {
-        slideStyles.border = '3px solid #20AB25';
-    }
 
     const onSetSelectionElement = (elementId: string) => {
         setSelectionElement(elementId)
@@ -52,15 +51,20 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
                 <div 
                     key={slideObject.id} 
                     className={styles.element} 
-                    onClick={scale === 1 ? (e) => {
-                        e.stopPropagation();
-                        onSetSelectionElement(slideObject.id);
-                    } : undefined}
+                    onClick={
+                        isWorkSpace 
+                        ? (e) => {
+                            e.stopPropagation();
+                            onSetSelectionElement(slideObject.id);
+                        } 
+                        : undefined
+                    }
                 >
                     {slideObject.type === "text" ? (
                         <TextObject 
                             state={presentation}
-                            textObject={slideObject} 
+                            textObject={slideObject}
+                            isWorkSpace={isWorkSpace} 
                             scale={scale} 
                             isSelected={selectElements?.includes(slideObject.id) ? true : false} 
                         />
@@ -68,7 +72,8 @@ const Slide = ({ slide, scale = 1, select, selectElements }: SlideProps) => {
                         <ImageObject 
                             state={presentation}
                             imageObject={slideObject} 
-                            scale={scale} 
+                            scale={scale}
+                            isWorkSpace={isWorkSpace} 
                             isSelected={selectElements?.includes(slideObject.id) ? true : false} 
                         />
                     )}

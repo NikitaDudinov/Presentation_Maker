@@ -1,21 +1,27 @@
-import styles from './Workspace.module.css'
-import { Slide } from "../slide/Slide"
-import { useAppSelector } from "../../store/hooks/useAppSelector"
+import { Slide } from "../slide/Slide";
+import { useAppSelector } from "../../store/hooks/useAppSelector";
 
-const Workspace = () => {
-    const selectedSlideId = useAppSelector(state => state.selection.selectedSlideId)
-    const slides = useAppSelector(state => state.slides)
-    const slide = slides.find(slide => slide.id === selectedSlideId);
-    const selectElemnets =  useAppSelector(state => state.selection.elementsId);
+type WorkspaceProps = {
+    WorkSpaceSlideScale: number;
+};
+
+const Workspace = ({ WorkSpaceSlideScale }: WorkspaceProps) => {
+    const selectedSlideId = useAppSelector(state => state.selection.selectedSlideId);
+    const slides = useAppSelector(state => state.slides);
+    const slide = slides.find(slide => slide.id === selectedSlideId) ?? slides[0];
+    const selectElements = useAppSelector(state => state.selection.elementsId);
+
     return (
-        <div className={styles.workspace}>
-            {
-                (slide && <Slide key={slide.id} slide={slide} selectElements={selectElemnets}/>)
-            }
-        </div>
-    )
-}
+        <Slide 
+            key={slide.id}
+            isWorkSpace={true}
+            slide={slide} 
+            selectElements={selectElements}
+            scale={WorkSpaceSlideScale}
+        />
+    );
+};
 
-export {
-    Workspace
-}
+export { 
+    Workspace,
+};

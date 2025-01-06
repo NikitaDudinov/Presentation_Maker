@@ -9,6 +9,7 @@ type TextObjectProps = {
     scale: number;
     isSelected: boolean;
     state: PresentationType;
+    isWorkSpace?: boolean;
 };
 
 type ResizeHandle  = {
@@ -22,7 +23,7 @@ type ResizeHandle  = {
     };
 }
 
-const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, state }) => {
+const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isWorkSpace = false, isSelected, state }) => {
 
     const {setSelectionElement} = useAppActions();
 
@@ -53,11 +54,11 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, 
         overflow: 'hidden',
     };
 
-    const positionStyles = scale === 1 
+    const positionStyles = isWorkSpace 
         ? { top: `${localPosition.y * scale}px`, left: `${localPosition.x * scale}px` }
         : { top: `${textObject.position.y * scale}px`, left: `${textObject.position.x * scale}px` };
 
-    const sizeStyles: CSSProperties = scale === 1 
+    const sizeStyles: CSSProperties = isWorkSpace
     ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
     : {width: `${textObject.size.width * scale}px`, height: `${textObject.size.height * scale}px`}
     
@@ -76,7 +77,7 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isSelected, 
         <div
             ref={ref}
             style={{ ...commonStyles, ...positionStyles, ...sizeStyles }}
-            onMouseDown={scale === 1 ? handleMouseDown : undefined}
+            onMouseDown={isWorkSpace ? handleMouseDown : undefined}
         >
             <p style={{ margin: 0 }}>
                 {textObject.content}

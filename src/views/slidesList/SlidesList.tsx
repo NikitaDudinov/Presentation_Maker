@@ -3,9 +3,13 @@ import { Slide } from "../slide/Slide"
 import { useDraggableSlides } from "../../store/hooks/useDraggableSlides"
 import { useAppSelector } from "../../store/hooks/useAppSelector"
 import { useAppActions } from "../../store/hooks/useAppActions"
-const SLIDE_PREVIEW_SCALE = 0.3
 
-const SlidesList = () => {
+type SlideListProps = {
+    slidePreviewScale: number;
+}
+
+const SlidesList = ({slidePreviewScale}: SlideListProps) => {
+
     const {setSelectionSlide, updateSlides} = useAppActions();
     const presentation = useAppSelector(state => state)
 
@@ -42,8 +46,7 @@ const SlidesList = () => {
                     >
                         <Slide
                             slide={slide}
-                            scale={SLIDE_PREVIEW_SCALE}
-                            select={presentation.selection.selectedSlideId === slide.id}
+                            scale={slidePreviewScale}
                             className={styles.slide}
                         />
                     </div>

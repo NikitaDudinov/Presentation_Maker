@@ -1,3 +1,5 @@
+@import './styles/colors.module.css';
+
 * {
     margin: 0;
     padding: 0;
@@ -9,19 +11,42 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #555555;
+    background-color: var(--primary-color);
     box-sizing: border-box;
 }
 
-.workspaceConatiner {
-    width: 85vw;
+.slideListContainer {
+    height: 100%;
+    width: calc(100vw - var(--workSpaceWidth));
+}
+
+.workspaceToolbarContainer {
+    width: var(--workSpaceWidth);
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 100px;
+    gap: 20px;
+}
+
+.workspaceContainer {
+    width: 80%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    border: 2px solid gray; 
+}
+
+.preloaderContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
 }
 
 :root {
     --topPanelHeight: 80px;
+    --workSpaceWidth: 85vw;
   }
