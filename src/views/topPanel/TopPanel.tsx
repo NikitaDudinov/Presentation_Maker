@@ -16,6 +16,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { Slide } from '../slide/Slide'
 import { useNavigate } from 'react-router'
+import { PresentationType } from '../../store/types'
 
 const TopPanel = () => {
     const navigate = useNavigate()
@@ -24,33 +25,63 @@ const TopPanel = () => {
     const [viewPdfFile, setViewPdfFile] = useState(false);
     const slidesRef = useRef<HTMLDivElement>(null)
 
-
-    const generatePDF = async () => {
-        if (slidesRef.current) {
-            const slidesElement = slidesRef.current as HTMLElement;
+    const generatePDF = async (presentation: PresentationType) => {
+        console.log('Начал конвертацию');
     
-            const slideHeightPx = 550;
-            const slideWidthPx = 935;
+        const slideHeightPx = 550; // Высота слайда
+        const slideWidthPx = 935; // Ширина слайда
     
-            const canvas = await html2canvas(slidesElement, {
-                scale: 2,
-                useCORS: true,
-            });
-            const imgData = canvas.toDataURL("image/png");
+        const doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'px',
+            format: 'a4',
+        });
     
-
-            const pdfWidth = slideWidthPx;
-            const pdfHeight = presentation.slides.length * slideHeightPx;
+        for (const slide of presentation.slides) {
+            const slideElement = `
+                <div style="width: ${slideWidthPx}px; height: ${slideHeightPx}px; background-color: ${slide.background}; position: relative;">
+                    ${slide.elements.map(element => {
+                        if (element.type === 'text') {
+                            return `<div style="position: absolute; top: ${element.position.y}px; left: ${element.position.x}px; font-size: ${element.font.size}px; font-family: ${element.font.family}; color: black;">${element.content}</div>`;
+                        }
+                        if (element.type === 'image') {
+                            return `<img src="${element.src}" style="position: absolute; top: ${element.position.y}px; left: ${element.position.x}px; width: ${element.size.width}px; height: ${element.size.height}px;" />`;
+                        }
+                        return '';
+                    }).join('')}
+                </div>
+            `;
     
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'px',
-                format: [pdfWidth, pdfHeight],
-            });
-            doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-            doc.save(`${presentation.title}.pdf`);
+            const tempElement = document.createElement('div');
+            tempElement.style.display = 'block'; // Временно показываем элемент для отладки
+            tempElement.innerHTML = slideElement;
+            document.body.appendChild(tempElement);
+    
+            try {
+                // Задержка для отрисовки
+                await new Promise(resolve => setTimeout(resolve, 100));
+    
+                // Используем увеличенный масштаб для повышения качества
+                const canvas = await html2canvas(tempElement, { scale: 2, useCORS: true, backgroundColor: '#fff' });
+                const imgData = canvas.toDataURL("image/png"); // Используем PNG
+    
+                // Добавляем изображение в PDF
+                doc.addImage(imgData, 'PNG', 0, 0, slideWidthPx, slideHeightPx);
+                if (slide !== presentation.slides[presentation.slides.length - 1]) {
+                    doc.addPage(); // Добавляем новую страницу для следующего слайда
+                }
+            } catch (error) {
+                console.error('Ошибка при генерации PDF:', error);
+            } finally {
+                document.body.removeChild(tempElement); // Удаляем временный элемент после обработки
+            }
         }
+    
+        doc.save(`${presentation.title}.pdf`);
     };
+    
+    
+    
     
 
     const history = useContext(HistoryContext)
@@ -137,29 +168,7 @@ const TopPanel = () => {
                     />
                 </div>
                 <Button type={'icon'} iconUrl={imageExportUrl} onClick={() => {saveToJsonFile(presentation)}} iconSize={'medium'}/>
-                <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => {setViewPdfFile(true)}} iconSize={'medium'}/>
-                {viewPdfFile && 
-                    <div className={styles.previewPdfContainer}>
-                        <div className={styles.conatinerLists}>
-                            <Button type={'text'} label={'Закрыть'} onClick={() => setViewPdfFile(false)}/>
-                            <div ref={slidesRef} className={styles.listSlides}>
-                                {presentation.slides.map(slide => 
-                                    <Slide key={slide.id} slide={slide}/>
-                                )}
-                            </div>
-                            <Button 
-                                type={'text'} 
-                                label={'Скачать в PDF'}     
-                                onClick={() => {
-                                    generatePDF();
-                                    setTimeout(() => {
-                                        setViewPdfFile(false);
-                                    }, 3000);
-                                }} 
-                            />
-                        </div>
-                    </div>
-                }
+                <Button type={'icon'} iconUrl={imagePlayUrl} onClick={() => generatePDF(presentation)} iconSize={'medium'}/>
             </div>
         </div>
     )

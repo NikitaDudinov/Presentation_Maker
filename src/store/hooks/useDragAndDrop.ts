@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PositionType, PresentationType, SizeType } from '../types';
+import { PositionType, SizeType } from '../types';
 import { useAppActions } from './useAppActions';
 import { SLIDE_HEIGHT, SLIDE_WIDTH } from '../constants';
 
@@ -8,7 +8,7 @@ const useDragAndDrop = (
     sizeObject: SizeType,
     isSelected: boolean,
     setSelection: () => void,
-    state: PresentationType,
+    scale: number,
 ) => {
     const {updatePositionElement} = useAppActions()
     const [localPosition, setLocalPosition] = useState(initialPosition);
@@ -19,9 +19,9 @@ const useDragAndDrop = (
         if(isDragging){
             const boundary = {
                 minX: 0,
-                maxX: SLIDE_WIDTH - sizeObject.width,
+                maxX: (SLIDE_WIDTH - sizeObject.width) * scale,
                 minY: 0,
-                maxY: SLIDE_HEIGHT - sizeObject.height,
+                maxY: (SLIDE_HEIGHT - sizeObject.height) * scale,
             };
             const newX = Math.min(Math.max(localPosition.x + e.clientX - dragStart.x, boundary.minX), boundary.maxX);
             const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
@@ -33,15 +33,13 @@ const useDragAndDrop = (
         if(isDragging){
             const boundary = {
                 minX: 0,
-                maxX: SLIDE_WIDTH - sizeObject.width,
+                maxX: (SLIDE_WIDTH - sizeObject.width) * scale,
                 minY: 0,
-                maxY: SLIDE_HEIGHT - sizeObject.height,
+                maxY: (SLIDE_HEIGHT - sizeObject.height) * scale,
             };
-            const newX = Math.min(Math.max(localPosition.x + e.clientX - dragStart.x, boundary.minX), boundary.maxX);
-            const newY = Math.min(Math.max(localPosition.y + e.clientY - dragStart.y, boundary.minY), boundary.maxY);
-            console.log(state.selection.selectedSlideId, state.selection.elementsId[0], {x: newX, y: newY})
-            if(state.selection.selectedSlideId)
-                updatePositionElement({x: newX, y: newY})
+            const newX = Math.min(Math.max((localPosition.x + e.clientX - dragStart.x) * scale, boundary.minX), boundary.maxX);
+            const newY = Math.min(Math.max((localPosition.y + e.clientY - dragStart.y) * scale, boundary.minY), boundary.maxY);
+            updatePositionElement({x: newX, y: newY})
             setIsDragging(false);
         }
     }

@@ -32,12 +32,13 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isWorkSpace 
         textObject.size,
         isSelected,
         () => {setSelectionElement(textObject.id)},
-        state,
+        scale,
     );
 
     useEffect(() => {
-        return(setLocalPosition(textObject.position))
-    }, [textObject]);
+        setLocalPosition(textObject.position);
+    }, [textObject.position]);
+    
 
     const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale, state);
 
