@@ -17,6 +17,7 @@ import { jsPDF } from 'jspdf';
 import { Slide } from '../slide/Slide'
 import { useNavigate } from 'react-router'
 import { PresentationType } from '../../store/types'
+import { SLIDE_HEIGHT } from '../../store/constants'
 
 const TopPanel = () => {
     const navigate = useNavigate()
@@ -28,9 +29,17 @@ const TopPanel = () => {
     const generatePDF = async (presentation: PresentationType) => {
         console.log('Начал конвертацию');
     
-        const slideHeightPx = 550; // Высота слайда
+        const slideHeightPx = 525; // Высота слайда
         const slideWidthPx = 935; // Ширина слайда
     
+        // Размеры A4 в пикселях (при 72 dpi)
+        const a4WidthPx = 842; // Ширина A4 в пикселях
+        const a4HeightPx = 595; // Высота A4 в пикселях
+    
+        // Рассчитываем масштаб
+        const scaleX = a4WidthPx / slideWidthPx;
+        const scaleY = a4HeightPx / slideHeightPx;
+        const scale = 0.7
         const doc = new jsPDF({
             orientation: 'landscape',
             unit: 'px',
@@ -39,13 +48,13 @@ const TopPanel = () => {
     
         for (const slide of presentation.slides) {
             const slideElement = `
-                <div style="width: ${slideWidthPx}px; height: ${slideHeightPx}px; background-color: ${slide.background}; position: relative;">
+                <div style="width: ${slideWidthPx * scale}px; height: ${slideHeightPx * scale}px; background-color: ${slide.background}; position: relative;">
                     ${slide.elements.map(element => {
                         if (element.type === 'text') {
-                            return `<div style="position: absolute; top: ${element.position.y}px; left: ${element.position.x}px; font-size: ${element.font.size}px; font-family: ${element.font.family}; color: black;">${element.content}</div>`;
+                            return `<div style="position: absolute; top: ${element.position.y * scale}px; left: ${element.position.x * scale}px; font-size: ${element.font.size * scale}px; font-family: ${element.font.family}; color: black;">${element.content}</div>`;
                         }
                         if (element.type === 'image') {
-                            return `<img src="${element.src}" style="position: absolute; top: ${element.position.y}px; left: ${element.position.x}px; width: ${element.size.width}px; height: ${element.size.height}px;" />`;
+                            return `<img src="${element.src}" style="position: absolute; top: ${element.position.y * scale}px; left: ${element.position.x * scale}px; width: ${element.size.width * scale}px; height: ${element.size.height * scale}px;" />`;
                         }
                         return '';
                     }).join('')}
@@ -65,8 +74,8 @@ const TopPanel = () => {
                 const canvas = await html2canvas(tempElement, { scale: 2, useCORS: true, backgroundColor: '#fff' });
                 const imgData = canvas.toDataURL("image/png"); // Используем PNG
     
-                // Добавляем изображение в PDF
-                doc.addImage(imgData, 'PNG', 0, 0, slideWidthPx, slideHeightPx);
+                // Добавляем изображение в PDF с учетом масштаба
+                doc.addImage(imgData, 'PNG', 0, 0, slideWidthPx * scale, slideHeightPx * scale);
                 if (slide !== presentation.slides[presentation.slides.length - 1]) {
                     doc.addPage(); // Добавляем новую страницу для следующего слайда
                 }
@@ -79,6 +88,7 @@ const TopPanel = () => {
     
         doc.save(`${presentation.title}.pdf`);
     };
+    
     
     
     

@@ -8,7 +8,7 @@ import { useAppActions } from "../../store/hooks/useAppActions";
 
 type ImageObjectProps = {
     imageObject: ImageElementType,
-    scale?: number,
+    scale: number,
     isSelected: boolean,
     state: PresentationType,
     isWorkSpace?: boolean,
@@ -25,7 +25,7 @@ type ResizeHandle  = {
     };
 }
 
-const ImageObject = ({ imageObject, scale = 1, isWorkSpace=false, isSelected, state }: ImageObjectProps) => {
+const ImageObject = ({ imageObject, scale, isWorkSpace=false, isSelected, state }: ImageObjectProps) => {
 
     const {setSelectionElement} = useAppActions();
 
@@ -34,7 +34,7 @@ const ImageObject = ({ imageObject, scale = 1, isWorkSpace=false, isSelected, st
         imageObject.size,
         isSelected,
         () => {setSelectionElement(imageObject.id)},
-        state,
+        scale,
     );
 
     useEffect(() => {
