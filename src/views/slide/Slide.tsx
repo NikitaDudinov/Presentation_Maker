@@ -8,6 +8,7 @@ import { useAppActions } from "../../store/hooks/useAppActions";
 import { SLIDE_HEIGHT, SLIDE_WIDTH } from "../../store/constants";
 
 type SlideProps = {
+    isSelected?: boolean;
     slide: SlideType;
     isWorkSpace?: boolean,
     scale: number;
@@ -15,7 +16,8 @@ type SlideProps = {
     className?: string; 
 }
 
-const Slide = ({ 
+const Slide = ({
+    isSelected = false,
     slide, 
     isWorkSpace = false, 
     scale, 
@@ -25,7 +27,8 @@ const Slide = ({
     const slideRef = useRef<HTMLDivElement>(null);
     const presentation = useAppSelector(state => state)
     const slideStyles: CSSProperties = {
-        backgroundColor: slide.background,
+        border: isSelected && !isWorkSpace ? '1px solid #007bff' : '1px solid black',
+        background: slide.background,
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     };
