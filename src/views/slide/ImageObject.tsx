@@ -1,4 +1,3 @@
-
 import {CSSProperties, useEffect} from "react";
 import { ImageElementType, PresentationType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
@@ -26,7 +25,6 @@ type ResizeHandle  = {
 }
 
 const ImageObject = ({ imageObject, scale, isWorkSpace=false, isSelected, state }: ImageObjectProps) => {
-
     const {setSelectionElement} = useAppActions();
 
     const { localPosition, handleMouseDown, setLocalPosition} = useDragAndDrop(
@@ -41,7 +39,11 @@ const ImageObject = ({ imageObject, scale, isWorkSpace=false, isSelected, state 
         return(setLocalPosition(imageObject.position))
     }, [imageObject]);
 
-    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(imageObject.size, scale, state);
+    const { sizeObject, resizeType, handleResizeMouseDown, ref, localPosition: resizePosition } = useResize(
+        imageObject.size,
+        scale,
+        state
+    );
 
     const commonStyles: CSSProperties = {
         position: 'absolute',
@@ -50,12 +52,18 @@ const ImageObject = ({ imageObject, scale, isWorkSpace=false, isSelected, state 
     };
 
     const sizeStyles: CSSProperties = isWorkSpace 
-    ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
-    : {width: `${imageObject.size.width * scale}px`, height: `${imageObject.size.height * scale}px`}
+        ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
+        : {width: `${imageObject.size.width * scale}px`, height: `${imageObject.size.height * scale}px`}
 
     const positionStyles = isWorkSpace 
-        ? { top: `${localPosition.y * scale}px`, left: `${localPosition.x * scale}px` }
-        : { top: `${imageObject.position.y * scale}px`, left: `${imageObject.position.x * scale}px` };
+        ? { 
+            top: `${(resizeType ? resizePosition.y : localPosition.y) * scale}px`, 
+            left: `${(resizeType ? resizePosition.x : localPosition.x) * scale}px` 
+        }
+        : { 
+            top: `${imageObject.position.y * scale}px`, 
+            left: `${imageObject.position.x * scale}px` 
+        };
 
     const imageObjectStyles: CSSProperties = {
         ...commonStyles,
@@ -79,30 +87,37 @@ const ImageObject = ({ imageObject, scale, isWorkSpace=false, isSelected, state 
     ];
 
     return (
-        <div ref={ref} onMouseDown={isWorkSpace ? handleMouseDown : undefined} style={imageObjectStyles}>
+        <div 
+            ref={ref} 
+            onMouseDown={isWorkSpace ? handleMouseDown : undefined} 
+            style={imageObjectStyles}
+        >
             <img
-            style={{
-                width: '100%',
-                height: '100%'
-            }}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    userSelect: 'none',
+                    pointerEvents: 'none'
+                }}
                 src={imageObject.src}
+                draggable={false}
             />
             <div>
-            {isSelected && resizeHandles.map(handle => (
-                <div
-                    key={handle.type}
-                    onMouseDown={handleResizeMouseDown(handle.type)}
-                    style={{
-                        position: 'absolute',
-                        width: '10px',
-                        height: '10px',
-                        backgroundColor: 'red',
-                        ...handle.style,
-                    }}
-                />
-            ))}
+                {isSelected && resizeHandles.map(handle => (
+                    <div
+                        key={handle.type}
+                        onMouseDown={handleResizeMouseDown(handle.type)}
+                        style={{
+                            position: 'absolute',
+                            width: '10px',
+                            height: '10px',
+                            backgroundColor: '#0b57d0',
+                            ...handle.style,
+                            userSelect: 'none',
+                        }}
+                    />
+                ))}
             </div>
-
         </div>
     );
 };

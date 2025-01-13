@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect} from "react";
+import React, { CSSProperties, useEffect, useState, useRef } from "react";
 import { PresentationType, TextElementType, UpdateSizeType } from "../../store/types";
 import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
 import { useResize } from "../../store/hooks/useResize";
@@ -10,6 +10,7 @@ type TextObjectProps = {
     isSelected: boolean;
     state: PresentationType;
     isWorkSpace?: boolean;
+    isNew?: boolean;
 };
 
 type ResizeHandle  = {
@@ -23,45 +24,87 @@ type ResizeHandle  = {
     };
 }
 
-const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isWorkSpace = false, isSelected, state }) => {
+const TextObject: React.FC<TextObjectProps> = ({ 
+    textObject, 
+    scale, 
+    isWorkSpace = false, 
+    isSelected, 
+    state,
+    isNew = false 
+}) => {
+    const { setSelectionElement, updateContentText } = useAppActions();
+    const [isEditing, setIsEditing] = useState(isNew);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
 
-    const {setSelectionElement} = useAppActions();
-
-    const { localPosition, handleMouseDown, setLocalPosition } = useDragAndDrop(
+    const { localPosition, handleMouseDown: dragMouseDown, setLocalPosition } = useDragAndDrop(
         textObject.position,
         textObject.size,
         isSelected,
-        () => {setSelectionElement(textObject.id)},
+        () => { setSelectionElement(textObject.id) },
         scale,
     );
+
+    const handleDoubleClick = (e: React.MouseEvent) => {
+        if (!isWorkSpace) return;
+        e.stopPropagation();
+        setIsEditing(true);
+    };
 
     useEffect(() => {
         setLocalPosition(textObject.position);
     }, [textObject.position]);
     
+    const { sizeObject, resizeType, handleResizeMouseDown, ref, localPosition: resizePosition } = useResize(
+        textObject.size,
+        scale,
+        state
+    );
 
-    const { sizeObject, resizeType, handleResizeMouseDown, ref } = useResize(textObject.size, scale, state);
+    useEffect(() => {
+        if (isNew && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isNew]);
+
+    const handleBlur = () => {
+        setIsEditing(false);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            inputRef.current?.blur();
+        }
+    };
 
     const commonStyles: CSSProperties = {
         position: 'absolute',
-        width: `${sizeObject.width * scale}px`,
-        height: `${sizeObject.height * scale}px`,
         fontSize: `${textObject.font.size * scale}px`,
         cursor: resizeType ? 
             (resizeType.includes('horizontal') ? 'ew-resize' : 
              resizeType.includes('vertical') ? 'ns-resize' : 'nwse-resize') 
-            : 'grab',
+            : isEditing ? 'text' : 'default',
         border: isSelected ? '2px solid #0b57d0' : 'none',
         overflow: 'hidden',
+        userSelect: 'none',
+        fontFamily: textObject.font.family,
+        wordWrap: 'break-word',
+        whiteSpace: 'pre-wrap'
     };
 
-    const positionStyles = isWorkSpace 
-        ? { top: `${localPosition.y * scale}px`, left: `${localPosition.x * scale}px` }
-        : { top: `${textObject.position.y * scale}px`, left: `${textObject.position.x * scale}px` };
-
     const sizeStyles: CSSProperties = isWorkSpace
-    ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
-    : {width: `${textObject.size.width * scale}px`, height: `${textObject.size.height * scale}px`}
+        ? {width: `${sizeObject.width * scale}px`, height: `${sizeObject.height * scale}px`}
+        : {width: `${textObject.size.width * scale}px`, height: `${textObject.size.height * scale}px`}
+
+    const positionStyles = isWorkSpace 
+        ? { 
+            top: `${(resizeType ? resizePosition.y : localPosition.y) * scale}px`, 
+            left: `${(resizeType ? resizePosition.x : localPosition.x) * scale}px` 
+        }
+        : { 
+            top: `${textObject.position.y * scale}px`, 
+            left: `${textObject.position.x * scale}px` 
+        };
     
     const resizeHandles: ResizeHandle[] = [
         { type: 'diagonal-right-bottom', style: { bottom: 0, right: 0, cursor: 'nwse-resize' } },
@@ -78,13 +121,52 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isWorkSpace 
         <div
             ref={ref}
             style={{ ...commonStyles, ...positionStyles, ...sizeStyles }}
-            onMouseDown={isWorkSpace ? handleMouseDown : undefined}
+            onMouseDown={!isEditing ? dragMouseDown : undefined}
+            onDoubleClick={handleDoubleClick}
         >
-            <p style={{ margin: 0 }}>
-                {textObject.content}
-            </p>
+            {isEditing ? (
+                <textarea
+                    ref={inputRef}
+                    value={textObject.content}
+                    onChange={(e) => updateContentText(e.target.value)}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                    onClick={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        border: 'none',
+                        outline: 'none',
+                        resize: 'none',
+                        background: 'transparent',
+                        fontSize: 'inherit',
+                        fontFamily: 'inherit',
+                        margin: 0,
+                        padding: 0,
+                        overflow: 'hidden',
+                        wordWrap: 'break-word',
+                        whiteSpace: 'pre-wrap',
+                        cursor: 'text',
+                        pointerEvents: 'auto'
+                    }}
+                    autoFocus
+                />
+            ) : (
+                <p style={{ 
+                    margin: 0,
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
+                    wordWrap: 'break-word',
+                    whiteSpace: 'pre-wrap'
+                }}>
+                    {textObject.content || 'Введите текст...'}
+                </p>
+            )}
             
-            {isSelected && resizeHandles.map(handle => (
+            {isSelected && !isEditing && resizeHandles.map(handle => (
                 <div
                     key={handle.type}
                     onMouseDown={handleResizeMouseDown(handle.type)}
@@ -92,14 +174,14 @@ const TextObject: React.FC<TextObjectProps> = ({ textObject, scale, isWorkSpace 
                         position: 'absolute',
                         width: '10px',
                         height: '10px',
-                        backgroundColor: 'red',
+                        backgroundColor: '#0b57d0',
                         ...handle.style,
+                        userSelect: 'none',
                     }}
                 />
             ))}
         </div>
     );
 };
-
 
 export { TextObject };

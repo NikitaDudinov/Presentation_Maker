@@ -8,6 +8,7 @@ import { updateBackgroundSlide } from "../updateBackgroundSlide";
 import { addTextElement } from "../addTextElement";
 import { addImageElement } from "../addImageElement";
 import { deleteElement } from "../deleteElement";
+import { updateContentText } from "./updateContentText";
 
 const presentationReducer = (state: PresentationType = defaultPresentation, action: PresentationAction): PresentationType => {
     switch (action.type) {
@@ -69,6 +70,8 @@ const presentationReducer = (state: PresentationType = defaultPresentation, acti
             }
         case PresentationActionType.SET_PRESENTATION:
             return action.payload
+        case PresentationActionType.UPDATE_CONTENT_TEXT:
+            return updateContentText(state, action.payload)
         default:
             return state
     }

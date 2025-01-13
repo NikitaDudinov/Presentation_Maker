@@ -142,6 +142,7 @@ const useDraggableSlides = (
 
     
     return {
+        setCurrentSlides,
         currentSlides,
         handleMouseDown,
         draggedIndex,

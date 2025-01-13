@@ -96,6 +96,13 @@ function setPresentation(newPresentation: PresentationType) {
     }
 }
 
+function updateContentText(newContent: string){
+    return {
+        type: PresentationActionType.UPDATE_CONTENT_TEXT,
+        payload: newContent,
+    }
+}
+
 export default {
     addSlide,
     removeSlide,
@@ -111,4 +118,5 @@ export default {
     setSelectionSlide,
     deleteSelectionElement,
     setPresentation,
+    updateContentText,
 }

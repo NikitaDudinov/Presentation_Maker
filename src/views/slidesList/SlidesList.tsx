@@ -4,6 +4,7 @@ import { useDraggableSlides } from "../../store/hooks/useDraggableSlides";
 import { useAppSelector } from "../../store/hooks/useAppSelector";
 import { useAppActions } from "../../store/hooks/useAppActions";
 import { SLIDE_HEIGHT, SLIDE_WIDTH } from '../../store/constants';
+import { useEffect } from 'react';
 
 type SlideListProps = {
     slidePreviewScale: number;
@@ -14,7 +15,12 @@ const SlidesList = ({slidePreviewScale}: SlideListProps) => {
     const slides = useAppSelector(state => state.slides);
     const selectSlideId = useAppSelector(state => state.selection.selectedSlideId);
 
-    const { 
+    useEffect(() => {
+        setCurrentSlides(slides);
+    }, [slides]);
+    
+    const {
+        setCurrentSlides,
         currentSlides, 
         handleMouseDown, 
         draggedIndex,

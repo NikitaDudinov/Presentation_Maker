@@ -17,6 +17,8 @@ enum PresentationActionType {
     SET_SELECTION_ELEMENT = 'setSelectionElement',
     DELETE_SELECTION_ELEMENT = 'deleteSelectionElement',
 
+    UPDATE_CONTENT_TEXT = 'updateContentText',
+
     SET_PRESENTATION = 'setPresentation',
 }
 
@@ -87,6 +89,11 @@ type DeleteSelectionElementAction = {
     type: PresentationActionType.DELETE_SELECTION_ELEMENT,
 }
 
+type UpdateTextContentAction = {
+    type: PresentationActionType.UPDATE_CONTENT_TEXT
+    payload: string,
+}
+
 type PresentationAction = ChangePresentationTitleAction |
                           SetSelectionElementAction |
                           SetSelectionSlideAction |
@@ -100,7 +107,8 @@ type PresentationAction = ChangePresentationTitleAction |
                           AddTextElementAction | 
                           AddImageElementAction | 
                           DeleteElementAction | 
-                          SetPresentationAction
+                          SetPresentationAction |
+                          UpdateTextContentAction
 
 export {
     PresentationActionType,

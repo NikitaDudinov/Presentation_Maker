@@ -73,6 +73,11 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
         setInputText(newValue);
     };
 
+    const handleAddText = () => {
+        if (selectedSlideId) {
+            addTextElement('');
+        }
+    };
 
     return (
         element && element.type === 'text' ? (
@@ -129,27 +134,15 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
             <Button type={'icon'} onClick={() => {}} iconUrl={imageTextUrl} iconSize={'medium'}/>
         </Popover>
         ) : (
-            <Popover 
-            content={
-                <div>
-                    <input
-                        value={inputText}
-                        onChange={handleInputChange}
-                        className="input-field"
-                    />
-                <span className={styles.label}>Добавить текст</span>
-                <Button type='text' onClick={() => {if(selectedSlideId)addTextElement(inputText)}} label="Добавить текст"/>
-                </div>
-            }
-        >
-            <Button type={'icon'} onClick={() => {}} iconUrl={imageTextUrl} iconSize={'medium'}/>
-        </Popover>
+            <Button 
+                type={'icon'} 
+                onClick={handleAddText} 
+                iconUrl={imageTextUrl} 
+                iconSize={'medium'}
+            />
         )
-        
     )
 }
-
-
 
 export {
     EditTextComponent
