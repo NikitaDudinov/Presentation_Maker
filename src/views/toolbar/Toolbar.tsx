@@ -18,11 +18,11 @@ import { useState } from 'react'
 const Toolbar = () => {
     
     const {addSlide, deleteElement, deleteSelectionElement} = useAppActions();
-    const presentation = useAppSelector((state) => state);
-    const selectedSlideId = presentation.selection.selectedSlideId;
-    const selectedElementId = presentation.selection.elementsId[0]
-    const selectedElement = presentation.slides.find(slide => slide.id === selectedSlideId)?.elements.find(element => element.id === selectedElementId)
-    const selectedSlideBg = presentation.slides.find(slide => slide.id === selectedSlideId)?.background
+    const slides = useAppSelector((state) => state.slides);
+    const selectedSlideId = useAppSelector((state) => state.selection.selectedSlideId);
+    const selectedElementId = useAppSelector((state) => state.selection.elementsId[0]);
+    const selectedElement = slides.find(slide => slide.id === selectedSlideId)?.elements.find(element => element.id === selectedElementId)
+    const selectedSlideBg = slides.find(slide => slide.id === selectedSlideId)?.background
     
     return (
         <div className={styles.toolbarContainer}>

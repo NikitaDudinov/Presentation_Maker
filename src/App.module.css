@@ -16,7 +16,7 @@
 }
 
 .slideListContainer {
-    height: 100%;
+    height: calc(100vh - var(--topPanelHeight));
     width: calc(100vw - var(--workSpaceWidth));
 }
 

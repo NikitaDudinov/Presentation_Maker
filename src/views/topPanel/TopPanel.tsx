@@ -16,37 +16,31 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { useNavigate } from 'react-router'
 import { PresentationType } from '../../store/types'
-import { SLIDE_HEIGHT } from '../../store/constants'
 import { PDFPreview } from '../pdfPreview/PDFPreview'
 
 const TopPanel = () => {
     const navigate = useNavigate()
     const {changePresentationTitle, setPresentation} = useAppActions();
-    const presentation = useAppSelector((presentation => presentation))
-    const [viewPdfFile, setViewPdfFile] = useState(false);
-    const slidesRef = useRef<HTMLDivElement>(null)
+    const presentation = useAppSelector((state => state))
     const [showPdfPreview, setShowPdfPreview] = useState(false);
 
     const generatePDF = async (presentation: PresentationType) => {
         console.log('Начал конвертацию');
 
-        // Используем фиксированные размеры для A4 в ландшафтной ориентации (в пунктах)
         const pdfWidth = 842;
         const pdfHeight = 595;
         
-        // Отступы для центрирования содержимого
         const margin = 20;
         const contentWidth = pdfWidth - (margin * 2);
         const contentHeight = pdfHeight - (margin * 2);
         
-        // Рассчитываем масштаб, сохраняя пропорции
         const scaleX = contentWidth / 935;
         const scaleY = contentHeight / 525;
         const scale = Math.min(scaleX, scaleY);
 
         const doc = new jsPDF({
             orientation: 'landscape',
-            unit: 'pt', // используем пункты вместо пикселей
+            unit: 'pt',
             format: 'a4',
         });
 
@@ -55,7 +49,7 @@ const TopPanel = () => {
                 <div style="
                     width: ${935 * scale}px;
                     height: ${525 * scale}px;
-                    background-color: ${slide.background};
+                    background: ${slide.background};
                     position: relative;
                     overflow: hidden;
                     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -66,8 +60,8 @@ const TopPanel = () => {
                                 position: absolute;
                                 top: ${element.position.y * scale}px;
                                 left: ${element.position.x * scale}px;
-                                font-size: ${element.font.size * scale}px;
-                                font-family: ${element.font.family};
+                                font-size: ${element.fontSize * scale}px;
+                                font-family: ${element.fontFamily};
                                 white-space: pre-wrap;
                                 line-height: 1.2;
                             ">${element.content}</div>`;
@@ -116,7 +110,6 @@ const TopPanel = () => {
 
                 const imgData = canvas.toDataURL('image/png', 1.0);
                 
-                // Центрируем слайд на странице
                 const xOffset = (pdfWidth - (935 * scale)) / 2;
                 const yOffset = (pdfHeight - (525 * scale)) / 2;
                 

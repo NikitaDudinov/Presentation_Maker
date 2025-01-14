@@ -31,7 +31,6 @@ const TextObject: React.FC<TextObjectProps> = ({
     isWorkSpace = false, 
     isSelected, 
     state,
-    isNew = false 
 }) => {
     const { setSelectionElement, updateContentText } = useAppActions();
     const [isEditing, setIsEditing] = useState(false);
