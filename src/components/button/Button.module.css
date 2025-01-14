@@ -1,8 +1,15 @@
 .buttonText {
-    background-color: black;
+    background: rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
-    padding: 5px;
-    border: unset;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.buttonText:hover:not(.disabledButton) {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .buttonIcon {
@@ -10,32 +17,44 @@
     border: none;
     outline: none;
     box-shadow: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.buttonIcon:hover:not(.disabledButton) {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .labelButton {
     color: white;
-    font-size: 16px;    
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
 .smallIcon {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
 }
 
 .mediumIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.largeIcon {
     width: 42px;
     height: 42px;
 }
 
-.largeIcon {
-    width: 54px;
-    height: 54px;
-}
-
 .disabledButton {
-    background-color: #ccc;
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .disabledLabelButton {
-    color: #666;
+    color: rgba(255, 255, 255, 0.5);
 }

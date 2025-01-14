@@ -15,7 +15,13 @@ const addTextElement = (presenattion: PresentationType, newText: string): Presen
                     size: { width: 100, height: 50 },
                     type: "text",
                     content: newText,
-                    font: { family: 'Arial', size: 20 }
+                    fontFamily: 'Georgia',
+                    fontSize: 20,
+                    weight: 'normal',
+                    style: 'normal',
+                    transform: 'none',
+                    color: '#000000',
+                    decoration: 'none',
                 };
         
                 return { ...slide, elements: [...slide.elements, textElement] };

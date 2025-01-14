@@ -4,6 +4,7 @@
     padding-block: 5px;
     background: white;
     border: none;
+    border-radius: 8px;
     outline: none;
     display: flex;
     align-items: center;
@@ -17,6 +18,7 @@
 .dropdownIcon {
     flex-shrink: 0;
     margin-right: 5px;
+    transition: transform 0.2s ease;
 }
 
 .dropdownMenu {
@@ -30,6 +32,20 @@
     max-height: 80px;
     overflow-y: auto;
     overflow-x: hidden;
+    border-radius: 8px;
+    animation: dropDown 0.2s ease-out;
+    transform-origin: top center;
+}
+
+@keyframes dropDown {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
 }
 
 .dropdownLabel {
@@ -45,6 +61,7 @@
     box-sizing: border-box;
     padding-inline: 10px;
     padding-block: 5px;
+    border-radius: 4px;
 }
 
 .containerItemMenu:hover {

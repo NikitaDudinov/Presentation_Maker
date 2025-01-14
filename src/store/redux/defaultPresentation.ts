@@ -3,6 +3,7 @@ import { PresentationType } from "../types";
 import { createNewSlide } from "./createNewSlide";
 
 const slide = createNewSlide()
+
 const defaultPresentation: PresentationType =  getFromLocalStorage() ||  {
     title: 'Название презентации',
     slides: [

@@ -4,23 +4,29 @@ import { Dropdown } from '../../../components/dropdown/Dropdown'
 import imageTextUrl from '../../../assets/text.svg'
 import styles from './EditTextComponent.module.css'
 import {useState} from 'react'
-import { ImageElementType, TextElementType } from '../../../store/types'
-import { changePropertyTextElement } from '../../../store/changePropertyTextElement'
+import { FigureElementType, ImageElementType, TextElementType } from '../../../store/types'
 import { useAppActions } from '../../../store/hooks/useAppActions'
 
-const options = ['Times New Roman', 'Arial', 'Calibri']
+const options = [    
+    'Times New Roman', 
+    'Arial', 
+    'Calibri', 
+    'Verdana', 
+    'Georgia', 
+    'Courier New', 
+    'Impact'
+]
 
 const sizes = [10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
 
 type EditTextComponentProps = {
-    element?: ImageElementType | TextElementType;
+    element?: ImageElementType | TextElementType | FigureElementType;
     selectedSlideId: string | null;
 };
 
 const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selectedSlideId }) => {
 
-    const {addTextElement} = useAppActions();
-    const [inputText, setInputText] = useState('')
+    const {addTextElement, updateTextStyle} = useAppActions();
 
     const [textStyle, setTextStyle] = useState({
         fontWeight: 'normal',
@@ -37,40 +43,43 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
     });
 
     const toggleBold = () => {
+        const newWeight = textStyle.fontWeight === 'bold' ? 'normal' : 'bold';
         setTextStyle(prev => ({
             ...prev,
-            fontWeight: prev.fontWeight === 'bold' ? 'normal' : 'bold'
+            fontWeight: newWeight
         }));
         setActiveStyles(prev => ({ ...prev, bold: !prev.bold }));
+        updateTextStyle('weight', newWeight);
     };
 
     const toggleItalic = () => {
+        const newStyle = textStyle.fontStyle === 'italic' ? 'normal' : 'italic';
         setTextStyle(prev => ({
             ...prev,
-            fontStyle: prev.fontStyle === 'italic' ? 'normal' : 'italic'
+            fontStyle: newStyle
         }));
         setActiveStyles(prev => ({ ...prev, italic: !prev.italic }));
+        updateTextStyle('style', newStyle);
     };
 
     const toggleUnderline = () => {
+        const newDecoration = textStyle.textDecoration === 'underline' ? 'none' : 'underline';
         setTextStyle(prev => ({
             ...prev,
-            textDecoration: prev.textDecoration === 'underline' ? 'none' : 'underline'
+            textDecoration: newDecoration
         }));
         setActiveStyles(prev => ({ ...prev, underline: !prev.underline }));
+        updateTextStyle('decoration', newDecoration);
     };
 
     const toggleCapsLock = () => {
+        const newTransform = textStyle.textTransform === 'uppercase' ? 'none' : 'uppercase';
         setTextStyle(prev => ({
             ...prev,
-            textDecoration: prev.textTransform === 'uppercase' ? 'none' : 'uppercase'
+            textTransform: newTransform
         }));
         setActiveStyles(prev => ({ ...prev, capsLock: !prev.capsLock }));
-    };
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = event.target.value;
-        setInputText(newValue);
+        updateTextStyle('transform', newTransform);
     };
 
     const handleAddText = () => {
@@ -79,28 +88,35 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
         }
     };
 
+    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newColor = e.target.value;
+        updateTextStyle('color', newColor);
+    };
+
     return (
         element && element.type === 'text' ? (
         <Popover 
             content={
-                <div>
-                    <span className={styles.label}>font</span>
-                    <Dropdown 
-                        options={options} 
-                        label={element.font.family}
-                        size={'medium'}
-                        property='family'
-                        onClick={changePropertyTextElement}
-                    />
-                    <span className={styles.label}>size</span>
-                    <Dropdown 
-                        options={sizes} 
-                        label={String(element.font.size)} 
-                        size={'small'} 
-                        property='size'
-                        onClick={changePropertyTextElement}
-                    />
-                    <div className={styles.textEditor}>
+                <div className={styles.container}>
+                    <div className={styles.row}>
+                        <span className={styles.label}>font</span>
+                        <Dropdown 
+                            options={options} 
+                            label={element.fontFamily}
+                            size={'medium'}
+                            property='fontFamily'
+                            onClick={updateTextStyle}
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <span className={styles.label}>size</span>
+                        <Dropdown 
+                            options={sizes} 
+                            label={String(element.fontSize)} 
+                            size={'small'} 
+                            property='fontSize'
+                            onClick={updateTextStyle}
+                        />
                         <div className={styles.buttonGroup}>
                             <span 
                                 onClick={toggleBold} 
@@ -127,6 +143,12 @@ const EditTextComponent: React.FC<EditTextComponentProps> = ({ element, selected
                                 A
                             </span>
                         </div>
+                        <input 
+                            type="color" 
+                            className={styles.colorPicker}
+                            onChange={handleColorChange}
+                            value={element.color}
+                        />
                     </div>
                 </div>
             }

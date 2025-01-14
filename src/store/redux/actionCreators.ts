@@ -1,5 +1,5 @@
 import { PresentationActionType} from "./actions"
-import { SlideType, PositionType, SizeType, PresentationType } from "../types"
+import { SlideType, PositionType, SizeType, PresentationType, FigureType } from "../types"
 
 function addSlide() {
     return {
@@ -103,6 +103,27 @@ function updateContentText(newContent: string){
     }
 }
 
+function updateTextStyle(style: string, value: string | number){
+    return {
+        type: PresentationActionType.UPDATE_TEXT_STYLE,
+        payload: {style, value},
+    }
+}
+
+function addFigureElement(figure: FigureType){
+    return {
+        type: PresentationActionType.ADD_FIGURE_ELEMENT,
+        payload: figure,
+    }
+}
+
+function updateFillElement(fill: string){
+    return {
+        type: PresentationActionType.UPDATE_FILL_ELEMENT,
+        payload: fill,
+    }
+}
+
 export default {
     addSlide,
     removeSlide,
@@ -119,4 +140,7 @@ export default {
     deleteSelectionElement,
     setPresentation,
     updateContentText,
+    updateTextStyle,
+    addFigureElement,
+    updateFillElement,
 }

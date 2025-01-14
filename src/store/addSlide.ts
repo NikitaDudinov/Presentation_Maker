@@ -3,7 +3,7 @@ import { createNewSlide } from "./redux/createNewSlide";
 
 const addSlide = (presentation: PresentationType): PresentationType => {
 
-    const newSlide = createNewSlide();
+    const newSlide = createNewSlide(presentation.theme);
     const newSlides: SlideType[] = [];
     if (presentation.selection) {
         for (const slide of presentation.slides) {

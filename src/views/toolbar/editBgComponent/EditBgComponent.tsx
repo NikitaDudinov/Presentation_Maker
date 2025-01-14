@@ -5,22 +5,30 @@ import { useEffect, useRef, useState } from 'react'
 import { Toggle } from '../../../components/toggle/Toggle'
 import styles from './EditBgComponent.module.css'
 import { useAppActions } from '../../../store/hooks/useAppActions'
+import { Popup } from '../../../components/popup/Popup'
+import { ImageDownloader } from '../../imageDownloader/ImageDownloader'
 
-type GradientColor = {
-    color: string;
-    position: number;
-}
+type BackgroundType = 'color' | 'gradient' | 'image';
 
 type EditBgComponentProps = {
     background?: string
     selectedSlideId: string | null
 }
 
+interface GradientColor {
+    color: string;
+    position: number;
+}
+
 const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedSlideId }) => {
     const { updateBackgroundSlide } = useAppActions();
     const [allSlides, setAllSlides] = useState(false);
-    const [isGradient, setIsGradient] = useState(false);
+    const [activeType, setActiveType] = useState<BackgroundType>('color');
+    const [isImageServiceOpen, setIsImageServiceOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const imageServiceRef = useRef<HTMLDivElement>(null);
+    const [imageUrl, setImageUrl] = useState('');
+    const [isGradient, setIsGradient] = useState(false);
     const [gradientColors, setGradientColors] = useState<GradientColor[]>([
         { color: '#000000', position: 0 },
         { color: '#ffffff', position: 100 }
@@ -55,26 +63,6 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
             }
         }
     }, [background]);
-
-    const handleToggleChange = (checked: boolean) => {
-        setAllSlides(checked);
-    };
-
-    const handleGradientToggle = () => {
-        const newIsGradient = !isGradient;
-        setIsGradient(newIsGradient);
-        // Немедленно обновляем фон после переключения
-        if (selectedSlideId) {
-            if (newIsGradient) {
-                const gradientString = `linear-gradient(${gradientAngle}deg, ${gradientColors
-                    .map(gc => `${gc.color} ${gc.position}%`)
-                    .join(', ')})`;
-                updateBackgroundSlide(gradientString, allSlides);
-            } else {
-                updateBackgroundSlide(solidColor, allSlides);
-            }
-        }
-    };
 
     const handleColorChange = (index: number, newColor: string) => {
         const newColors = [...gradientColors];
@@ -230,125 +218,208 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
         fileInputRef.current?.click();
     };
 
-    return (
-        <Popover
-            content={
-                <div className={styles.container}>
-                    <div className={styles.header}>
-                        <span className={styles.label}>Фон</span>
-                        <Toggle
-                            initialChecked={allSlides}
-                            onToggle={() => setAllSlides(!allSlides)}
-                        />
-                    </div>
-                    <div className={styles.typeSwitch}>
-                        <button
-                            className={!isGradient ? styles.active : ''}
-                            onClick={() => setIsGradient(false)}
-                        >
-                            Цвет
-                        </button>
-                        <button
-                            className={isGradient ? styles.active : ''}
-                            onClick={() => setIsGradient(true)}
-                        >
-                            Градиент
-                        </button>
-                    </div>
-                    {isGradient ? (
-                        <div className={styles.gradientControls}>
-                            <div className={styles.gradientPreview} style={{
-                                background: `linear-gradient(${gradientAngle}deg, ${gradientColors
-                                    .map(gc => `${gc.color} ${gc.position}%`)
-                                    .join(', ')})`
-                            }} />
-                            
-                            <div className={styles.angleControl}>
-                                <label>Угол:</label>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="360"
-                                    value={gradientAngle}
-                                    onChange={handleAngleChange}
-                                />
-                                <span>{gradientAngle}°</span>
-                            </div>
+    const handleImageUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setImageUrl(event.target.value);
+    };
 
-                            <div className={styles.colorStops}>
-                                {gradientColors.map((gc, index) => (
-                                    <div key={index} className={styles.colorStop}>
-                                        <input
-                                            type="color"
-                                            value={gc.color}
-                                            onChange={(e) => handleColorChange(index, e.target.value)}
-                                        />
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max="100"
-                                            value={gc.position}
-                                            onChange={(e) => handlePositionChange(index, Number(e.target.value))}
-                                        />
-                                        {gradientColors.length > 2 && (
-                                            <button 
-                                                className={styles.removeColor}
-                                                onClick={() => removeGradientColor(index)}
-                                            >
-                                                ×
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                                {gradientColors.length < 5 && (
-                                    <button 
-                                        className={styles.addColor}
-                                        onClick={addGradientColor}
-                                    >
-                                        + Добавить цвет
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={styles.colorControls}>
-                            <div className={styles.solidColorControl}>
-                                <input
-                                    type="color"
-                                    value={solidColor}
-                                    onChange={handleSolidColorChange}
-                                />
-                            </div>
-                            <div 
-                                className={styles.imageUploadArea}
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
-                            >
-                                <button 
-                                    className={styles.uploadButton}
-                                    onClick={triggerImageUpload}
-                                >
-                                    <img src={imagePenUrl} alt="Upload" />
-                                    <span>Загрузить изображение</span>
-                                </button>
-                                <div className={styles.dragText}>
-                                    или перетащите изображение сюда
-                                </div>
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                    style={{ display: 'none' }}
-                                />
-                            </div>
-                        </div>
-                    )}
-                </div>
+    const handleAddImageByUrl = () => {
+        if (imageUrl && selectedSlideId) {
+            const backgroundStyle = `url(${imageUrl}) center center / cover no-repeat`;
+            updateBackgroundSlide(backgroundStyle, allSlides);
+            setImageUrl('');
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (background?.startsWith('url(')) {
+                const urlMatch = background.match(/url\((.*?)\)/);
+                if (urlMatch) {
+                    URL.revokeObjectURL(urlMatch[1]);
+                }
             }
-        >
-            <Button type={'icon'} onClick={() => {}} iconUrl={imagePenUrl} iconSize={'medium'}/>
-        </Popover>
+        };
+    }, [background]);
+
+    return (
+        <>
+            <Popover
+                content={
+                    <div className={styles.container}>
+                        <div className={styles.header}>
+                            <span className={styles.label}>Фон</span>
+                            <Toggle
+                                initialChecked={allSlides}
+                                onToggle={() => setAllSlides(!allSlides)}
+                            />
+                        </div>
+                        <div className={styles.typeSwitch}>
+                            <button
+                                className={activeType === 'color' ? styles.active : ''}
+                                onClick={() => setActiveType('color')}
+                            >
+                                Цвет
+                            </button>
+                            <button
+                                className={activeType === 'gradient' ? styles.active : ''}
+                                onClick={() => setActiveType('gradient')}
+                            >
+                                Градиент
+                            </button>
+                            <button
+                                className={activeType === 'image' ? styles.active : ''}
+                                onClick={() => setActiveType('image')}
+                            >
+                                Картинка
+                            </button>
+                        </div>
+
+                        {activeType === 'color' && (
+                            <div className={styles.colorControls}>
+                                <div className={styles.solidColorControl}>
+                                    <input
+                                        type="color"
+                                        value={solidColor}
+                                        onChange={handleSolidColorChange}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {activeType === 'gradient' && (
+                            <div className={styles.gradientControls}>
+                                <div className={styles.gradientPreview} style={{
+                                    background: `linear-gradient(${gradientAngle}deg, ${gradientColors
+                                        .map(gc => `${gc.color} ${gc.position}%`)
+                                        .join(', ')})`
+                                }} />
+                                
+                                <div className={styles.angleControl}>
+                                    <label>Угол:</label>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="360"
+                                        value={gradientAngle}
+                                        onChange={handleAngleChange}
+                                    />
+                                    <span>{gradientAngle}°</span>
+                                </div>
+
+                                <div className={styles.colorStops}>
+                                    {gradientColors.map((gc, index) => (
+                                        <div key={index} className={styles.colorStop}>
+                                            <input
+                                                type="color"
+                                                value={gc.color}
+                                                onChange={(e) => handleColorChange(index, e.target.value)}
+                                            />
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="100"
+                                                value={gc.position}
+                                                onChange={(e) => handlePositionChange(index, Number(e.target.value))}
+                                            />
+                                            {gradientColors.length > 2 && (
+                                                <button 
+                                                    className={styles.removeColor}
+                                                    onClick={() => removeGradientColor(index)}
+                                                >
+                                                    ×
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {gradientColors.length < 5 && (
+                                        <button 
+                                            className={styles.addColor}
+                                            onClick={addGradientColor}
+                                        >
+                                            + Добавить цвет
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeType === 'image' && (
+                            <div className={styles.imageControls}>
+                                <div className={styles.imageSection}>
+                                    <span className={styles.subLabel}>Загрузить с компьютера</span>
+                                    <div 
+                                        className={styles.uploadArea}
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleDrop}
+                                    >
+                                        <Button 
+                                            type='text'
+                                            onClick={triggerImageUpload}
+                                            label="Выбрать файл"
+                                        />
+                                        <span className={styles.dragText}>или перетащите файл сюда</span>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={styles.divider} />
+
+                                <div className={styles.imageSection}>
+                                    <span className={styles.subLabel}>Выбрать из галереи</span>
+                                    <Button 
+                                        type='text'
+                                        onClick={() => setIsImageServiceOpen(true)}
+                                        label="Открыть галерею"
+                                    />
+                                </div>
+
+                                <div className={styles.divider} />
+
+                                <div className={styles.imageSection}>
+                                    <span className={styles.subLabel}>Вставить ссылку</span>
+                                    <div className={styles.urlInput}>
+                                        <input
+                                            value={imageUrl}
+                                            onChange={handleImageUrlChange}
+                                            className={styles.input}
+                                            placeholder="Введите URL изображения"
+                                        />
+                                        <Button 
+                                            type='text'
+                                            onClick={handleAddImageByUrl}
+                                            label="Добавить"
+                                            disabled={!imageUrl}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                }
+            >
+                <Button 
+                    type="icon" 
+                    onClick={() => {}} 
+                    iconUrl={imagePenUrl} 
+                    iconSize="medium"
+                    aria-label="Редактировать фон"
+                />
+            </Popover>
+            {isImageServiceOpen && (
+                <Popup
+                    ref={imageServiceRef}
+                    height="80%"
+                    width="60%"
+                    content={<ImageDownloader />}
+                />
+            )}
+        </>
     );
 };
 

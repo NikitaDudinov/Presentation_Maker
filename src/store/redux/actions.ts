@@ -1,4 +1,4 @@
-import { PositionType, PresentationType, SizeType, SlideType } from "../types";
+import { FigureType, PositionType, PresentationType, SizeType, SlideType } from "../types";
 
 enum PresentationActionType {
     CHANGE_PRESENTATION_TITLE = 'changePresentationTitle',
@@ -11,13 +11,16 @@ enum PresentationActionType {
     UPDATE_BACKGROUND_SLIDE = 'updateBackgroundSlide',
     ADD_TEXT_ELEMENT = 'addTextElement',
     ADD_IMAGE_ELEMENT = 'addImageElement',
+    ADD_FIGURE_ELEMENT = 'addFigureElement',
     DELETE_ELEMENT = 'deleteElement',
+    UPDATE_FILL_ELEMENT = 'updateFillElement',
 
     SET_SELECTION_SLIDE = 'setSelectionSlide',
     SET_SELECTION_ELEMENT = 'setSelectionElement',
     DELETE_SELECTION_ELEMENT = 'deleteSelectionElement',
 
     UPDATE_CONTENT_TEXT = 'updateContentText',
+    UPDATE_TEXT_STYLE = 'updateTextStyle',
 
     SET_PRESENTATION = 'setPresentation',
 }
@@ -94,6 +97,21 @@ type UpdateTextContentAction = {
     payload: string,
 }
 
+type UpdateTextStyleAction = {
+    type: PresentationActionType.UPDATE_TEXT_STYLE,
+    payload: {style: string, value: string | number},
+}
+
+type AddFigureElementAction = {
+    type: PresentationActionType.ADD_FIGURE_ELEMENT,
+    payload: FigureType,
+}
+
+type UpdateFillElementAction = {
+    type: PresentationActionType.UPDATE_FILL_ELEMENT,
+    payload: string,
+}
+
 type PresentationAction = ChangePresentationTitleAction |
                           SetSelectionElementAction |
                           SetSelectionSlideAction |
@@ -108,7 +126,10 @@ type PresentationAction = ChangePresentationTitleAction |
                           AddImageElementAction | 
                           DeleteElementAction | 
                           SetPresentationAction |
-                          UpdateTextContentAction
+                          UpdateTextContentAction | 
+                          UpdateTextStyleAction | 
+                          AddFigureElementAction |
+                          UpdateFillElementAction
 
 export {
     PresentationActionType,

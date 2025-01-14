@@ -13,6 +13,7 @@ type EditImageComponentProps = {
 
 const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}) => {
     const imageServiceRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const {addImageElement} = useAppActions();
     const [url, setUrl] = useState('')
     const [disabled, setDisabled] = useState(true)
@@ -20,10 +21,40 @@ const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(event.target.value);
-        if(event.target.value == ''){
-            setDisabled(true)
-        }else{
-            setDisabled(false)
+        setDisabled(event.target.value === '');
+    };
+
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file || !selectedSlideId) return;
+
+        try {
+            if (!file.type.startsWith('image/')) {
+                alert('Пожалуйста, выберите файл изображения');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageUrl = e.target?.result as string;
+                addImageElement(imageUrl);
+            };
+            reader.readAsDataURL(file);
+        } catch (error) {
+            console.error('Ошибка при загрузке изображения:', error);
+            alert('Произошла ошибка при загрузке изображения');
+        }
+    };
+
+    const openFileDialog = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleAddImage = () => {
+        if (selectedSlideId && !disabled) {
+            addImageElement(url);
+            setUrl('');
+            setDisabled(true);
         }
     };
 
@@ -44,31 +75,68 @@ const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}
         <>
             <Popover 
                 content={
-                    <div>
-                        <span className={styles.label}>Добавить картинку с компьютера</span>
-                        <Button type='text' onClick={() => setIsOpenImageService(!isOpenImageService)} label="Сервис картинок"/>
-                        <span className={styles.label}>Добавить картинку через url</span>
-                        <input
-                            value={url}
-                            onChange={handleInputChange}
-                            className="input-field"
-                        />
-                        <Button type='text' onClick={() => {if(selectedSlideId) addImageElement(url)}} label="Добавить картинку" disabled={disabled}/>
+                    <div className={styles.container}>
+                        <div className={styles.section}>
+                            <span className={styles.label}>Загрузить с компьютера</span>
+                            <div className={styles.buttonWrapper}>
+                                <Button 
+                                    type='text' 
+                                    onClick={openFileDialog} 
+                                    label="Выбрать файл"
+                                />
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileSelect}
+                                    style={{ display: 'none' }}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.divider} />
+                        <div className={styles.section}>
+                            <span className={styles.label}>Выбрать из галереи</span>
+                            <div className={styles.buttonWrapper}>
+                                <Button 
+                                    type='text' 
+                                    onClick={() => setIsOpenImageService(true)} 
+                                    label="Открыть галерею"
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.divider} />
+                        <div className={styles.section}>
+                            <span className={styles.label}>Вставить ссылку</span>
+                            <div className={styles.urlInput}>
+                                <input
+                                    value={url}
+                                    onChange={handleInputChange}
+                                    className={styles.input}
+                                    placeholder="Введите URL изображения"
+                                />
+                                <div className={styles.buttonWrapper}>
+                                    <Button 
+                                        type='text' 
+                                        onClick={handleAddImage}
+                                        label="Добавить"
+                                        disabled={disabled}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             >
                 <Button type={'icon'} onClick={() => {}} iconUrl={imageImgUrl} iconSize={'medium'}/>
             </Popover>
-            {isOpenImageService &&
+            {isOpenImageService && (
                 <Popup
                     ref={imageServiceRef}
                     height={'80%'}
                     width={'60%'}
-                    content={
-                        <ImageDownloader/>
-                    }
+                    content={<ImageDownloader/>}
                 />
-            }
+            )}
         </>
     )
 }

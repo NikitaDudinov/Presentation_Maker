@@ -36,9 +36,13 @@ const validateElement = (element: any): element is ImageElementType | TextElemen
     if (element.type === 'text') {
         return (
             typeof element.content === 'string' &&
-            element.font &&
-            typeof element.font.family === 'string' &&
-            typeof element.font.size === 'number'
+            typeof element.fontFamily === 'string' &&
+            typeof element.fontSize === 'number' &&
+            ['normal', 'bold'].includes(element.weight) &&
+            ['normal', 'italic'].includes(element.style) &&
+            ['none', 'uppercase', 'lowercase'].includes(element.transform) &&
+            typeof element.color === 'string' &&
+            ['none', 'underline'].includes(element.decoration)
         );
     }
 

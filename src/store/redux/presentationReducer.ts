@@ -9,6 +9,9 @@ import { addTextElement } from "../addTextElement";
 import { addImageElement } from "../addImageElement";
 import { deleteElement } from "../deleteElement";
 import { updateContentText } from "./updateContentText";
+import { updateTextStyle } from "../updateTextStyle";
+import { addFigureElement } from "../addFigureElement";
+import { updateFillElement } from "../updateFillElement";
 
 const presentationReducer = (state: PresentationType = defaultPresentation, action: PresentationAction): PresentationType => {
     switch (action.type) {
@@ -72,6 +75,12 @@ const presentationReducer = (state: PresentationType = defaultPresentation, acti
             return action.payload
         case PresentationActionType.UPDATE_CONTENT_TEXT:
             return updateContentText(state, action.payload)
+        case PresentationActionType.UPDATE_TEXT_STYLE:
+            return updateTextStyle(state, action.payload.style, action.payload.value)
+        case PresentationActionType.ADD_FIGURE_ELEMENT:
+            return addFigureElement(state, action.payload)
+        case PresentationActionType.UPDATE_FILL_ELEMENT:
+            return updateFillElement(state, action.payload)
         default:
             return state
     }

@@ -1,5 +1,6 @@
 type PresentationType = {
     title: string,
+    theme: string | null, 
     selection: SelectionType,
     slides: SlideType[],
 }
@@ -7,7 +8,7 @@ type PresentationType = {
 type SlideType = {
     id: string,
     background: string,
-    elements: (ImageElementType | TextElementType)[],
+    elements: (ImageElementType | TextElementType | FigureElementType)[],
 }
 
 type PositionType = {
@@ -26,6 +27,14 @@ type BaseElementType = {
     size: SizeType,
 }
 
+type FigureType = 'rectangle' | 'circle' | 'triangle' | 'line';
+
+type FigureElementType = BaseElementType & {
+    type: 'figure',
+    figureType: FigureType,
+    fill: string,
+}
+
 type ImageElementType = BaseElementType & {
     type: 'image',
     src: string,
@@ -34,10 +43,13 @@ type ImageElementType = BaseElementType & {
 type TextElementType = BaseElementType & {
     type: 'text',
     content: string,
-    font: {
-        family: string,
-        size: number,
-    }
+    fontFamily: string,
+    fontSize: number,
+    weight: 'normal' | 'bold',
+    style: 'normal' | 'italic',
+    transform: 'none' | 'uppercase' | 'lowercase',
+    color: string,
+    decoration: 'none' | 'underline',
 }
 
 type SelectionType = {
@@ -64,5 +76,7 @@ export type {
     ImageElementType,
     TextElementType,
     SelectionType,
-    UpdateSizeType
+    UpdateSizeType,
+    FigureElementType,
+    FigureType,
 };

@@ -2,6 +2,7 @@ import { SlideType } from "../../store/types";
 import { CSSProperties, useRef } from "react";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
+import { FigureObject } from "./FigureObject";
 import styles from './Slide.module.css';
 import { useAppSelector } from "../../store/hooks/useAppSelector";
 import { useAppActions } from "../../store/hooks/useAppActions";
@@ -26,12 +27,19 @@ const Slide = ({
     const {setSelectionElement, deleteSelectionElement} = useAppActions();
     const slideRef = useRef<HTMLDivElement>(null);
     const presentation = useAppSelector(state => state)
+    console.log(slide.background);
     const slideStyles: CSSProperties = {
         border: isSelected && !isWorkSpace ? '1px solid #007bff' : '1px solid black',
-        background: slide.background,
+        background: slide.background.startsWith('http') || slide.background.startsWith('data:') || slide.background.startsWith('/src')
+            ? `url(${slide.background})`
+            : slide.background,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     };
+    
 
     const onSetSelectionElement = (elementId: string) => {
         setSelectionElement(elementId)
@@ -63,23 +71,42 @@ const Slide = ({
                         : undefined
                     }
                 >
-                    {slideObject.type === "text" ? (
-                        <TextObject 
-                            state={presentation}
-                            textObject={slideObject}
-                            isWorkSpace={isWorkSpace} 
-                            scale={scale} 
-                            isSelected={selectElements?.includes(slideObject.id) ? true : false} 
-                        />
-                    ) : (
-                        <ImageObject 
-                            state={presentation}
-                            imageObject={slideObject} 
-                            scale={scale}
-                            isWorkSpace={isWorkSpace} 
-                            isSelected={selectElements?.includes(slideObject.id) ? true : false} 
-                        />
-                    )}
+                    {(() => {
+                        switch (slideObject.type) {
+                            case 'text':
+                                return (
+                                    <TextObject 
+                                        state={presentation}
+                                        textObject={slideObject}
+                                        isWorkSpace={isWorkSpace} 
+                                        scale={scale} 
+                                        isSelected={selectElements?.includes(slideObject.id) ? true : false} 
+                                    />
+                                );
+                            case 'image':
+                                return (
+                                    <ImageObject 
+                                        state={presentation}
+                                        imageObject={slideObject} 
+                                        scale={scale}
+                                        isWorkSpace={isWorkSpace} 
+                                        isSelected={selectElements?.includes(slideObject.id) ? true : false} 
+                                    />
+                                );
+                            case 'figure':
+                                return (
+                                    <FigureObject
+                                        state={presentation}
+                                        figureObject={slideObject}
+                                        scale={scale}
+                                        isWorkSpace={isWorkSpace}
+                                        isSelected={selectElements?.includes(slideObject.id) ? true : false}
+                                    />
+                                );
+                            default:
+                                return null;
+                        }
+                    })()}
                 </div>
             ))}
         </div>

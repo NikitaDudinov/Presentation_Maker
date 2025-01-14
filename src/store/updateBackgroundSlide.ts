@@ -21,6 +21,7 @@ const updateBackgroundSlide = (
 
         return {
             ...presentation,
+            theme: isAllSlides ? newBackground : null,
             slides: newSlides,
         }
     }   

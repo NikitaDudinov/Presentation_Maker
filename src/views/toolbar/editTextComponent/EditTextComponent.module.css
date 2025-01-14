@@ -1,27 +1,62 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .label {
     color: white;
-    margin-bottom: 40px;
-    font-size: 16px;
+    font-size: 14px;
+    min-width: 40px;
+}
+
+.buttonGroup {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
 }
 
 .styleButton {
-    font-size: 20px;
-    text-transform: lowercase;
+    font-size: 16px;
     color: white;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-.activeBold {
-    font-weight: bold;
+.styleButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.activeStyle {
-    font-style: italic;
+.activeBold, .activeStyle, .activeUnderline, .activeCapsLock {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-.activeUnderline {
-    text-decoration: underline;
+.colorPicker {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    background: none;
 }
 
-.activeCapsLock {
-    text-transform: uppercase;
+.colorPicker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch {
+    border: 2px solid white;
+    border-radius: 4px;
 }
