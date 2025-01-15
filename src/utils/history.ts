@@ -19,7 +19,6 @@ function initHistory(store: Store<PresentationType>): HistoryType {
 
     store.subscribe(() => {
         const editor = store.getState()
-        console.log('hih')
         saveToLocalStorage(editor)
         if (!undoStack.length || previousEditor != editor) {
             if (editor == getLastItem(undoStack)) {

@@ -80,8 +80,6 @@ const TextObject: React.FC<TextObjectProps> = ({
         color: textObject.color,
     }
 
-
-    console.log(textStyles);
     const commonStyles: CSSProperties = {
         position: 'absolute',
         cursor: resizeType ? 

@@ -27,7 +27,7 @@ const Slide = ({
     const {setSelectionElement, deleteSelectionElement} = useAppActions();
     const slideRef = useRef<HTMLDivElement>(null);
     const presentation = useAppSelector(state => state)
-    console.log(slide.background);
+
     const slideStyles: CSSProperties = {
         border: isSelected && !isWorkSpace ? '1px solid #007bff' : '1px solid black',
         background: slide.background.startsWith('http') || slide.background.startsWith('data:') || slide.background.startsWith('/src')

@@ -10,7 +10,7 @@ const Workspace = ({ WorkSpaceSlideScale }: WorkspaceProps) => {
     const slides = useAppSelector(state => state.slides);
     const slide = slides.find(slide => slide.id === selectedSlideId) ?? slides[0];
     const selectElements = useAppSelector(state => state.selection.elementsId);
-    console.log(slide.background);
+
     return (
         <Slide 
             key={slide.id}

@@ -1,4 +1,4 @@
-import styles from './SlidesList.module.css';
+import styles from './SlidesList.module.css'
 import { Slide } from "../slide/Slide";
 import { useDraggableSlides } from "../../store/hooks/useDraggableSlides";
 import { useAppSelector } from "../../store/hooks/useAppSelector";
@@ -10,8 +10,8 @@ type SlideListProps = {
     slidePreviewScale: number;
 }
 
-const SlidesList = ({slidePreviewScale}: SlideListProps) => {
-    const {setSelectionSlide, updateSlides} = useAppActions();
+const SlidesList = ({ slidePreviewScale }: SlideListProps) => {
+    const { setSelectionSlide, updateSlides } = useAppActions();
     const slides = useAppSelector(state => state.slides);
     const selectSlideId = useAppSelector(state => state.selection.selectedSlideId);
     
@@ -40,19 +40,14 @@ const SlidesList = ({slidePreviewScale}: SlideListProps) => {
         handleMouseDown, 
         draggedIndex,
         topSlide,
-        dropIndicatorIndex,
     } = useDraggableSlides(
         slides, 
         updateSlides,
-        selectedSlides // Передаем выбранные слайды
+        selectedSlides
     );
 
     return (
         <div className={styles.slidesList}>
-            {dropIndicatorIndex === 0 && draggedIndex !== null && (
-                <div className={styles.dropIndicator} />
-            )}
-            
             {currentSlides.map((slide, index) => {
                 const isSelected = selectedSlides.includes(slide.id);
                 const isDragging = draggedIndex !== null && isSelected;
@@ -63,7 +58,7 @@ const SlidesList = ({slidePreviewScale}: SlideListProps) => {
                         key={slide.id}
                     >
                         <div 
-                            id={`slide-${index}`}
+                            id={`slide-${slide.id}`}
                             className={`${styles.slide} ${isSelected ? styles.selected : ''}`}
                             onClick={(e) => onSlideClick(slide.id, e)}
                             onMouseDown={(e) => handleMouseDown(e, index)}
@@ -83,16 +78,9 @@ const SlidesList = ({slidePreviewScale}: SlideListProps) => {
                                 scale={slidePreviewScale * 0.95}
                             />
                         </div>
-                        {dropIndicatorIndex === index + 1 && draggedIndex !== null && !isSelected && (
-                            <div className={styles.dropIndicator} />
-                        )}
                     </div>
                 );
             })}
-            
-            {dropIndicatorIndex === currentSlides.length && draggedIndex !== null && (
-                <div className={styles.dropIndicator} />
-            )}
         </div>
     );
 };
