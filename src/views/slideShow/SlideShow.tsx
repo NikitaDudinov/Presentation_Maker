@@ -28,9 +28,9 @@ const SlideShow = () => {
     return (
         <div className={styles.container}>
             <div className={styles.containerLink}>
-                <NavLink className={styles.linkToPresentation} to="/">Вернуться к редактированию прзетации</NavLink>
+                <NavLink className={styles.linkToPresentation} to="/">Вернуться к редактированию презентации</NavLink>
             </div>
-            <Slide slide={presentation.slides[indexSlide]} scale={1.6}/>
+            <Slide slide={presentation.slides[indexSlide]} scale={1.7}/>
             <div className={styles.containerButtons}>
                 <div className={styles.buttons}>
                     <Button 

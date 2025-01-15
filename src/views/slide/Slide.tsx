@@ -29,13 +29,12 @@ const Slide = ({
     const presentation = useAppSelector(state => state)
 
     const slideStyles: CSSProperties = {
-        border: isSelected && !isWorkSpace ? '1px solid #007bff' : '1px solid black',
-        background: slide.background.startsWith('http') || slide.background.startsWith('data:') || slide.background.startsWith('/src')
+        border: isSelected && !isWorkSpace ? '1px solid #39FF14' : '1px solid black',
+        background: `${slide.background.startsWith('http') || 
+            slide.background.startsWith('data:') || 
+            slide.background.startsWith('/src')
             ? `url(${slide.background})`
-            : slide.background,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+            : slide.background} no-repeat center / cover`,
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     };

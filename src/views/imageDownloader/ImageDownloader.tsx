@@ -14,11 +14,16 @@ type UnsplashResult = {
     small_s3: string;
 }
 
-const ImageDownloader = () => {
+type ImageDownloaderProps = {
+    type: 'changeBackground' | 'addImage'
+    all?: boolean;
+}
+
+const ImageDownloader = ({type, all = false}: ImageDownloaderProps) => {
     const [photos, setPhotos] = useState<UnsplashResult[]>([]);
     const [arrayUrls, setArrayUrls] = useState<string[]>([]);
     const [query, setQuery] = useState<string>('');
-    const {addImageElement} = useAppActions();
+    const {addImageElement, updateBackgroundSlide} = useAppActions();
     
     const getPhotos = async () => {
         const UNSPLASH_API_KEY = 'rGNChDIGHO-O0xXnk43O9N9zsts0sm5t5GZntOmt-Xw';
@@ -72,7 +77,7 @@ const ImageDownloader = () => {
     };
 
     return (
-        <div style={{maxHeight: '100%'}}>
+        <div  style={{maxHeight: '100%'}}>
             <input
                 type="text"
                 value={query}
@@ -98,17 +103,21 @@ const ImageDownloader = () => {
                 ) : (
                     <Preloader />
                 )}
-            </div>   
-            <Button 
-                type='text' 
-                onClick={() => {
-                    arrayUrls.forEach(photo => {
-                        addImageElement(photo)
-                    });
-                    setArrayUrls([]);
-                }} 
-                label='Выбрать'
-            /> 
+            </div>
+            <div className={styles.grayButton}>
+                <Button 
+                    type='text' 
+                    onClick={() => {
+                        arrayUrls.forEach(photo => {
+                            type === 'addImage' ? addImageElement(photo) : updateBackgroundSlide(photo, all)
+                        });
+                        setArrayUrls([]);
+
+                    }} 
+                    label='Выбрать'
+                /> 
+            </div>  
+
         </div>
     );
 };

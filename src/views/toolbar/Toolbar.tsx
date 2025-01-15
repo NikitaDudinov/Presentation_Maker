@@ -1,7 +1,5 @@
 import { Button } from '../../components/button/Button'
 import styles from './Toolbar.module.css'
-import imageStarUrl from '../../assets/star.svg'
-import imageThemesUrl from '../../assets/thems.svg'
 import { EditBgComponent } from './editBgComponent/EditBgComponent'
 import imageAddSlide from '../../assets/add-slide.svg'
 import imnageTrash from '../../assets/trash.svg'
@@ -11,7 +9,6 @@ import { useAppSelector } from '../../store/hooks/useAppSelector'
 import { useAppActions } from '../../store/hooks/useAppActions'
 import { EditFigureComponent } from './editFigureComponent/EditFigureComponent'
 import { EditThemePresentation } from './editThemePresentation/EditThemePresentation'
-import { useState } from 'react'
 
 
 

@@ -7,6 +7,7 @@ import {
     PresentationType, 
     PositionType,
     BaseElementType,
+    FigureElementType,
 } from "../types";
 
 const isValidPosition = (position: PositionType): position is PositionType => {
@@ -58,20 +59,30 @@ const validateTextElement = (element: TextElementType): element is TextElementTy
     );
 };
 
-const validateElement = (element: any): element is ImageElementType | TextElementType => {
+const validateFigureElement = (element: FigureElementType): element is FigureElementType => {
+    return (
+        validateBaseElement(element) &&
+        element.type === 'figure' &&
+        ['rectangle', 'circle', 'triangle', 'line'].includes(element.figureType) &&
+        typeof element.fill === 'string'
+    );
+};
+
+const validateElement = (element: any): element is ImageElementType | TextElementType | FigureElementType => {
     if (!element || typeof element.id !== 'string') {
         return false;
     }
 
-    if (element.type === 'image') {
-        return validateImageElement(element);
+    switch (element.type) {
+        case 'image':
+            return validateImageElement(element);
+        case 'text':
+            return validateTextElement(element);
+        case 'figure':
+            return validateFigureElement(element);
+        default:
+            return false;
     }
-
-    if (element.type === 'text') {
-        return validateTextElement(element);
-    }
-
-    return false;
 };
 
 const validateSlide = (slide: any): slide is SlideType => {
@@ -97,7 +108,6 @@ const validatePresentation = (presentation: any): presentation is PresentationTy
     return (
         presentation && 
         typeof presentation.title === 'string' && 
-        presentation.theme !== undefined &&
         validateSelection(presentation.selection) && 
         Array.isArray(presentation.slides) && 
         presentation.slides.every(validateSlide)

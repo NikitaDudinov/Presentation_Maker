@@ -20,7 +20,7 @@ function initHistory(store: Store<PresentationType>): HistoryType {
     store.subscribe(() => {
         const editor = store.getState()
         saveToLocalStorage(editor)
-        if (!undoStack.length || previousEditor != editor) {
+        if (!undoStack.length || previousEditor !== editor) {
             if (editor == getLastItem(undoStack)) {
                 undoStack.pop()
                 redoStack.push(previousEditor)

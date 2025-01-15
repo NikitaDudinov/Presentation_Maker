@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './PDFPreview.module.css';
 import { PresentationType } from '../../store/types';
 import { Button } from '../../components/button/Button';
+import { Slide } from '../slide/Slide';
 
 interface PDFPreviewProps {
     presentation: PresentationType;
@@ -47,49 +48,20 @@ export const PDFPreview: React.FC<PDFPreviewProps> = ({ presentation, onClose, o
                 </div>
                 
                 <div className={styles.slideContainer}>
-                    <div className={styles.slide} style={{ background: presentation.slides[currentSlide].background }}>
-                        {presentation.slides[currentSlide].elements.map(element => {
-                            if (element.type === 'text') {
-                                return (
-                                    <div
-                                        key={element.id}
-                                        style={{
-                                            position: 'absolute',
-                                            top: element.position.y,
-                                            left: element.position.x,
-                                            fontSize: element.font.size,
-                                            fontFamily: element.font.family,
-                                            whiteSpace: 'pre-wrap',
-                                        }}
-                                    >
-                                        {element.content}
-                                    </div>
-                                );
-                            }
-                            if (element.type === 'image') {
-                                return (
-                                    <img
-                                        key={element.id}
-                                        src={element.src}
-                                        style={{
-                                            position: 'absolute',
-                                            top: element.position.y,
-                                            left: element.position.x,
-                                            width: element.size.width,
-                                            height: element.size.height,
-                                            objectFit: 'contain',
-                                        }}
-                                    />
-                                );
-                            }
-                            return null;
-                        })}
-                    </div>
+                    <Slide 
+                        slide={presentation.slides[currentSlide]}
+                        scale={1.3}
+                    />
                 </div>
 
+
                 <div className={styles.footer}>
-                    <Button type='text' onClick={onClose} label={'Отмена'}/>
-                    <Button type='text' onClick={onGenerate} label={'Сгенерировать PDF'}/>
+                    <div className={styles.redButton}>
+                        <Button type='text' onClick={onClose} label={'Отмена'}/>
+                    </div>
+                    <div className={styles.greenButton}>
+                        <Button type='text' onClick={onGenerate} label={'Сгенерировать PDF'}/>
+                    </div>
                 </div>
             </div>
         </div>

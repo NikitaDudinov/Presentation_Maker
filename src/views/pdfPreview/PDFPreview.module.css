@@ -67,6 +67,17 @@
 .footer {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    background-color: white;
     margin-top: 20px;
+    gap: 10px;
+}
+
+.redButton {
+    background-color: red;
+    border-radius: 5px;
+}
+
+.greenButton {
+    background-color: green;
+    border-radius: 5px;
 }

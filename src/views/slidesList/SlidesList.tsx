@@ -11,7 +11,7 @@ type SlideListProps = {
 }
 
 const SlidesList = ({ slidePreviewScale }: SlideListProps) => {
-    const { setSelectionSlide, updateSlides } = useAppActions();
+    const { setSelectionSlide, updateSlides, removeSlide } = useAppActions();
     const slides = useAppSelector(state => state.slides);
     const selectSlideId = useAppSelector(state => state.selection.selectedSlideId);
     
@@ -29,6 +29,20 @@ const SlidesList = ({ slidePreviewScale }: SlideListProps) => {
             setSelectionSlide(slideId);
         }
     };
+
+    useEffect(() => {
+        console.log(selectSlideId)
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Delete' && selectSlideId !== null) {
+                removeSlide(selectSlideId)
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectSlideId]);
 
     useEffect(() => {
         setCurrentSlides(slides);

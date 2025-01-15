@@ -1,7 +1,7 @@
 import { Button } from '../../../components/button/Button'
 import { Popover } from '../../../components/popover/Popover'
 import { Dropdown } from '../../../components/dropdown/Dropdown'
-import imageTextUrl from '../../../assets/text.svg'
+import imageTextUrl from '../../../assets/Text Bold.svg'
 import styles from './EditTextComponent.module.css'
 import {useState} from 'react'
 import { FigureElementType, ImageElementType, TextElementType } from '../../../store/types'

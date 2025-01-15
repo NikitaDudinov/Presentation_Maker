@@ -95,12 +95,12 @@ const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}
                         </div>
                         <div className={styles.divider} />
                         <div className={styles.section}>
-                            <span className={styles.label}>Выбрать из галереи</span>
+                            <span className={styles.label}>Выбрать из сервиса картинок</span>
                             <div className={styles.buttonWrapper}>
                                 <Button 
                                     type='text' 
                                     onClick={() => setIsOpenImageService(true)} 
-                                    label="Открыть галерею"
+                                    label=" Сервис картинок"
                                 />
                             </div>
                         </div>
@@ -134,7 +134,7 @@ const EditImageComponent: React.FC<EditImageComponentProps> = ({selectedSlideId}
                     ref={imageServiceRef}
                     height={'80%'}
                     width={'60%'}
-                    content={<ImageDownloader/>}
+                    content={<ImageDownloader type={'addImage'}/>}
                 />
             )}
         </>
