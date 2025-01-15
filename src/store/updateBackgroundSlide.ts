@@ -7,7 +7,7 @@ const updateBackgroundSlide = (
 ): PresentationType => {
 
     const selectedSlideId = presentation.selection.selectedSlideId;
-
+    console.log(newBackground)
     if(selectedSlideId){
         const newSlides = presentation.slides.map(slide => {
             if (isAllSlides || slide.id === selectedSlideId) {

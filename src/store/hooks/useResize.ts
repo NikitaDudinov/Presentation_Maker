@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState} from 'react';
 import { PresentationType, UpdateSizeType } from '../types';
 import { useAppActions } from './useAppActions';
 import { SLIDE_HEIGHT, SLIDE_WIDTH } from '../constants';
@@ -24,7 +24,7 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
         }
     }, [state.selection.selectedSlideId, state.selection.elementsId, state.slides]);
 
-    const handleMouseMove = useCallback((event: MouseEvent) => {
+    const handleMouseMove = (event: MouseEvent) => {
         if (resizeType && ref.current && state.selection.selectedSlideId) {
             if (rafRef.current) {
                 cancelAnimationFrame(rafRef.current);
@@ -129,9 +129,9 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
                 setLocalPosition({ x: newX, y: newY });
             });
         }
-    }, [resizeType, scale, state.selection.selectedSlideId, state.slides]);
+    };
 
-    const handleMouseUp = useCallback(() => {
+    const handleMouseUp = () => {
         if (resizeType && ref.current) {
             updateSizeElement(sizeObject);
             updatePositionElement(localPosition);
@@ -140,9 +140,9 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
         if (rafRef.current) {
             cancelAnimationFrame(rafRef.current);
         }
-    }, [resizeType, sizeObject, localPosition, updateSizeElement, updatePositionElement]);
+    };
 
-    const handleResizeMouseDown = useCallback((type: UpdateSizeType) => (event: React.MouseEvent) => {
+    const handleResizeMouseDown = (type: UpdateSizeType) => (event: React.MouseEvent) => {
         event.stopPropagation();
         event.preventDefault();
         setResizeType(type);
@@ -157,7 +157,7 @@ const useResize = (initialSize: { width: number; height: number }, scale: number
             startSizeRef.current = { width: sizeObject.width, height: sizeObject.height };
             setLocalPosition(selectedElement.position);
         }
-    }, [state.selection.selectedSlideId, state.slides, sizeObject]);
+    };
 
     useEffect(() => {
         if (resizeType) {

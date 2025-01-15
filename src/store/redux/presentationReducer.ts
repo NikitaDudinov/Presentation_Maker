@@ -12,16 +12,14 @@ import { updateContentText } from "./updateContentText";
 import { updateTextStyle } from "../updateTextStyle";
 import { addFigureElement } from "../addFigureElement";
 import { updateFillElement } from "../updateFillElement";
+import { removeSlide } from "../removeSlide";
 
 const presentationReducer = (state: PresentationType = defaultPresentation, action: PresentationAction): PresentationType => {
     switch (action.type) {
         case PresentationActionType.ADD_SLIDE:  
             return addSlide(state)
         case PresentationActionType.REMOVE_SLIDE:
-            return {
-                ...state,
-                slides: state.slides.filter(item => item.id !== action.payload)
-            }
+            return removeSlide(state, action.payload)
         case PresentationActionType.UPDATE_SLIDES:
             return {
                 ...state,

@@ -1,13 +1,12 @@
 import { PresentationType } from "./types"
 
-const removeSlide = (presentation: PresentationType): PresentationType => {
-    const selectedSlideId = presentation.selection.selectedSlideId
+const removeSlide = (presentation: PresentationType, removeSlideId: string): PresentationType => {
 
-    if (selectedSlideId){
-        const newSlides = presentation.slides.filter(slide => slide.id != selectedSlideId)
+    if (removeSlideId){
+        const newSlides = presentation.slides.filter(slide => slide.id != removeSlideId)
 
         let newSelectedSlideId = null;
-        const removeSlideIndex = presentation.slides.findIndex(slide => slide.id == selectedSlideId)
+        const removeSlideIndex = presentation.slides.findIndex(slide => slide.id == removeSlideId)
         
         if (newSlides.length > 0) {
             const index = Math.min(removeSlideIndex, newSlides.length - 1)

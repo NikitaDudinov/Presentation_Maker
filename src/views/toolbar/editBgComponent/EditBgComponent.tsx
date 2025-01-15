@@ -11,7 +11,6 @@ import { ImageDownloader } from '../../imageDownloader/ImageDownloader'
 type BackgroundType = 'color' | 'gradient' | 'image';
 
 type EditBgComponentProps = {
-    background?: string
     selectedSlideId: string | null
 }
 
@@ -20,48 +19,19 @@ interface GradientColor {
     position: number;
 }
 
-const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedSlideId }) => {
+const EditBgComponent: React.FC<EditBgComponentProps> = ({selectedSlideId}) => {
     const { updateBackgroundSlide } = useAppActions();
     const [allSlides, setAllSlides] = useState(false);
     const [activeType, setActiveType] = useState<BackgroundType>('color');
     const [isImageServiceOpen, setIsImageServiceOpen] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const imageServiceRef = useRef<HTMLDivElement>(null);
     const [imageUrl, setImageUrl] = useState('');
-    const [isGradient, setIsGradient] = useState(false);
     const [gradientColors, setGradientColors] = useState<GradientColor[]>([
         { color: '#000000', position: 0 },
         { color: '#ffffff', position: 100 }
     ]);
     const [gradientAngle, setGradientAngle] = useState(90);
     const [solidColor, setSolidColor] = useState('#000000');
-
-    useEffect(() => {
-        if (background) {
-            if (background.includes('gradient')) {
-                setIsGradient(true);
-                const matches = background.match(/rgba?\(.*?\)|#[a-f\d]{3,6}/gi);
-                const positions = background.match(/\s\d+%/g);
-                if (matches) {
-                    const newGradientColors = matches.map((color, index) => ({
-                        color,
-                        position: positions && positions[index] 
-                            ? parseInt(positions[index]) 
-                            : index === 0 ? 0 : 100
-                    }));
-                    setGradientColors(newGradientColors);
-                    
-                    const angleMatch = background.match(/\d+deg/);
-                    if (angleMatch) {
-                        setGradientAngle(parseInt(angleMatch[0]));
-                    }
-                }
-            } else {
-                setIsGradient(false);
-                setSolidColor(background);
-            }
-        }
-    }, [background]);
 
     const handleColorChange = (index: number, newColor: string) => {
         const newColors = [...gradientColors];
@@ -105,15 +75,7 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
 
     const updateBackground = () => {
         if (!selectedSlideId) return;
-
-        if (isGradient) {
-            const gradientString = `linear-gradient(${gradientAngle}deg, ${gradientColors
-                .map(gc => `${gc.color} ${gc.position}%`)
-                .join(', ')})`;
-            updateBackgroundSlide(gradientString, allSlides);
-        } else {
-            updateBackgroundSlide(solidColor, allSlides);
-        }
+        updateBackgroundSlide(solidColor, allSlides);
     };
 
     const addGradientColor = () => {
@@ -145,63 +107,6 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
         }
     };
 
-    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file || !selectedSlideId) return;
-
-        try {
-            if (!file.type.startsWith('image/')) {
-                alert('Пожалуйста, выберите файл изображения');
-                return;
-            }
-            const imageUrl = URL.createObjectURL(file);
-
-            const img = new Image();
-            img.src = imageUrl;
-
-            await new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-            });
-
-            const backgroundStyle = `url(${imageUrl}) center center / cover no-repeat`;
-            
-            updateBackgroundSlide(backgroundStyle, allSlides);
-
-        } catch (error) {
-            console.error('Ошибка при загрузке изображения:', error);
-            alert('Произошла ошибка при загрузке изображения');
-        }
-    };
-
-    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-
-    const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const file = event.dataTransfer.files[0];
-        if (!file || !selectedSlideId) return;
-
-        try {
-            if (!file.type.startsWith('image/')) {
-                alert('Пожалуйста, перетащите файл изображения');
-                return;
-            }
-
-            const imageUrl = URL.createObjectURL(file);
-            const backgroundStyle = `url(${imageUrl}) center center / cover no-repeat`;
-            updateBackgroundSlide(backgroundStyle, allSlides);
-
-        } catch (error) {
-            console.error('Ошибка при загрузке изображения:', error);
-            alert('Произошла ошибка при загрузке изображения');
-        }
-    };
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (imageServiceRef.current && !imageServiceRef.current.contains(event.target as Node)) {
@@ -215,9 +120,6 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
         };
     }, []);
 
-    const triggerImageUpload = () => {
-        fileInputRef.current?.click();
-    };
 
     const handleImageUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setImageUrl(event.target.value);
@@ -225,22 +127,10 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
 
     const handleAddImageByUrl = () => {
         if (imageUrl && selectedSlideId) {
-            const backgroundStyle = `url(${imageUrl})`;
-            updateBackgroundSlide(backgroundStyle, allSlides);
+            updateBackgroundSlide(imageUrl, allSlides);
             setImageUrl('');
         }
     };
-
-    useEffect(() => {
-        return () => {
-            if (background?.startsWith('url(')) {
-                const urlMatch = background.match(/url\((.*?)\)/);
-                if (urlMatch) {
-                    URL.revokeObjectURL(urlMatch[1]);
-                }
-            }
-        };
-    }, [background]);
 
     return (
         <>
@@ -347,31 +237,6 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
                         {activeType === 'image' && (
                             <div className={styles.imageControls}>
                                 <div className={styles.imageSection}>
-                                    <span className={styles.subLabel}>Загрузить с компьютера</span>
-                                    <div 
-                                        className={styles.uploadArea}
-                                        onDragOver={handleDragOver}
-                                        onDrop={handleDrop}
-                                    >
-                                        <Button 
-                                            type='text'
-                                            onClick={triggerImageUpload}
-                                            label="Выбрать файл"
-                                        />
-                                        <span className={styles.dragText}>или перетащите файл сюда</span>
-                                        <input
-                                            ref={fileInputRef}
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleImageUpload}
-                                            style={{ display: 'none' }}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={styles.divider} />
-
-                                <div className={styles.imageSection}>
                                     <span className={styles.subLabel}>Сервис картинок</span>
                                     <Button 
                                         type='text'
@@ -417,7 +282,7 @@ const EditBgComponent: React.FC<EditBgComponentProps> = ({ background, selectedS
                     ref={imageServiceRef}
                     height="80%"
                     width="60%"
-                    content={<ImageDownloader type={'changeBackground'} all={true}/>}
+                    content={<ImageDownloader type={'changeBackground'} all={allSlides}/>}
                 />
             )}
         </>

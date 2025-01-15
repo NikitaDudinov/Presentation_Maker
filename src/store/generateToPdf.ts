@@ -92,7 +92,6 @@ const generatePDF = async (presentation: PresentationType) => {
                                 user-select:none; 
                                 pointer-events:none;">
                                 <svg width="100%" height="100%">
-                                    <!-- Рендерим фигуру на основе figureObject -->
                                     ${renderFigureToSVG(element)}
                                 </svg>
                             </div>`;

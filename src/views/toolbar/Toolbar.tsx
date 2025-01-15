@@ -19,7 +19,7 @@ const Toolbar = () => {
     const selectedSlideId = useAppSelector((state) => state.selection.selectedSlideId);
     const selectedElementId = useAppSelector((state) => state.selection.elementsId[0]);
     const selectedElement = slides.find(slide => slide.id === selectedSlideId)?.elements.find(element => element.id === selectedElementId)
-    const selectedSlideBg = slides.find(slide => slide.id === selectedSlideId)?.background
+
     
     return (
         <div className={styles.toolbarContainer}>
@@ -30,7 +30,7 @@ const Toolbar = () => {
                 selectedElement={selectedElement}
             />
             <EditThemePresentation selectedSlideId={selectedSlideId}/>
-            <EditBgComponent background={selectedSlideBg} selectedSlideId={selectedSlideId}/>
+            <EditBgComponent selectedSlideId={selectedSlideId}/>
             <Button type={'icon'} onClick={addSlide} iconUrl={imageAddSlide} iconSize={'large'}/>
             {selectedElement && (    
                 <Button 

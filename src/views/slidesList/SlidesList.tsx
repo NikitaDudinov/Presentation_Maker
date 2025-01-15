@@ -31,14 +31,17 @@ const SlidesList = ({ slidePreviewScale }: SlideListProps) => {
     };
 
     useEffect(() => {
-        console.log(selectSlideId)
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Delete' && selectSlideId !== null) {
                 removeSlide(selectSlideId)
             }
         };
         window.addEventListener('keydown', handleKeyDown);
-
+        if (selectSlideId) {
+            setSelectedSlides([selectSlideId]);
+        } else {
+            setSelectedSlides([]);
+        }
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };

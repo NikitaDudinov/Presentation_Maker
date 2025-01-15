@@ -1,5 +1,5 @@
 import { SlideType } from "../../store/types";
-import { CSSProperties, useRef } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
 import { FigureObject } from "./FigureObject";
@@ -39,6 +39,7 @@ const Slide = ({
         height: `${SLIDE_HEIGHT * scale}px`,
     };
     
+ 
 
     const onSetSelectionElement = (elementId: string) => {
         setSelectionElement(elementId)

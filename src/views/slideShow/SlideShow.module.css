@@ -3,9 +3,8 @@
     height: 100vh;
     background: linear-gradient(135deg, #424242, #212121); 
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
 }
 
 .linkToPresentation {
